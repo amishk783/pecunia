@@ -7,11 +7,13 @@ import bg2 from "../assets/custom-bg/bg2.jpg";
 import bg3 from "../assets/custom-bg/bg3.png";
 import bg4 from "../assets/custom-bg/bg4.jpg";
 import bg5 from "../assets/custom-bg/bg5.png";
-import cross from '../assets/custom-bg/cross.png'
+import cross from "../assets/custom-bg/cross.png";
 
-interface CustomThemePickerProps {}
+interface CustomThemePickerProps {
+  handleOpen: () => void;
+}
 
-const CustomThemePicker: React.FC = () => {
+const CustomThemePicker: React.FC<CustomThemePickerProps> = ({ handleOpen }) => {
   const [isPrimaryColor, setPrimary] = useState<string>("");
   const [isSecondaryColor, setSecondary] = useState<string>("");
 
@@ -46,7 +48,7 @@ const CustomThemePicker: React.FC = () => {
   return (
     <div className=" absolute flex flex-col w-[17%] bg-theme-primary right-0 px-2 border-l-3  ">
       <div className="flex justify-end items-end pt-3 ">
-        <CircleX size={32} className="text-white" />
+        <CircleX size={32} className="text-white" onClick={handleOpen} />
       </div>
       <div className="px-2 ">
         <div>

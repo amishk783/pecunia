@@ -5,11 +5,19 @@ import CustomThemePicker from "./components/CustomThemePicker.tsx";
 import { useTheme } from "./lib/providers/Theme.tsx";
 import { cn } from "./lib/utils.ts";
 function App() {
+  const [openCustomPicker, setOpenCustomPicker] = useState<boolean>(false);
+
+  const handleOpenCustomPicker = () => {
+    setOpenCustomPicker((prevState) => !prevState);
+  };
   const { theme } = useTheme();
   const bgcolor = `bg-[${theme?.bgColor}]`;
   return (
     <main className={cn("w-full h-full", bgcolor)}>
-      <CustomThemePicker />
+      {openCustomPicker && (
+        <CustomThemePicker handleOpen={handleOpenCustomPicker} />
+      )}
+      <button onClick={handleOpenCustomPicker}>opem</button>
 
       <Routes>
         <Route path="/" element={""} />
