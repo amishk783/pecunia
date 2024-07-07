@@ -49,8 +49,8 @@ const Header: React.FC = () => {
   return (
     <div
       className={cn(
-        "flex py-6   w-full items-center justify-between  px-5",
-        theme?.bgColor
+        "flex py-6   w-full items-center justify-between  px-5 glass",
+        // theme?.bgColor
       )}
     >
       <div className="flex gap-2 items-center">

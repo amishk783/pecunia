@@ -15,18 +15,18 @@ export const adminDashboard: DashboardType[] = [
   },
   {
     icon: CircleGauge,
-    text: "Analytics",
+    text: "Goals",
     pathUrl: "/analytics",
   },
   {
     icon: User,
-    text: "Users",
+    text: "Insights",
     pathUrl: "/users",
   },
   {
     icon: PanelsTopLeft,
-    text: "Account",
-    pathUrl: "/account",
+    text: "Budget",
+    pathUrl: "/budget",
   },
   {
     icon: ShoppingCart,

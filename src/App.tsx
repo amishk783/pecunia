@@ -4,7 +4,10 @@ import SideBar from "./components/SideBar.tsx";
 import CustomThemePicker from "./components/CustomThemePicker.tsx";
 import { useTheme } from "./lib/providers/Theme.tsx";
 import { cn } from "./lib/utils.ts";
+import Signup from "./pages/Signup.tsx";
 import Weather from "./components/widgets/weather/wheather.tsx";
+import Signup from "./pages/Signup.tsx";
+import { fromTheme } from "tailwind-merge";
 function App() {
   const [openCustomPicker, setOpenCustomPicker] = useState<boolean>(false);
 
@@ -24,6 +27,7 @@ function App() {
 
       <Routes>
         <Route path="/" element={""} />
+        <Route path="/singup" element={"Signup"} />
         <Route path="/dashboard" element={""}></Route>
         <Route path="/analytics" element={""}></Route>
         <Route path="/users" element={""}></Route>
