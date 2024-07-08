@@ -74,7 +74,7 @@ const Weather = () => {
   useEffect(() => {
     const getWeather = async () => {
       const response = await axios.get<WeatherData>(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric` //TODO: Restructure the code
+        `httpss://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric` //TODO: Restructure the code
       );
       const weather: WeatherData = await response.data;
       const weatherCondition = weather.weather[0].main;

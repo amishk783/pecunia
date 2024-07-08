@@ -1,17 +1,16 @@
-import React, { FC, ReactElement } from "react";
-import { adminDashboard } from "../Constants/constants";
-import { NavLink, Link, useLocation } from "react-router-dom";
-import Button from "./Button";
-import { cn } from "../lib/utils";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
+
+import { cn } from "@/lib/utils";
 import { Settings, LogOut } from "lucide-react";
 import { useTheme } from "../lib/providers/Theme";
-interface SideBarProps {
-  text: string;
-}
+
+import { adminDashboard } from "../Constants/constants";
+import Button from "@/components/ui/Button";
 
 const SideBar: React.FC = () => {
   const { pathname } = useLocation();
-  const { theme, setThemeState } = useTheme();
+  const { theme } = useTheme();
 
   const isActivePage = (path: string): boolean => {
     return path === pathname;
@@ -19,7 +18,7 @@ const SideBar: React.FC = () => {
   return (
     <div
       className={cn(
-        " w-[15%] h-screen glass ",
+        " w-[15%] h-screen  glass ",
         // theme?.bgSecondary,
         theme?.textColor
       )}

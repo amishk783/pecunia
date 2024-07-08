@@ -11,26 +11,26 @@ export const adminDashboard: DashboardType[] = [
   {
     icon: LayoutDashboard,
     text: "Dashboard",
-    pathUrl: "/dashboard",
+    pathUrl: "app/dashboard",
   },
   {
     icon: CircleGauge,
     text: "Goals",
-    pathUrl: "/analytics",
+    pathUrl: "app/analytics",
   },
   {
     icon: User,
     text: "Insights",
-    pathUrl: "/users",
+    pathUrl: "app/users",
   },
   {
     icon: PanelsTopLeft,
     text: "Budget",
-    pathUrl: "/budget",
+    pathUrl: "app/budget",
   },
   {
     icon: ShoppingCart,
     text: "Projects",
-    pathUrl: "/projects",
+    pathUrl: "app/projects",
   },
 ];
