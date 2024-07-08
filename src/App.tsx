@@ -12,6 +12,7 @@ import { LogIn } from "lucide-react";
 import Login from "@/pages/Auth/Login.tsx";
 import Signup from "@/pages/Auth/Signup.tsx";
 import { Sign } from "crypto";
+import ForgotPassword from "./pages/Auth/ForgotPassword.tsx";
 
 function App() {
   const { theme } = useTheme();
@@ -20,7 +21,8 @@ function App() {
   return (
     <Routes>
       <Route path="/signup" element={<Signup />} />
-      <Route path="/login" element={<Login/>} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/" element={<Layout />}>
         <Route index element={<Navigate to="/dashboard" replace />} />
         <Route
