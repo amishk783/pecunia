@@ -10,7 +10,7 @@ interface Position {
 
 import { WeatherData } from "./type";
 
-const weatherDesgin = {
+const weatherDesgin: { [key: string]: { icon: string; bgColor: string } } = {
   rain: {
     icon: "",
     bgColor: "",
@@ -41,7 +41,7 @@ const Weather = () => {
   const [bgClass, setBgClass] = useState<string>("");
   const [weather, setWeather] = useState<WeatherData>();
   console.log("🚀 ~ Wheather ~ wheather:", weather);
-
+  console.log(weatherDesgin["snow"]);
   const getLocation = async () => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -77,7 +77,7 @@ const Weather = () => {
         `httpss://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric` //TODO: Restructure the code
       );
       const weather: WeatherData = await response.data;
-      const weatherCondition = weather.weather[0].main;
+      // const weatherCondition = weather.weather[0].main;
 
       setWeather(weather);
     };

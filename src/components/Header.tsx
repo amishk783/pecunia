@@ -1,8 +1,8 @@
-import { Sun, Home, Mail, Moon, PenTool, Wrench } from "lucide-react";
+import { Sun, Home, Mail, Moon,Wrench } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../lib/providers/Theme";
 import { cn } from "../lib/utils";
-import CustomThemePicker from "./CustomThemePicker";
+
 
 import {
   Select,

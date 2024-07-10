@@ -6,15 +6,25 @@ import { supabase } from "@/supabaseClient";
 import { Provider } from "@supabase/supabase-js";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
 
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/providers/AuthProvider";
+import { financialAdvice } from "./constant";
 
 import { Input } from "@/components/ui/Input";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
 import Button from "@/components/ui/Button";
 
-import { Github, Loader, Eye } from "lucide-react";
+import { Github, Loader, Eye, Plus } from "lucide-react";
+
 
 const schema = z.object({
   email: z
@@ -53,11 +63,14 @@ const Signup = () => {
     setActive("password");
     try {
       await signUp(email, password);
+
+      navigate("/app/dashboard");
+    } catch (error) {
+      console.log(error);
+
       toast("Welcome Aboard!", {
         className: " text-green-300",
       });
-    } catch (error) {
-      console.log(error);
     }
     setLoading(false);
   };
@@ -88,36 +101,76 @@ const Signup = () => {
   };
 
   return (
-    <div className="h-screen bg-white ">
-      <div className=" gap-20 m-auto rounded-lg shadow-lg  h-screen flex">
+    <div className="h-screen">
+      <div className="h-full rounded-lg shadow-lg flex flex-col md:flex-row md:gap-5">
         {/* left part */}
-        <div className=" w-2/5 p-8 bg-red-50">
-          <h1 className="text-2xl font-bold mb-4">FINOTIC</h1>
-          <div className="bg-gray-100 p-4 rounded-lg mb-4">
-            <p className="text-sm text-gray-500">CURRENT BALANCE</p>
-            <p className="text-3xl font-bold">${24359}</p>
-          </div>
-          <div className="relative h-40 w-40 mx-auto mb-4">
-            {/* Placeholder for pie chart */}
-            <div className="absolute inset-0 rounded-full bg-blue-500"></div>
-            <div className="absolute inset-2 rounded-full bg-white flex items-center justify-center">
-              <span className="text-xl font-bold">34</span>
+        <div className="w-full md:w-1/2 xl:w-2/5 flex px-4 md:justify-center bg-red-50">
+          <div className="flex flex-col items-center justify-center w-full  pt-10">
+            <h1 className="text-2xl font-bold md:mb-10">Pecunia</h1>
+
+            {/* grid image part */}
+            <div className="hidden md:grid md:grid-cols-3 xl:grid-cols-6 grid-rows-4 gap-8 self-center pt-10 ">
+              <img
+                className="w-48 xl:w-60 rounded-lg col-start-1 col-span-3 xl:col-start-2 xl:col-span-4 row-start-1 row-span-2 drop-shadow-lg "
+                width={240}
+                src="/loginCover.jpg"
+              />
+              <img
+                className="w-48 xl:w-60 rounded-lg col-start-2 col-span-3 xl:col-start-4 xl:col-span-6 row-start-2 row-span-3 ml-10 z-10  aspect-[8/7] drop-shadow-lg "
+                src="/loginCover2.jpg"
+              />
+              <div className="w-64 xl:w-full group rounded-lg   p-2  bg-white col-start-1 col-span-3 row-start-3 row-span-2 xl:col-start-1 xl:col-span-5 xl:row-start-3 xl:row-span-2  drop-shadow-lg ">
+                <div className="border-2 rounded-lg border-dashed w-full h-full flex flex-col gap-2 justify-center items-center hover:border-blue-400  transition ease-in-out delay-75">
+                  <Plus
+                    size={42}
+                    className="bg-blue-600 rounded-full p-3 group-hover:scale-[110%] transition ease-in-out delay-75"
+                    color="white"
+                  />
+                  <h2 className="font-bold mt-2">New Expense</h2>
+                  <h4 className="flex gap-2">
+                    or upload <p className="text-green-500">.xls</p> file
+                  </h4>
+                </div>
+              </div>
+            </div>
+            <div className="hidden pt-10 md:block w-4/5">
+              <div className="w-full bg-white py-3  xl:py-6 rounded-lg ">
+                <Carousel
+                  plugins={[
+                    Autoplay({
+                      delay: 3000,
+                    }),
+                  ]}
+                >
+                  <CarouselContent>
+                    {financialAdvice.map((advice) => (
+                      <CarouselItem key={advice.title}>
+                        <div className=" flex-col justify-center px-2 xl:px-10">
+                          <h2 className=" font-bold text-xl xl:text-2xl mb-2 text-center">
+                            {advice.title}
+                          </h2>
+                          <p className="text-center">{advice.advice}</p>
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious />
+                  <CarouselNext />
+                </Carousel>
+              </div>
             </div>
           </div>
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg">
-            New transaction
-          </button>
         </div>
         {/* right part */}
-        <div className=" w-3/5 flex justify-center items-center  bg-white ">
-          <div className="w-4/5 ml-auto">
+        <div className="h-full md:w-3/5 flex justify-center items-center bg-red-50 md:pt-10  md:bg-white ">
+          <div className="w-[90%] xl:w-4/5 xl:ml-auto">
             <h2 className="text-3xl font-bold mb-4">Join Us Today!</h2>
             <p className="mb-6 text-gray-600">
               Take control of your finances with ease and efficiency.
             </p>
 
             <form
-              className=" w-3/5 flex flex-col gap-2  rounded-lg "
+              className="w-full  flex flex-col gap-2  rounded-lg xl:w-3/5"
               onSubmit={handleSubmit(onSubmit)}
             >
               <label htmlFor="name" className="mb-2 block leading-tight ">
@@ -171,7 +224,7 @@ const Signup = () => {
               </Button>
             </form>
             {/* serperation */}
-            <div className="w-3/5 py-4 flex gap-4 justify-center">
+            <div className="xl:w-3/5 py-4 flex gap-4 justify-center">
               <div className="border-b-2 border-zinc-300 w-1/3  mb-3"></div>
               <p className="text-2xl">or</p>
               <div className="border-b-2 border-zinc-300 w-1/3  mb-3"></div>
@@ -179,7 +232,7 @@ const Signup = () => {
 
             {/* auth providers options */}
 
-            <div className="w-3/5 py-4 flex gap-4 ">
+            <div className="xl:w-3/5 py-4 flex gap-4 ">
               <div className="flex gap-4 w-full">
                 <Button
                   className="flex gap-2 items-center w-full justify-center"
@@ -237,7 +290,7 @@ const Signup = () => {
                 </Button>
               </div>
             </div>
-            <div className="w-3/5 flex justify-center items-center">
+            <div className="xl:w-3/5 flex justify-center items-center">
               <p>Have an account?</p>
               <Button
                 variant="ghost"

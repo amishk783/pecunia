@@ -29,9 +29,11 @@ function App() {
         <Route element={<PrivateRoute />}>
           <Route path="/update-password" element={<UpdatePassword />} />
         </Route>
-        <Route path="/update-password" element={<ForgotPassword />} />
+
         <Route path="/" element={<Layout />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
+          <Route element={<PrivateRoute />}>
+            <Route index element={<Navigate to="app/dashboard" replace />} />
+          </Route>
           <Route
             path="app/"
             element={

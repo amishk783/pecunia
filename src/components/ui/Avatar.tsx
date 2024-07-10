@@ -25,14 +25,15 @@ const avatarVariants = cva("", {
 
 const Avatar: React.FC<AvatarProps> = ({
   src,
-  size,
-  variant = "square",
-  className,
-  children,
+  // size,
+  // variant = "square",
+  // className,
+  // children,
 }) => {
-  //FIX
+
   return (
     <div>
+      
       <img src={src} className=""></img>
     </div>
   );

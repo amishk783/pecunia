@@ -6,7 +6,7 @@ import * as z from "zod";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { cn } from "@/lib/utils";
+
 import { useAuth } from "@/lib/providers/AuthProvider";
 
 import { ArrowLeftIcon, Loader } from "lucide-react";
@@ -61,29 +61,35 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="h-screen bg-white ">
-      <div className=" gap-20 m-auto rounded-lg shadow-lg  h-screen flex">
+    <div className="h-screen">
+      <div className="h-full rounded-lg shadow-lg flex flex-col md:flex-row md:justify-center md:gap-5">
         {/* left part */}
-        <div className=" w-2/5 p-8 bg-red-50">
-          <h1 className="text-2xl font-bold mb-4">FINOTIC</h1>
-          <div className="bg-gray-100 p-4 rounded-lg mb-4">
-            <p className="text-sm text-gray-500">CURRENT BALANCE</p>
-            <p className="text-3xl font-bold">${24359}</p>
-          </div>
-          <div className="relative h-40 w-40 mx-auto mb-4">
-            {/* Placeholder for pie chart */}
-            <div className="absolute inset-0 rounded-full bg-blue-500"></div>
-            <div className="absolute inset-2 rounded-full bg-white flex items-center justify-center">
-              <span className="text-xl font-bold">34</span>
+        <h1 className="absolute lg:hidden z-30 text-3xl px-6 py-8 font-bold">
+          Pecunia
+        </h1>
+        <div className="hidden lg:flex w-full md:w-1/2 xl:w-2/5  bg-red-50  md:bg-[#ffe8c8]">
+          <h1 className="absolute z-30 text-2xl p-10 font-bold lg:text-4xl">
+            Pecunia
+          </h1>
+          <div className="relative flex flex-col items-center justify-center w-full  pt-10">
+            <div className="hidden md:flex items-center justify-center">
+              <img
+                width={440}
+                className=" rounded-lg z-10 mt-10 "
+                src="/resetPassword.jpg"
+              />
             </div>
           </div>
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg">
-            New transaction
-          </button>
         </div>
         {/* right part */}
-        <div className=" w-3/5 flex justify-center items-center  bg-white ">
-          <div className="w-4/5 ml-auto">
+        <div className="h-full w-full md:w-xl:w-3/5 flex justify-center items-center bg-red-50 md:pt-10  lg:bg-white">
+          <div className="w-[90%] xl:w-4/5 xl:ml-auto">
+            <div className="flex items-center sm:hidden justify-center mb-6">
+              <img
+                className="rounded-full z-10 mt-10  w-44"
+                src="/resetPassword.jpg"
+              />
+            </div>
             <h2 className="text-3xl font-bold mb-4">Forgot your password?</h2>
             <p className="mb-4 text-gray-600">
               Don't worry, it happens! Let's get you a new one.
@@ -95,7 +101,7 @@ const ForgotPassword = () => {
             )}
 
             <form
-              className=" w-3/5 flex flex-col gap-2  rounded-lg "
+              className="w-full  flex flex-col gap-2  rounded-lg xl:w-3/5"
               onSubmit={handleSubmit(onSubmit)}
             >
               <label htmlFor="name" className="mb-2 block leading-tight ">
@@ -122,7 +128,7 @@ const ForgotPassword = () => {
               </Button>
             </form>
 
-            <div className="w-3/5 flex justify-center items-center">
+            <div className="xl:w-3/5 flex justify-center items-center">
               <p>Didn't recieve the verification code? </p>
               <Button
                 variant="ghost"
@@ -132,7 +138,7 @@ const ForgotPassword = () => {
                 Resend
               </Button>
             </div>
-            <div className="w-3/5 flex justify-center">
+            <div className="xl:w-3/5 flex justify-center">
               <Button
                 variant="ghost"
                 className="px-2 flex items-center gap-1"

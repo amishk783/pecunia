@@ -1,13 +1,7 @@
-import React, { useRef } from "react";
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
-
-import { config } from "@/config";
-import { cn } from "@/lib/utils";
-import { supabase } from "@/supabaseClient";
 
 import { Input } from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
@@ -45,8 +39,9 @@ const UpdatePassword = () => {
   const { updatePassword } = useAuth();
 
   const navigate = useNavigate();
+  console.log("🚀 ~ UpdatePassword ~ navigate:", navigate);
   const [loading, setLoading] = useState(false);
-  const watchPassword = watch("password") || '';
+  const watchPassword = watch("password") || "";
   console.log(watchPassword);
 
   const onSubmit = async (formDetails: FormData) => {
@@ -62,34 +57,37 @@ const UpdatePassword = () => {
   };
 
   return (
-    <div className="h-screen bg-white ">
-      <div className=" gap-20 m-auto rounded-lg shadow-lg  h-screen flex">
+    <div className="h-screen">
+      <div className="h-full rounded-lg shadow-lg flex flex-col md:flex-row lg:justify-center md:gap-5">
         {/* left part */}
-        <div className=" w-2/5 p-8 bg-red-50">
-          <h1 className="text-2xl font-bold mb-4">FINOTIC</h1>
-          <div className="bg-gray-100 p-4 rounded-lg mb-4">
-            <p className="text-sm text-gray-500">CURRENT BALANCE</p>
-            <p className="text-3xl font-bold">${24359}</p>
-          </div>
-          <div className="relative h-40 w-40 mx-auto mb-4">
-            {/* Placeholder for pie chart */}
-            <div className="absolute inset-0 rounded-full bg-blue-500"></div>
-            <div className="absolute inset-2 rounded-full bg-white flex items-center justify-center">
-              <span className="text-xl font-bold">34</span>
+        <h1 className="absolute lg:hidden text-start z-30 text-3xl px-6 py-8 font-bold">
+          Pecunia
+        </h1>
+        <div className="hidden lg:flex w-full md:w-1/2 xl:w-2/5  bg-red-50  lg:bg-[#ffe8c8]">
+          <h1 className="absolute z-30 text-2xl p-10 font-bold">Pecunia</h1>
+          <div className="relative flex flex-col items-center justify-center w-full  pt-10">
+            <div className="hidden md:flex items-center justify-center">
+              <img
+                className=" rounded-lg z-10 mt-10 "
+                src="/updatePassword.jpg"
+              />
             </div>
           </div>
-          <button className="w-full bg-blue-500 text-white py-2 rounded-lg">
-            New transaction
-          </button>
         </div>
         {/* right part */}
-        <div className=" w-3/5 flex justify-center items-center  bg-white ">
-          <div className="w-4/5 ml-auto">
+        <div className=" h-full w-full md:w-xl:w-3/5 flex justify-center items-center bg-red-50 md:pt-10  lg:bg-white ">
+          <div className="w-[90%] xl:w-4/5 xl:ml-auto">
+            <div className="flex items-center lg:hidden justify-center mb-6">
+              <img
+                className="rounded-full z-10 mt-10  w-44"
+                src="/updatePassword.jpg"
+              />
+            </div>
             <h2 className="text-3xl font-bold mb-4">Set your new password</h2>
             <p className="mb-6 text-gray-600">Make it a strong one!</p>
 
             <form
-              className=" w-3/5 flex flex-col gap-2  rounded-lg "
+              className="w-full  flex flex-col gap-2  rounded-lg xl:w-3/5"
               onSubmit={handleSubmit(onSubmit)}
             >
               <label htmlFor="name" className="mb-2 block leading-tight ">

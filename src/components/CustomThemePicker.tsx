@@ -13,15 +13,21 @@ interface CustomThemePickerProps {
   handleOpen: () => void;
 }
 
-const CustomThemePicker: React.FC<CustomThemePickerProps> = ({ handleOpen }) => {
+const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
+  handleOpen,
+}) => {
   const [isPrimaryColor, setPrimary] = useState<string>("");
+  console.log("🚀 ~ isPrimaryColor:", isPrimaryColor);
   const [isSecondaryColor, setSecondary] = useState<string>("");
+  console.log("🚀 ~ setSecondary:", setSecondary)
+  console.log("🚀 ~ isSecondaryColor:", isSecondaryColor);
 
   const handleColor = (
     primaryColor?: string,
     secondaryColor?: string,
     pattern?: string
   ) => {
+    console.log("🚀 ~ pattern:", pattern);
     if (!primaryColor) return;
     document.documentElement.style.setProperty(
       "--background-primary",
@@ -37,6 +43,7 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({ handleOpen }) => 
   const handleAttr = (pattern: string) => {
     document.documentElement.setAttribute("data-attr", pattern);
   };
+  console.log("🚀 ~ handleAttr ~ handleAttr:", handleAttr);
   const handleImageClick = (image: string) => {
     console.log(image);
 
