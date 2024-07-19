@@ -1,4 +1,4 @@
-import React, { FC } from "react"; // Import FC type from react module
+import { FC } from "react"; // Import FC type from react module
 import SideBar from "./components/SideBar";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";

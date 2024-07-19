@@ -64,6 +64,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       email: email,
       password: password,
     });
+    console.log("🚀 ~ signUp ~ error:", error);
   };
   const logIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({
@@ -92,7 +93,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     });
     if (error) {
       throw new Error(error.code);
-      
     }
   };
 

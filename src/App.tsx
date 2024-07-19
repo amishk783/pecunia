@@ -14,6 +14,7 @@ import Signup from "@/pages/Auth/Signup.tsx";
 import ForgotPassword from "@/pages/Auth/ForgotPassword.tsx";
 import PrivateRoute from "./lib/PrivateRoute.tsx";
 import UpdatePassword from "./pages/Auth/UpdatePassword.tsx";
+import Welcome from "./pages/Welcome/index.tsx";
 
 function App() {
   const { theme } = useTheme();
@@ -26,6 +27,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-password" element={<ForgotPassword />} />
+        <Route path="/welcome/*" element={<Welcome />} />
         <Route element={<PrivateRoute />}>
           <Route path="/update-password" element={<UpdatePassword />} />
         </Route>

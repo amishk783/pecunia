@@ -4,17 +4,20 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 
 import { AuthProvider } from "./lib/providers/AuthProvider.tsx";
+import { FormProvider } from "./lib/providers/FormProvider.tsx";
+import { ThemeProvider } from "./lib/providers/Theme.tsx";
 
 import "./index.css";
-import { ThemeProvider } from "./lib/providers/Theme.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
+        <FormProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
+        </FormProvider>
       </AuthProvider>
     </BrowserRouter>
   </React.StrictMode>
