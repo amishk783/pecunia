@@ -1,12 +1,13 @@
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 
 import { useMultiForm } from "@/lib/providers/FormProvider";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
+import Button from "./ui/Button";
 import { BadgeCheck } from "lucide-react";
 import toast from "react-hot-toast";
-import Button from "./ui/Button";
-import { cn } from "@/lib/utils";
+
+import { saveToLocalStorage, loadFromLocalStorage } from "@/lib/utils";
 
 export interface Item {
   value: string;
@@ -28,9 +29,14 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
   prevRoute,
 }) => {
   const navigate = useNavigate();
-  const [selected, setSelected] = useState<string[]>([]);
+  const [selected, setSelected] = useState<string[]>(() =>
+    loadFromLocalStorage(category, [])
+  );
   const { currentStep, setCurrentStep, updateFormValue } = useMultiForm();
-  console.log(selected);
+
+  useEffect(() => {
+    saveToLocalStorage(category, selected);
+  }, [selected, category, currentStep]);
 
   const toggleCheck = (value: string) => {
     setSelected((prevSelected) =>
@@ -51,21 +57,21 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
   const handlePrev = () => {
     if (prevRoute) {
       navigate(prevRoute);
-      setCurrentStep((prev) => prev - 1);
     }
+    setCurrentStep((prev) => prev - 1);
   };
   return (
     <div className="">
-      <div className="w-full grid grid-cols-3 gap-4">
+      <div className="w-full grid grid-cols-3 gap-4  ">
         {items.map((item) => (
           <div
-            key={item.value}
+            key={item.label}
             onClick={() => toggleCheck(item.value)}
-            className="w-full flex items-center justify-center h-32 drop-shadow-lg shadow-md rounded-lg cursor-pointer"
+            className="w-full flex items-center justify-center h-48 drop-shadow-lg shadow-md rounded-lg cursor-pointer"
           >
             <label
               htmlFor={item.value}
-              className="flex items-center justify-start flex-col gap-3 p-2"
+              className="flex items-center justify-start flex-col gap-3 p-2 unselect"
             >
               {selected.includes(item.value) ? (
                 <BadgeCheck size={64} color="green" className=" " />
@@ -76,8 +82,7 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
             </label>
             <input
               type="checkbox"
-              value="rent"
-              name="lifestyle"
+              value={item.label}
               className=" absolute top-[-9999px] left-[-9999px]"
             />
           </div>

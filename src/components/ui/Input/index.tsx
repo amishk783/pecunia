@@ -5,11 +5,12 @@ import { cn } from "@/lib/utils";
 type Props = {
   name: string;
   label: string;
-  register: UseFormRegister<FieldValues & any>;
+  register: UseFormRegister<FieldValues & unknown>;
   required?: boolean;
   className?: string;
   placeholder?: string;
-  error: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  error: any
   type?: "text" | "number" | "password" | "email";
   validate?: (value: string) => boolean | string;
 };
