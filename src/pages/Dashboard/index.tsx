@@ -5,7 +5,7 @@ const Dashboard = () => {
   const { user } = useAuth();
   console.log(user);
   return (
-    <div>
+    <div className="m-10">
       <Weather />
       <p></p>
     </div>

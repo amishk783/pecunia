@@ -36,15 +36,17 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
 
   useEffect(() => {
     saveToLocalStorage(category, selected);
-  }, [selected, category, currentStep]);
+  }, [selected, category, currentStep, updateFormValue]);
 
+  useEffect(() => {
+    updateFormValue(category, selected);
+  },[])
   const toggleCheck = (value: string) => {
     setSelected((prevSelected) =>
       prevSelected.includes(value)
         ? prevSelected.filter((item) => item !== value)
         : [...prevSelected, value]
     );
-    updateFormValue(category, selected);
   };
 
   const handleNext = () => {
@@ -61,22 +63,22 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
     setCurrentStep((prev) => prev - 1);
   };
   return (
-    <div className="">
-      <div className="w-full grid grid-cols-3 gap-4  ">
+    <div className="max-sm:mb-10">
+      <div className="w-full grid grid-cols-2 md:grid-cols-3 gap-4  ">
         {items.map((item) => (
           <div
             key={item.label}
-            onClick={() => toggleCheck(item.value)}
-            className="w-full flex items-center justify-center h-48 drop-shadow-lg shadow-md rounded-lg cursor-pointer"
+            onClick={() => toggleCheck(item.label)}
+            className="w-full flex items-center justify-center h-36 md:h-48 drop-shadow-lg shadow-lg rounded-lg cursor-pointer group"
           >
             <label
               htmlFor={item.value}
-              className="flex items-center justify-start flex-col gap-3 p-2 unselect"
+              className="flex items-center justify-start flex-col gap-3 p-2 unselect "
             >
-              {selected.includes(item.value) ? (
-                <BadgeCheck size={64} color="green" className=" " />
+              {selected.includes(item.label) ? (
+                <BadgeCheck size={64} color="green" className="max-sm:w-10 " />
               ) : (
-                <img src={item.logo} width={64} />
+                <img src={item.logo} width={64} className="max-sm:w-14" />
               )}
               {item.label}
             </label>

@@ -31,7 +31,7 @@ export const Steps = () => {
   };
 
   return (
-    <div className="w-1/2 ">
+    <div className="">
       <div className="flex flex-col gap-6">
         {StepsItems.map((step, index) => (
           <div key={index} className="flex gap-4 items-center">

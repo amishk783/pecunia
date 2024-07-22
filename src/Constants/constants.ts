@@ -1,6 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
-import { CircleGauge, User, PanelsTopLeft, ShoppingCart } from "lucide-react";
+import { CircleGauge, } from "lucide-react";
+import { Bitcoin } from "lucide-react";
+import { SquareGanttChart , CandlestickChartIcon } from "lucide-react";
 export interface DashboardType {
   icon: LucideIcon;
   text: string;
@@ -19,18 +21,18 @@ export const adminDashboard: DashboardType[] = [
     pathUrl: "app/analytics",
   },
   {
-    icon: User,
+    icon: CandlestickChartIcon,
     text: "Insights",
     pathUrl: "app/users",
   },
   {
-    icon: PanelsTopLeft,
+    icon: Bitcoin,
     text: "Budget",
     pathUrl: "app/budget",
   },
   {
-    icon: ShoppingCart,
-    text: "Projects",
+    icon: SquareGanttChart,
+    text: "Roadmap",
     pathUrl: "app/projects",
   },
 ];

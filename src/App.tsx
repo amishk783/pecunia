@@ -15,14 +15,16 @@ import ForgotPassword from "@/pages/Auth/ForgotPassword.tsx";
 import PrivateRoute from "./lib/PrivateRoute.tsx";
 import UpdatePassword from "./pages/Auth/UpdatePassword.tsx";
 import Welcome from "./pages/Welcome/index.tsx";
+import CustomThemePicker from "./components/CustomThemePicker.tsx";
 
 function App() {
-  const { theme } = useTheme();
+  const { theme,themePicker,setThemeOpen } = useTheme();
   const bgcolor = `bg-[${theme?.bgColor}]`;
 
   return (
     <>
       <Toaster position="top-center" />
+
       <Routes>
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
@@ -39,7 +41,8 @@ function App() {
           <Route
             path="app/"
             element={
-              <main className={cn("w-full h-full", bgcolor)}>
+              <main className={cn("w-full h-full relative", bgcolor)}>
+                {themePicker && <CustomThemePicker handleOpen={setThemeOpen} />}
                 <Outlet />
               </main>
             }

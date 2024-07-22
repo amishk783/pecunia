@@ -24,8 +24,13 @@ const buttonVariants = cva("", {
     size: "default",
   },
 });
+interface Props{
+  label?: string;
+  newTab?: boolean;
+
+}
 interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,Props,
     VariantProps<typeof buttonVariants> {}
 
 const Button: React.FC<ButtonProps> = ({
@@ -41,6 +46,7 @@ const Button: React.FC<ButtonProps> = ({
       {...props}
     >
       {children}
+
     </button>
   );
 };

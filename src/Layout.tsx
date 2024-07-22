@@ -2,6 +2,7 @@ import { FC } from "react"; // Import FC type from react module
 import SideBar from "./components/SideBar";
 import { Outlet } from "react-router-dom";
 import Header from "./components/Header";
+
 const Layout: FC = () => {
   // Use FC type for Layout component
   return (
@@ -10,6 +11,7 @@ const Layout: FC = () => {
       <SideBar />
       <div className="flex flex-col w-full ">
         <Header />
+
         <Outlet />
       </div>
     </div>

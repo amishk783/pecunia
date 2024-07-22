@@ -8,7 +8,7 @@ interface StepProps {
 
 export const Step: React.FC<StepProps> = ({ status, title }) => {
   return (
-    <div className="flex gap-4 items-center w-2/3 whitespace-nowrap  ">
+    <div className="flex gap-4 items-center w-full xl:w-2/3 xl:whitespace-nowrap  ">
       <div
         className={cn(
           "flex items-center justify-center h-10 w-10 rounded-full relative",
@@ -42,7 +42,11 @@ export const Step: React.FC<StepProps> = ({ status, title }) => {
             status === "previous" ? "border-green-300" : "hidden"
           )}
         >
-          <motion.svg width="50" height="110" className="gap-2 stroke-green-500">
+          <motion.svg
+            width="50"
+            height="110"
+            className="gap-2 stroke-green-500"
+          >
             <defs>
               <linearGradient
                 id="customGradient"
@@ -92,7 +96,7 @@ export const Step: React.FC<StepProps> = ({ status, title }) => {
           </motion.svg>
         </div>
       </div>
-      <div className="w-2/3  border-b-2 justify-items-start min-h-min min-w-80 py-6 ">
+      <div className="w-2/3  border-b-2 justify-items-start min-h-min xl:min-w-80 py-6 ">
         <h2 className=" text-2xl font-medium">{title}</h2>
       </div>
     </div>

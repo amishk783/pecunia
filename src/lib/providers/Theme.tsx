@@ -1,10 +1,5 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
+import { createContext, useContext, useEffect, useState } from "react";
 
-} from "react";
 type Theme = {
   type: string;
   bgImage?: string;
@@ -15,12 +10,16 @@ type Theme = {
 
 interface initalThemeInterface {
   theme: Theme | undefined;
+  themePicker: boolean;
   setThemeState: (theme: Theme | undefined) => void;
+  setThemeOpen: () => void;
 }
 
 const initalThemeContext: initalThemeInterface = {
   theme: undefined,
   setThemeState: () => null,
+  setThemeOpen: () => null,
+  themePicker: false,
 };
 const defaultTheme: Theme = {
   type: "light",
@@ -34,8 +33,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [theme, setThemeState] = useState<Theme | undefined>();
-
- 
+  const [themePicker, setThemePicker] = useState<boolean>(false);
 
   useEffect(() => {
     const isTheme = localStorage.getItem("theme");
@@ -47,8 +45,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, [setThemeState]);
   console.log(theme);
+  const setThemeOpen = () => {
+    setThemePicker((prev) => !prev);
+  };
   return (
-    <ThemeContext.Provider value={{ theme, setThemeState }}>
+    <ThemeContext.Provider
+      value={{ theme, setThemeState, setThemeOpen, themePicker }}
+    >
       {children}
     </ThemeContext.Provider>
   );

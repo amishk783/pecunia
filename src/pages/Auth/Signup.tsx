@@ -25,7 +25,6 @@ import Button from "@/components/ui/Button";
 
 import { Github, Loader, Eye, Plus } from "lucide-react";
 
-
 const schema = z.object({
   email: z
     .string()
@@ -55,7 +54,7 @@ const Signup = () => {
   const [active, setActive] = useState<activeLoginButton>("password");
 
   const [viewPassword, setViewPassword] = useState<boolean>(false); // hanndling view of the password
-  const watchPassword = watch("password") || "";
+  const watchPassword = watch("password", "");
   const onSubmit = async (formDetails: FormData) => {
     event?.preventDefault();
     const { email, password } = formDetails;

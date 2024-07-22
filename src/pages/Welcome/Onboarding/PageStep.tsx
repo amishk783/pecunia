@@ -23,20 +23,16 @@ const PageStep: React.FC<PageStepProps> = ({
   question,
 }) => {
   const { setCurrentStep } = useMultiForm();
-  const [prevScaleX, setPrevScaleX] = useState(0);
 
   useEffect(() => {
     setCurrentStep(stepNumber);
-    setPrevScaleX(stepNumber - 1);
   }, [stepNumber, setCurrentStep]);
-  console.log("prevScale", 7);
-  console.log("currentScale", prevScaleX);
-  console.log("current", stepNumber);
+
   return (
     <div className="">
       <div className="bg-white drop-shadow">
-        <div className="container py-10 ">
-          <h2 className="text-3xl font-medium">Get Started</h2>
+        <div className="container py-5 md:py-10 ">
+          <h2 className="text-2xl md:text-3xl font-medium">Get Started</h2>
         </div>
         <motion.div
           initial={{ scaleX: (stepNumber - 1) / 7 }}
@@ -44,15 +40,19 @@ const PageStep: React.FC<PageStepProps> = ({
           transition={{
             ease: "easeIn",
             type: "tween",
-            // stiffness: 260,
-            // damping: 20,
+            stiffness: 260,
+            damping: 20,
           }}
           className=" bg-indigo-300 opacity-100  z-50 w-full fixed animate-glowing  h-2 origin-[0%] duration-300 ease-out rounded-[30px]"
         ></motion.div>
       </div>
       <div className="container flex pt-10 gap-10">
-        <div className="w-1/2 pt-10">
-          {question && <div>{question}</div>}
+        <div className="w-full lg:w-2/3 xl:w-1/2 pt-5">
+          {question && (
+            <div className="text-lg md:text-3xl font-bold md:mb-5">
+              {question}
+            </div>
+          )}
           <MultistepForm
             items={items}
             category={category}
@@ -60,7 +60,7 @@ const PageStep: React.FC<PageStepProps> = ({
             prevRoute={prevRoute}
           />
         </div>
-        <div className="pl-28">
+        <div className="pl-10 lg:w-1/3 xl:w-1/2  xl:pl-28 hidden lg:block">
           <Steps />
         </div>
       </div>

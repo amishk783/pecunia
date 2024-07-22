@@ -17,6 +17,7 @@ export const Lifestyle = () => {
       category="Lifestyle"
       nextRoute="/welcome/bills/"
       stepNumber={1}
+      question="Tell us more about your daily lifestyle?"
     />
   );
 };
@@ -29,8 +30,9 @@ export const Bill = () => {
       nextRoute="/welcome/debt"
       prevRoute="/welcome/lifestyle"
       stepNumber={2}
+      question="What are your recurring monthly bills?"
     />
-  ); 
+  );
 };
 
 export const Debt = () => {
@@ -41,9 +43,11 @@ export const Debt = () => {
       nextRoute="/welcome/subscription"
       prevRoute="/welcome/bills"
       stepNumber={3}
+      question="Do you have any outstanding debts?"
     />
   );
 };
+
 export const Subscription = () => {
   return (
     <PageStep
@@ -52,9 +56,11 @@ export const Subscription = () => {
       nextRoute="/welcome/goals"
       prevRoute="/welcome/debt"
       stepNumber={4}
+      question="What subscriptions do you currently have?"
     />
   );
 };
+
 export const Goal = () => {
   return (
     <PageStep
@@ -63,6 +69,7 @@ export const Goal = () => {
       nextRoute="/welcome/guilt-free"
       prevRoute="/welcome/debt"
       stepNumber={5}
+      question="What are your financial goals?"
     />
   );
 };
@@ -75,9 +82,11 @@ export const GuiltFreeExpense = () => {
       nextRoute="/welcome/hidden-expense"
       prevRoute="/welcome/goals"
       stepNumber={6}
+      question="What are your guilt-free spending categories?"
     />
   );
 };
+
 export const HiddenExpense = () => {
   return (
     <PageStep
@@ -86,6 +95,7 @@ export const HiddenExpense = () => {
       nextRoute="/welcome/"
       prevRoute="/welcome/guilt-free"
       stepNumber={7}
+      question="Are there any hidden expenses you need to account for?"
     />
   );
 };

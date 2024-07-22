@@ -53,7 +53,7 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
     );
   };
   return (
-    <div className=" absolute flex flex-col w-[17%] bg-theme-primary right-0 px-2 border-l-3  ">
+    <div className=" absolute flex flex-col w-[17%] bg-theme-primary right-0 px-2 border-l-3 h-full ">
       <div className="flex justify-end items-end pt-3 ">
         <CircleX size={32} className="text-white" onClick={handleOpen} />
       </div>

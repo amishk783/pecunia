@@ -96,7 +96,7 @@ const Weather = () => {
         case "snow":
           return setBgClass("bg-orange-300");
         case "storm":
-          return stormBg;
+          return setBgClass("bg-orange-300");
         // case "rain":
         //   return rainyBg;
         // default:

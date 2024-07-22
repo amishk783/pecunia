@@ -4,7 +4,9 @@ import {
   useState,
   Dispatch,
   SetStateAction,
+  useEffect,
 } from "react";
+import { loadFromLocalStorage } from "../utils";
 
 interface FormValueType {
   formValue: Record<string, string[]>;
@@ -20,9 +22,28 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
   const [formValue, setFormValue] = useState<Record<string, string[]>>({});
   const [currentStep, setCurrentStep] = useState<number>(1);
   console.log(formValue);
+
   const updateFormValue = (category: string, selections: string[]) => {
     setFormValue((prev) => ({ ...prev, [category]: selections }));
   };
+
+  useEffect(() => {
+    const categories = [
+      "Lifestyle",
+      "Bills",
+      "Debt",
+      "Subscription",
+      "Goals",
+      "GuiltFree",
+      "Extra",
+    ]; 
+    const initialFormValue = categories.reduce((acc, category) => {
+      acc[category] = loadFromLocalStorage(category, []);
+      return acc;
+    }, {} as Record<string, string[]>);
+    setFormValue(initialFormValue);
+  }, []);
+
   return (
     <FormContext.Provider
       value={{ formValue, updateFormValue, setCurrentStep, currentStep }}

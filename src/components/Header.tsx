@@ -1,8 +1,7 @@
-import { Sun, Home, Mail, Moon,Wrench } from "lucide-react";
+import { Sun, Home, Mail, Moon, Wrench } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../lib/providers/Theme";
 import { cn } from "../lib/utils";
-
 
 import {
   Select,
@@ -11,9 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+import Button from "./ui/Button";
+
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const breadcrumb = pathname.slice(1, pathname.length);
+  const { setThemeOpen} = useTheme();
 
   const { theme, setThemeState } = useTheme();
 
@@ -25,14 +28,14 @@ const Header: React.FC = () => {
         type: "light",
         bgColor: "bg-zinc-200",
         textColor: "text-black",
-        bgSecondary:"bg-stone-300",
+        bgSecondary: "bg-stone-300",
       });
     } else if (value === "dark") {
       setThemeState({
         type: "dark",
         bgColor: "bg-[#1d1c1c]",
         textColor: "text-white",
-        bgSecondary:"bg-stone-700",
+        bgSecondary: "bg-stone-700",
       });
     } else {
       setThemeState({
@@ -49,7 +52,7 @@ const Header: React.FC = () => {
   return (
     <div
       className={cn(
-        "flex py-6   w-full items-center justify-between  px-5 glass",
+        "flex py-6   w-full items-center justify-between  px-5 glass"
         // theme?.bgColor
       )}
     >
@@ -59,6 +62,13 @@ const Header: React.FC = () => {
       </div>
       <div className="flex items-center">
         <div className="flex gap-4">
+          <Button
+            className="text-white rounded-md"
+            variant="outline"
+            onClick={() => setThemeOpen()}
+          >
+            Theme
+          </Button>
           <Select onValueChange={handleTheme}>
             <SelectTrigger className="w-[140px]">
               <SelectValue placeholder="Theme" />

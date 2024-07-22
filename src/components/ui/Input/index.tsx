@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 type Props = {
   name: string;
   label: string;
-  register: UseFormRegister<FieldValues & unknown>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  register: UseFormRegister<FieldValues & any>;
   required?: boolean;
   className?: string;
   placeholder?: string;
