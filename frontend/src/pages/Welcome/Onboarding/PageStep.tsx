@@ -4,7 +4,7 @@ import { Steps } from "./Steps";
 import { useMultiForm } from "@/lib/providers/FormProvider";
 import { ItemsType } from "../constant";
 import { motion } from "framer-motion";
-import { useState } from "react";
+
 interface PageStepProps {
   items: ItemsType[];
   category: string;

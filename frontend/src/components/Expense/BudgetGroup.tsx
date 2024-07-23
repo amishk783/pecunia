@@ -1,4 +1,4 @@
-import { DndContext, closestCenter } from "@dnd-kit/core";
+import { DndContext, DragEndEvent, closestCenter } from "@dnd-kit/core";
 import {
   arrayMove,
   SortableContext,
@@ -13,9 +13,9 @@ interface BudgetGroupProps {
 
 export const BudgetGroup: React.FC<BudgetGroupProps> = ({ initalItems }) => {
   const [items, setItems] = useState<BudgetItemProps[]>(initalItems);
-  const handleDragEnd = (event) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
+    if (over && active.id !== over.id) {
       setItems((items) => {
         const oldIndex = items.findIndex((item) => item.id === active.id);
         const newIndex = items.findIndex((item) => item.id === over.id);

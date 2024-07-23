@@ -1,4 +1,3 @@
-import { LucideIcon, LucideProps } from "lucide-react";
 
 export interface ItemsType {
   value: string;
