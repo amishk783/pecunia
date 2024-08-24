@@ -26,16 +26,7 @@ export const Step: React.FC<StepProps> = ({ status, title }) => {
             status === "next" ? "hidden" : "visible"
           )}
         />
-        {/* <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.1, ease: easeInOut }}
-          exit={{ opacity: 0 }}
-          className={cn(
-            "w-1 h-14 py-4 bg-orange-300 absolute border-2 mt-24 ",
-            status === "previous" ? "border-green-300" : "hidden"
-          )}
-        ></motion.div> */}
+
         <div
           className={cn(
             "xl:mx-20 mt-10  absolute -z-10   ",
@@ -59,29 +50,7 @@ export const Step: React.FC<StepProps> = ({ status, title }) => {
                 <stop offset="100%" stopColor="#FF3800" />
               </linearGradient>
             </defs>
-            {/* <motion.path
-              initial={{ pathLength: 0, pathSpacing: 0.4 }}
-              whileInView={{ pathLength: 1, pathSpacing: 0.4 }}
-              transition={{
-                pathLength: {
-                  delay: 0.4,
-                  type: "tween",
-                  duration: 10,
-                  ease: "linear",
-                  // repeat: Infinity,
-                  bounce: 0,
-                },
-              }}
-              className=""
-              strokeDasharray="3.846, 2.282"
-              strokeDashoffset="0"
-              strokeWidth="3.641"
-              id="svgPath"
-              stroke="url(#customGradient)"
-              fill="none"
-              d="M 25 45 L 250 154000"
-              transform=" "
-            ></motion.path> */}
+
             <path
               id=""
               className=""

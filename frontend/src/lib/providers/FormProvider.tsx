@@ -21,7 +21,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [formValue, setFormValue] = useState<Record<string, string[]>>({});
   const [currentStep, setCurrentStep] = useState<number>(1);
-  console.log(formValue);
+ 
 
   const updateFormValue = (category: string, selections: string[]) => {
     setFormValue((prev) => ({ ...prev, [category]: selections }));

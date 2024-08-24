@@ -11,10 +11,11 @@ export default {
   dialect: 'postgresql',
   schemaFilter: ['public'],
   dbCredentials: {
+    database:"postgres",
     url: process.env.DATABASE_URI,
     port: 5432,
-    host: process.env.DATABASE_HOST!,
-    user: process.env.DATABASE_USER!,
+    host: process.env.DATABASE_HOST||"",
+    user: process.env.DATABASE_USER||"",
     password: process.env.DATABASE_PASSWORD!,
     ssl: false,
   },

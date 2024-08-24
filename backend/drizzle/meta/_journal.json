@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1721717988417,
-      "tag": "0000_light_iron_patriot",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1721721439149,
-      "tag": "0001_high_photon",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1721722860280,
-      "tag": "0002_mushy_patriot",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1721728511666,
-      "tag": "0003_opposite_wasp",
+      "when": 1721981253170,
+      "tag": "0000_sparkling_wolverine",
       "breakpoints": true
     }
   ]

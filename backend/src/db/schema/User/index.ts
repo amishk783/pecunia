@@ -2,20 +2,22 @@ import { pgTable, serial, text, varchar, pgSchema, uuid, timestamp } from 'drizz
 
 const authSchema = pgSchema('auth');
 
-const users = authSchema.table('users', {
+const user = authSchema.table('users', {
   id: uuid('id').primaryKey(),
 });
 
 export const accounts = pgTable('accounts', {
-  id: serial('id').primaryKey(),
+  id: uuid('id')
+    .primaryKey()
+    .references(() => user.id, { onDelete: 'cascade' })
+    .notNull(),
+
   email: varchar('email', { length: 256 }).notNull(),
   user_name: text('user_name'),
 
-  user_id: uuid('user_id')
-    .references(() => users.id, { onDelete: 'cascade' })
-    .notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('update_at', {
     withTimezone: true,
   }).defaultNow(),
 });
+type Account = typeof accounts.$inferInsert;

@@ -1,3 +1,4 @@
+import { useMultiForm } from "@/lib/providers/FormProvider";
 import {
   lifestyle,
   Bills,
@@ -88,6 +89,9 @@ export const GuiltFreeExpense = () => {
 };
 
 export const HiddenExpense = () => {
+  const { formValue } = useMultiForm();
+  console.log("sadkj", formValue);
+  
   return (
     <PageStep
       items={HiddenExpenses}

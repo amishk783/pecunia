@@ -19,7 +19,7 @@ const config: ServerConfig = {
   port: parseInt(process.env.PORT || "3000") || 3000,
   databaseURL: process.env.DATABASE_URI || "",
   apiBasePath: process.env.API_BASE_PATH || "/api",
-  jwtSecret: process.env.JWT_SECRET || "your-secret-key",
+  jwtSecret: process.env.JWT_SECRET || "",
   logs: {
     level: process.env.LOG_LEVEL || "silly",
   },

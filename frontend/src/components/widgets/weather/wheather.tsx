@@ -38,7 +38,7 @@ const Weather = () => {
     latitude: 27,
     longitude: 72,
   });
-  const [bgClass, setBgClass] = useState<string>("");
+  // const [bgClass, setBgClass] = useState<string>("");
   const [weather, setWeather] = useState<WeatherData>();
   console.log("🚀 ~ Wheather ~ wheather:", weather);
   console.log(weatherDesgin["snow"]);
@@ -71,42 +71,42 @@ const Weather = () => {
     getLocation();
   }, []);
 
-  useEffect(() => {
-    const getWeather = async () => {
-      const response = await axios.get<WeatherData>(
-        `httpss://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric` //TODO: Restructure the code
-      );
-      const weather: WeatherData = await response.data;
-      // const weatherCondition = weather.weather[0].main;
+  // useEffect(() => {
+  //   const getWeather = async () => {
+  //     const response = await axios.get<WeatherData>(
+  //       `httpss://api.openweathermap.org/data/2.5/weather?lat=${position.latitude}&lon=${position.longitude}&appid=${process.env.REACT_APP_WEATHER_API_KEY}&units=metric` //TODO: Restructure the code
+  //     );
+  //     const weather: WeatherData = await response.data;
+  //     // const weatherCondition = weather.weather[0].main;
 
-      setWeather(weather);
-    };
-    getWeather();
-  }, [position]);
+  //     setWeather(weather);
+  //   };
+  //   getWeather();
+  // }, [position]);
 
-  useEffect(() => {
-    if (weather) {
-      const weatherCondition = weather.weather[0].main.toLowerCase();
+  // useEffect(() => {
+  //   if (weather) {
+  //     const weatherCondition = weather.weather[0].main.toLowerCase();
 
-      switch (weatherCondition) {
-        case "clouds":
-          return setBgClass("bg-blue-100");
-        case "clear":
-          return setBgClass("bg-green-500");
-        case "snow":
-          return setBgClass("bg-orange-300");
-        case "storm":
-          return setBgClass("bg-orange-300");
-        // case "rain":
-        //   return rainyBg;
-        // default:
-        //   return tranquilBg;
-      }
-    }
-  }, [weather]);
+  //     switch (weatherCondition) {
+  //       case "clouds":
+  //         return setBgClass("bg-blue-100");
+  //       case "clear":
+  //         return setBgClass("bg-green-500");
+  //       case "snow":
+  //         return setBgClass("bg-orange-300");
+  //       case "storm":
+  //         return setBgClass("bg-orange-300");
+  //       // case "rain":
+  //       //   return rainyBg;
+  //       // default:
+  //       //   return tranquilBg;
+  //     }
+  //   }
+  // }, [weather]);
 
   return (
-    <div className={cn("w-64 h-32  rounded-lg drop-shadow-xl glass", bgClass)}>
+    <div className={cn("w-64 h-32  rounded-lg drop-shadow-xl glass, bgClass")}>
       <div className="p-4">
         <div>{}</div>
         <div className="flex items-center justify-between">

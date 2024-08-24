@@ -1,3 +1,4 @@
+import { updateAxiosToken } from "@/services/api";
 import { supabase } from "@/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
 
@@ -45,14 +46,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setSession(data.session);
       setUser(data.session?.user as User);
 
+      updateAxiosToken(data.session?.access_token || null);
+
       setLoading(false);
     };
     loadSession();
+    
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
-      setUser(session?.user || null);
+
+      if (session) setUser(session?.user);
     });
     return () => {
       subscription.unsubscribe();
@@ -64,7 +69,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       email: email,
       password: password,
     });
-    console.log("🚀 ~ signUp ~ error:", error);
+    if (error) {
+      throw new Error(error.message);
+    }
   };
   const logIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({

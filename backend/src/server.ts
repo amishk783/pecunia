@@ -4,8 +4,11 @@ import cors from 'cors';
 import compression from 'compression';
 import morgan from 'morgan';
 import config from './config/index';
-import Logger from './logger';
+import Logger from './utils/logger';
+import { verifyUser } from './middleware/verifyUser';
 const app = express();
+
+import { budgetRouter } from './routes/budget';
 
 if (config.nodeEnv === 'production') {
   app.use(helmet());
@@ -22,6 +25,10 @@ app.use(express.urlencoded({ extended: true }));
 if (config.nodeEnv !== 'test') {
   app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));
 }
+
+app.use('/', verifyUser);
+
+app.use('/app/budget', budgetRouter);
 
 app.listen(config.port, () => {
   Logger.info(

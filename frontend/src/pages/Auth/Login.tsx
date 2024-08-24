@@ -57,24 +57,23 @@ const Login = () => {
   const watchPassword = watch("password") || "";
 
   const onSubmit = async (formDetails: FormData) => {
-    event?.preventDefault();
     const { email, password } = formDetails;
-    setLoading(true);
-    setActive("password");
     try {
-      logIn(email, password);
+      setLoading(true);
+      setActive("password");
+      await logIn(email, password);
       toast("Welcome Aboard!", {
         className: " text-green-300",
       });
       navigate("/app/dashboard");
     } catch (error) {
       console.log(error);
+      toast.error(error.message);
     }
     setLoading(false);
   };
 
   const signItWithOAuth = async (selectedProvider: string) => {
-    console.log(selectedProvider);
     setLoading(true);
     setActive("github");
     try {

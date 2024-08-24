@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-import { cn } from "@/lib/utils";
+import { cn, erroMessageHandler } from "@/lib/utils";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { financialAdvice } from "./constant";
 
@@ -56,20 +56,18 @@ const Signup = () => {
   const [viewPassword, setViewPassword] = useState<boolean>(false); // hanndling view of the password
   const watchPassword = watch("password", "");
   const onSubmit = async (formDetails: FormData) => {
-    event?.preventDefault();
     const { email, password } = formDetails;
-    setLoading(true);
-    setActive("password");
     try {
+      setLoading(true);
+      setActive("password");
       await signUp(email, password);
-
-      navigate("/app/dashboard");
-    } catch (error) {
-      console.log(error);
-
       toast("Welcome Aboard!", {
         className: " text-green-300",
       });
+      navigate("/welcome/lifestyle");
+    } catch (error) {
+      console.log(error);
+      erroMessageHandler(error);
     }
     setLoading(false);
   };
@@ -81,6 +79,9 @@ const Signup = () => {
     try {
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: selectedProvider as Provider,
+        options: {
+          redirectTo: "http://localhost:5173/welcome/lifestyle/",
+        },
       });
       console.log(data.provider);
       console.log(data.url);

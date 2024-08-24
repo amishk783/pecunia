@@ -5,11 +5,13 @@
     "target": "es2017",
     "noImplicitAny": true,
     "moduleResolution": "node",
+    "rootDir": "./src",
     "sourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
+    
       "*": ["node_modules/*"]
     }
   },
