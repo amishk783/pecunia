@@ -10,6 +10,11 @@ import {
 } from "../constant";
 
 import PageStep from "./PageStep";
+import { useEffect, useState } from "react";
+import api from "@/services/api";
+import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { Loader } from "lucide-react";
 
 export const Lifestyle = () => {
   return (
@@ -89,17 +94,46 @@ export const GuiltFreeExpense = () => {
 };
 
 export const HiddenExpense = () => {
-  const { formValue } = useMultiForm();
-  console.log("sadkj", formValue);
-  
   return (
     <PageStep
       items={HiddenExpenses}
       category="Extra"
-      nextRoute="/welcome/"
+      nextRoute="/welcome/submit/"
       prevRoute="/welcome/guilt-free"
       stepNumber={7}
       question="Are there any hidden expenses you need to account for?"
     />
+  );
+};
+
+export const OnboardingComplete = () => {
+  const { formValue } = useMultiForm();
+  const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  useEffect(() => {
+    const postOboardingData = async () => {
+      const currentDate = new Date();
+      try {
+        setIsLoading(true);
+        const date = format(currentDate, "dd/MM/yyyy");
+        const response = await api.post("/app/budget/onboarding-complete", {
+          date,
+        });
+
+        navigate("/");
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error posting data:", error);
+      }
+    };
+    postOboardingData();
+  }, [navigate]);
+  return (
+    isLoading && (
+      <div className="w-full h-screen flex items-center justify-center align-middle top-1/2">
+        <Loader className=" flex justify-center items-center w-12 h-12 animate-spin" />
+      </div>
+    )
   );
 };

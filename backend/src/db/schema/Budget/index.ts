@@ -27,7 +27,11 @@ export const groups = pgTable('groups', {
 export const items = pgTable('items', {
   id: serial('id').primaryKey(),
   type: groupTypeEnum('type'),
-  groupID: integer('group_id').references(() => groups.id),
+  groupID: integer('group_id')
+    .references(() => groups.id, {
+      onDelete: 'cascade',
+    })
+    .notNull(),
   label: varchar('label', { length: 50 }).notNull(),
   amountBudget: numeric('amountBudget').notNull(),
   allocatedBudget: numeric('allocated'),
@@ -39,9 +43,18 @@ export type Item = typeof items.$inferInsert;
 export type Group = typeof groups.$inferInsert;
 export type Budget = typeof budget.$inferInsert;
 
-export const groupsRelations = relations(groups, ({ many }) => ({
+export const budgetRelations = relations(budget, ({ one, many }) => ({
+  groups: many(groups),
+}));
+
+export const groupRelations = relations(groups, ({ one, many }) => ({
+  budget: one(budget, {
+    fields: [groups.budgetID],
+    references: [budget.id],
+  }),
   items: many(items),
 }));
+
 export const itemRelations = relations(items, ({ one }) => ({
   group: one(groups, {
     fields: [items.groupID],

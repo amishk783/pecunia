@@ -1,16 +1,19 @@
 import express from 'express';
 import { createItem, deleteItem, updateItemByID } from '@/controllers/budget/item';
-import { createGroup, editGroupLabel } from '@/controllers/budget/group';
-import { createBudget } from '@/controllers/budget/budget';
+import { createGroup, deleteGroup, editGroupLabel } from '@/controllers/budget/group';
+import { createBudget, getBudgetByMonth } from '@/controllers/budget/budget';
 const router = express.Router();
 
 router.post('/item', createItem); // post item
-router.put('item/:', updateItemByID); // edit item by id
-router.delete('/item/:', deleteItem); //delete item by id
+router.put('item/:id', updateItemByID); // edit item by id
+router.delete('/item/:id', deleteItem); //delete item by id
 
-router.post('/group/:id', editGroupLabel); //edit group label
-router.post('/group', createGroup); //add a group
+router.put('/group/:id', editGroupLabel); //edit group label
+router.post('/group', createGroup);
+router.delete('/group/:id', deleteGroup); //add a group
 
-router.post('/', createBudget);
+router.post('/onboarding-complete', createBudget);
+
+router.post('/by-date', getBudgetByMonth);
 
 export const budgetRouter = router;

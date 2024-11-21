@@ -9,16 +9,17 @@ import { verifyUser } from './middleware/verifyUser';
 const app = express();
 
 import { budgetRouter } from './routes/budget';
+import { itemRouter } from './routes/item';
 
 if (config.nodeEnv === 'production') {
   app.use(helmet());
   app.use(compression());
 }
 const corsOptions = {
-  origin: 'https://localhost:4893',
+  origin: 'https://localhost:5173',
 };
 
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,6 +30,7 @@ if (config.nodeEnv !== 'test') {
 app.use('/', verifyUser);
 
 app.use('/app/budget', budgetRouter);
+app.use('/app/item', itemRouter);
 
 app.listen(config.port, () => {
   Logger.info(

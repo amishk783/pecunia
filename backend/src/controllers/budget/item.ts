@@ -3,8 +3,9 @@ import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import { budget, groups, items } from '@/db/schema/Budget';
 import Logger from '@/utils/logger';
+import { AuthenticatedRequest } from '@/types';
 
-export const updateItemByID = async (req: Request, res: Response) => {
+export const updateItemByID = async (req: AuthenticatedRequest, res: Response) => {
   const id = +req.params.id;
   const { amountBudget } = req.body;
 
@@ -26,14 +27,15 @@ export const updateItemByID = async (req: Request, res: Response) => {
   }
 };
 
-export const createItem = async (req: Request, res: Response) => {
-  const { label, type, groupID, amountBudget } = req.body;
+export const createItem = async (req: AuthenticatedRequest, res: Response) => {
+  const { label, type, groupId, amountBudget } = req.body;
+
   try {
     const group = await db.query.groups.findMany({
-      where: eq(groups.id, groupID),
+      where: eq(groups.id, groupId),
     });
     if (!group) {
-      Logger.error(`Group with ID ${groupID} not found`);
+      Logger.error(`Group with ID ${groupId} not found`);
       return res.status(400).json({ error: 'Group not found' });
     }
     const newItem = await db
@@ -41,7 +43,7 @@ export const createItem = async (req: Request, res: Response) => {
       .values({
         label,
         type,
-        groupID,
+        groupID: groupId,
         amountBudget,
       })
       .returning();
@@ -52,18 +54,21 @@ export const createItem = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteItem = async (req: Request, res: Response) => {
+export const deleteItem = async (req: AuthenticatedRequest, res: Response) => {
   const id = +req.params.id;
+  console.log('🚀 ~ deleteItem ~ id:', id);
 
   try {
-    const item = await db.query.items.findMany({
+    const item = await db.query.items.findFirst({
       where: eq(items.id, id),
     });
+    console.log('🚀 ~ deleteItem ~ item:', item);
     if (!item) {
       Logger.error('Item does not exit');
-      res.status(400).send('Item does not exit');
+      return res.status(400).send('Item does not exit');
     }
     await db.delete(items).where(eq(items.id, id));
+    res.status(201).json(item);
   } catch (error) {
     Logger.error('Error Deleting item:', error);
     res.status(500).json({ error: 'An error occurred' });

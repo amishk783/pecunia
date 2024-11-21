@@ -43,15 +43,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
       if (error) throw new Error(error.message);
 
+      if (!data.session) throw new Error("No session");
       setSession(data.session);
       setUser(data.session?.user as User);
 
-      updateAxiosToken(data.session?.access_token || null);
+      if (data.session && data.session.access_token)
+        updateAxiosToken(data.session?.access_token);
 
       setLoading(false);
     };
     loadSession();
-    
+
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {

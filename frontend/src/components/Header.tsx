@@ -16,7 +16,7 @@ import Button from "./ui/Button";
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const breadcrumb = pathname.slice(1, pathname.length);
-  const { setThemeOpen} = useTheme();
+  const { setThemeOpen } = useTheme();
 
   const { theme, setThemeState } = useTheme();
 
@@ -52,16 +52,17 @@ const Header: React.FC = () => {
   return (
     <div
       className={cn(
-        "flex py-6   w-full items-center justify-between  px-5 glass"
-        // theme?.bgColor
+        "flex py-6   w-full items-center justify-between  px-5 ",
+        theme?.bgSecondary,
+        theme?.textColor
       )}
     >
       <div className="flex gap-2 items-center">
         <Home className={theme?.textColor} size={28} />
         <h3 className="text-xl">/ home / {breadcrumb}</h3>
       </div>
-      <div className="flex items-center">
-        <div className="flex gap-4">
+      <div className="flex items-center ">
+        <div className="flex gap-4  ">
           <Button
             className="text-white rounded-md"
             variant="outline"

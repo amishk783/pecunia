@@ -8,15 +8,18 @@ import { FormProvider } from "./lib/providers/FormProvider.tsx";
 import { ThemeProvider } from "./lib/providers/Theme.tsx";
 
 import "./index.css";
+import { BudgetProvider } from "./lib/providers/BudgetProvider.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <AuthProvider>
         <FormProvider>
-          <ThemeProvider>
-            <App />
-          </ThemeProvider>
+          <BudgetProvider>
+            <ThemeProvider>
+              <App />
+            </ThemeProvider>
+          </BudgetProvider>
         </FormProvider>
       </AuthProvider>
     </BrowserRouter>

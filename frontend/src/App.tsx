@@ -18,12 +18,12 @@ import Welcome from "./pages/Welcome/index.tsx";
 import CustomThemePicker from "./components/CustomThemePicker.tsx";
 
 function App() {
-  const { theme,themePicker,setThemeOpen } = useTheme();
+  const { theme, themePicker, setThemeOpen } = useTheme();
   const bgcolor = `bg-[${theme?.bgColor}]`;
 
   return (
     <>
-      <Toaster position="top-center" />
+      <Toaster position="bottom-right" />
 
       <Routes>
         <Route path="/signup" element={<Signup />} />

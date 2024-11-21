@@ -7,6 +7,7 @@ import {
   Goal,
   GuiltFreeExpense,
   HiddenExpense,
+  OnboardingComplete,
 } from "@/pages/Welcome/Onboarding";
 
 const Welcome = () => {
@@ -21,6 +22,7 @@ const Welcome = () => {
 
         <Route path="guilt-free" element={<GuiltFreeExpense />} />
         <Route path="hidden-expense" element={<HiddenExpense />} />
+        <Route path="submit" element={<OnboardingComplete />} />
       </Routes>
     </>
   );

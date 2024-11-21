@@ -1,16 +1,19 @@
-FROM node:20-alpine3.18 as builder
+FROM node:20-alpine3.18
 
-RUN mkdir -p /usr/src/app
+RUN addgroup app && adduser -S app -G app 
 
-WORKDIR /usr/src/app
-COPY package*.json /usr/src/app
+USER app
+
+RUN mkdir -p /home/app/frontend
+
+WORKDIR /home/app/frontend
+
+COPY --chown=app:app package*.json ./
+
 RUN npm install
-COPY . /usr/src/app
-RUN npm run build
-# Stage 2: Create the production image
-FROM nginx:latest
-COPY --from=builder /usr/src/app /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-RUN chown nginx.nginx /usr/share/nginx/html/ -R
 
+COPY --chown=app:app . .
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--", "--host"]

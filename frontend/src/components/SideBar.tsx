@@ -18,16 +18,21 @@ const SideBar: React.FC = () => {
   return (
     <div
       className={cn(
-        " w-[15%] h-screen  glass ",
-        // theme?.bgSecondary,
+        " w-[15%] h-full fixed flex bottom-0 top-0 left-0 flex-col z-10  ",
+        theme?.bgColor,
         theme?.textColor
       )}
     >
       <div className="flex flex-col px-5 pt-5 relative overflow-hidden   ">
         <div className="flex justify-between items-center  py-5 border-b-2 border-stone-400 ">
           {/* <img /> */}
-          <h1 className=" text-zinc-200 text-3xl drop-shadow-md ">
-            AdminDashy
+          <h1
+            className={cn(
+              " text-zinc-200 text-3xl drop-shadow-md ",
+              theme?.textColor
+            )}
+          >
+            Pecunia
           </h1>
         </div>
 
