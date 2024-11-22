@@ -1,8 +1,8 @@
 import { LucideIcon } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
-import { CircleGauge, } from "lucide-react";
+import { CircleGauge } from "lucide-react";
 import { Bitcoin } from "lucide-react";
-import { SquareGanttChart , CandlestickChartIcon } from "lucide-react";
+import { SquareGanttChart, CandlestickChartIcon } from "lucide-react";
 export interface DashboardType {
   icon: LucideIcon;
   text: string;
@@ -32,7 +32,29 @@ export const adminDashboard: DashboardType[] = [
   },
   {
     icon: SquareGanttChart,
-    text: "Roadmap",
-    pathUrl: "app/projects",
+    text: "Expenses",
+    pathUrl: "app/expenses",
   },
 ];
+
+interface ExpensesPayMode {
+  [key: string]: {
+    name: string;
+    emoji: string;
+  };
+}
+
+export const expensesPayMode: ExpensesPayMode = {
+  cash: { name: "Cash", emoji: "💵" },
+  creditcard: { name: "Credit Card", emoji: "💳" },
+  debitcard: { name: "Debit Card", emoji: "💳" },
+  ewallet: { name: "E-Wallet", emoji: "🪪" },
+  netbanking: { name: "NetBanking", emoji: "🏦" },
+  upi: { name: "UPI", emoji: "📲" },
+};
+
+export interface GroupWithCategoriesType {
+  [key: string]: {
+    name: string;
+  }[];
+}

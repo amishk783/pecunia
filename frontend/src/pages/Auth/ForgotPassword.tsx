@@ -10,7 +10,7 @@ import { useAuth } from "@/lib/providers/AuthProvider";
 
 import { ArrowLeftIcon, Loader } from "lucide-react";
 import { Input } from "@/components/ui/Input";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import toast from "react-hot-toast";
 
 const schema = z.object({

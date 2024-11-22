@@ -11,6 +11,7 @@ export interface GroupType {
   id: number;
   label: string;
   type: "expense" | "income";
+  position: number;
   items: ItemType[];
 }
 export interface ItemType {
@@ -20,4 +21,21 @@ export interface ItemType {
   id: number;
   label: string;
   type: string;
+  position: number;
 }
+
+export interface BudgetsExitence {
+  [key: string]: {
+    [key: string]: number;
+  };
+}
+
+export type Transaction = {
+  id?: string;
+  amount: number | string;
+  date: string | Date;
+  label: string;
+  category: string;
+  paidVia: string;
+  notes?: string;
+};

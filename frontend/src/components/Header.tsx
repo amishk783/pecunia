@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import Button from "./ui/Button";
+import { Button } from "./ui/Button";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();

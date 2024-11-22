@@ -7,15 +7,15 @@ if (!process.env.DATABASE_URI) {
 
 export default {
   schema: './src/db/schema/schema.ts',
-  out: './drizzle',
+  out: './supabase/migrations',
   dialect: 'postgresql',
-  schemaFilter: ['public'],
+  schemaFilter: ['public', 'drizzle'],
   dbCredentials: {
-    database:"postgres",
+    database: 'postgres',
     url: process.env.DATABASE_URI,
     port: 5432,
-    host: process.env.DATABASE_HOST||"",
-    user: process.env.DATABASE_USER||"",
+    host: process.env.DATABASE_HOST || '',
+    user: process.env.DATABASE_USER || '',
     password: process.env.DATABASE_PASSWORD!,
     ssl: false,
   },

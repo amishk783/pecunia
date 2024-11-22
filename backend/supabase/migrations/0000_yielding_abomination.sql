@@ -39,17 +39,30 @@ CREATE TABLE IF NOT EXISTS "groups" (
 	"userID" uuid,
 	"budget_id" integer,
 	"label" varchar(50) NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+	"position" integer,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "groups_position_unique" UNIQUE("position")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "items" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"type" "type",
-	"group_id" integer,
+	"group_id" integer NOT NULL,
+	"position" integer,
 	"label" varchar(50) NOT NULL,
 	"amountBudget" numeric NOT NULL,
 	"allocated" numeric,
 	"date" date,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "items_position_unique" UNIQUE("position")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "transactions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"item_id" integer NOT NULL,
+	"label" varchar(50),
+	"amountBudget" numeric NOT NULL,
+	"date" date NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -78,7 +91,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "items" ADD CONSTRAINT "items_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "items" ADD CONSTRAINT "items_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "transactions" ADD CONSTRAINT "transactions_item_id_items_id_fk" FOREIGN KEY ("item_id") REFERENCES "public"."items"("id") ON DELETE no action ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

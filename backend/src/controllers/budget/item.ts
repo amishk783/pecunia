@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { db } from '@/db';
 import { eq } from 'drizzle-orm';
-import { budget, groups, items } from '@/db/schema/Budget';
+import { budget, groups, Item, items } from '@/db/schema/Budget';
 import Logger from '@/utils/logger';
 import { AuthenticatedRequest } from '@/types';
+import { itemsArraySchema, itemSchema, reorderItemsSchemaArray } from '@/utils/validationSchema';
 
 export const updateItemByID = async (req: AuthenticatedRequest, res: Response) => {
   const id = +req.params.id;
@@ -31,7 +32,7 @@ export const createItem = async (req: AuthenticatedRequest, res: Response) => {
   const { label, type, groupId, amountBudget } = req.body;
 
   try {
-    const group = await db.query.groups.findMany({
+    const group = await db.query.groups.findFirst({
       where: eq(groups.id, groupId),
     });
     if (!group) {
@@ -43,7 +44,7 @@ export const createItem = async (req: AuthenticatedRequest, res: Response) => {
       .values({
         label,
         type,
-        groupID: groupId,
+        groupId,
         amountBudget,
       })
       .returning();
@@ -72,5 +73,61 @@ export const deleteItem = async (req: AuthenticatedRequest, res: Response) => {
   } catch (error) {
     Logger.error('Error Deleting item:', error);
     res.status(500).json({ error: 'An error occurred' });
+  }
+};
+
+export const reorder = async (req: AuthenticatedRequest, res: Response) => {
+  const { data } = req.body;
+
+  const validation = reorderItemsSchemaArray.safeParse(data);
+
+  if (!validation.success) {
+    console.error(validation.error.format());
+  }
+
+  try {
+    const validatedData = validation.data;
+    const updateResult = validatedData.map((item, index: number) => {
+      item.position = index;
+      return item;
+    });
+
+    const group = await db.query.groups.findFirst({
+      where: eq(groups.id, updateResult[0].groupId),
+    });
+
+    if (!group) {
+      Logger.error(`Group with ID ${updateResult[0].groupId} not found`);
+      return res.status(400).json({ error: 'Group not found' });
+    }
+
+    await db.transaction(async tx => {
+      const updatePromises = validatedData.map((item, index) => {
+        return tx.update(items).set({ position: index }).where(eq(items.id, item.id));
+      });
+      await Promise.all(updatePromises);
+    });
+
+    const updatedGroup = await db.query.groups.findFirst({
+      where: eq(groups.id, group.id),
+      with: {
+        items: true,
+      },
+    });
+
+    if (!updatedGroup || !updatedGroup.items) {
+      throw new Error('Failed to fetch updated items');
+    }
+    console.log('🚀 ~ updatedItems ~ updatedItems:', updatedGroup.items);
+
+    const updatesSuccessful = updatedGroup.items.every((item, index) => item.position === index);
+
+    if (!updatesSuccessful) {
+      throw new Error('Position updates were not applied correctly');
+    }
+
+    res.status(201).json({ updateResult: updatedGroup.items });
+  } catch (error) {
+    console.log(error);
   }
 };

@@ -21,17 +21,19 @@ export const groups = pgTable('groups', {
   userID: uuid('userID').references(() => accounts.id),
   budgetID: integer('budget_id').references(() => budget.id),
   label: varchar('label', { length: 50 }).notNull(),
+  position: integer('position').unique(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
 export const items = pgTable('items', {
   id: serial('id').primaryKey(),
   type: groupTypeEnum('type'),
-  groupID: integer('group_id')
+  groupId: integer('group_id')
     .references(() => groups.id, {
       onDelete: 'cascade',
     })
     .notNull(),
+  position: integer('position').unique(),
   label: varchar('label', { length: 50 }).notNull(),
   amountBudget: numeric('amountBudget').notNull(),
   allocatedBudget: numeric('allocated'),
@@ -39,9 +41,23 @@ export const items = pgTable('items', {
   dueDate: date('date'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
+export const transactions = pgTable('transactions', {
+  id: serial('id').primaryKey().notNull(),
+  itemId: integer('item_id')
+    .references(() => items.id)
+    .notNull(),
+  label: varchar('label', { length: 50 }).notNull(),
+  amount: numeric('amount').notNull(),
+  paidVia: varchar('paid_via', { length: 50 }).notNull(),
+  notes: varchar('notes', { length: 50 }),
+  date: date('date').notNull(),
+  category: varchar('category', { length: 50 }).notNull(),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+});
 export type Item = typeof items.$inferInsert;
 export type Group = typeof groups.$inferInsert;
-export type Budget = typeof budget.$inferInsert;
+export type Budget = typeof budget.$inferSelect;
+export type Transaction = typeof transactions.$inferInsert;
 
 export const budgetRelations = relations(budget, ({ one, many }) => ({
   groups: many(groups),
@@ -55,9 +71,17 @@ export const groupRelations = relations(groups, ({ one, many }) => ({
   items: many(items),
 }));
 
-export const itemRelations = relations(items, ({ one }) => ({
+export const itemRelations = relations(items, ({ one, many }) => ({
   group: one(groups, {
-    fields: [items.groupID],
+    fields: [items.groupId],
     references: [groups.id],
+  }),
+  transactions: many(transactions),
+}));
+
+export const transactionRelations = relations(transactions, ({ one, many }) => ({
+  items: one(items, {
+    fields: [transactions.itemId],
+    references: [items.id],
   }),
 }));
