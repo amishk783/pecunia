@@ -39,7 +39,11 @@ CREATE TABLE IF NOT EXISTS "groups" (
 	"userID" uuid,
 	"budget_id" integer,
 	"label" varchar(50) NOT NULL,
+<<<<<<<< HEAD:backend/supabase/migrations/0000_uneven_penance.sql
 	"position" serial NOT NULL,
+========
+	"position" integer,
+>>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added):backend/supabase/migrations/0000_yielding_abomination.sql
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "groups_position_unique" UNIQUE("position")
 );
@@ -53,6 +57,16 @@ CREATE TABLE IF NOT EXISTS "items" (
 	"amountBudget" numeric NOT NULL,
 	"allocated" numeric,
 	"date" date,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "items_position_unique" UNIQUE("position")
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "transactions" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"item_id" integer NOT NULL,
+	"label" varchar(50),
+	"amountBudget" numeric NOT NULL,
+	"date" date NOT NULL,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
@@ -82,6 +96,15 @@ END $$;
 --> statement-breakpoint
 DO $$ BEGIN
  ALTER TABLE "items" ADD CONSTRAINT "items_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE cascade ON UPDATE no action;
+<<<<<<<< HEAD:backend/supabase/migrations/0000_uneven_penance.sql
+========
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "transactions" ADD CONSTRAINT "transactions_item_id_items_id_fk" FOREIGN KEY ("item_id") REFERENCES "public"."items"("id") ON DELETE no action ON UPDATE no action;
+>>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added):backend/supabase/migrations/0000_yielding_abomination.sql
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;

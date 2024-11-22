@@ -7,9 +7,9 @@ if (!process.env.DATABASE_URI) {
 
 export default {
   schema: './src/db/schema/schema.ts',
-  out: './drizzle',
+  out: './supabase/migrations',
   dialect: 'postgresql',
-  schemaFilter: ['public','drizzle'],
+  schemaFilter: ['public', 'drizzle'],
   dbCredentials: {
     database: 'postgres',
     url: process.env.DATABASE_URI,

@@ -10,6 +10,7 @@
     "outDir": "dist",
     "baseUrl": ".",
     "types": ["node"],
+    "strict": true,
     "paths": {
       "@/*": ["./src/*"],
 

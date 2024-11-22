@@ -69,7 +69,7 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
       return res.status(400).send('Account does not exit');
     }
 
-    const budgetData = await db.query.budget.findMany({
+    const budgetData = await db.query.budget.findFirst({
       where: and(eq(budget.userId, userId), eq(budget.month, desiredMonth), eq(budget.year, desiredYear)),
       with: {
         groups: {
@@ -80,12 +80,12 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
       },
     });
 
-    if (!budgetData.length) {
+    if (!budgetData) {
       Logger.error('Budget not found for the specified month and year.');
       return res.status(404).send('Budget not found for the specified month and year.');
     }
 
-    const currentBudget = budgetData[0];
+    const currentBudget = budgetData;
 
     res.status(200).send({ currentBudget });
   } catch (error) {
@@ -121,7 +121,6 @@ export const getAllExistenceBudget = async (req: AuthenticatedRequest, res: Resp
     },
     {} as Record<string, Record<number, number>>,
   );
-  console.log('🚀 ~ getAllExistenceBudget ~ budgetData:', budgetData);
   if (!budgetData.length) {
     Logger.error('Budget not found for the specified month and year.');
     return res.status(404).send('Budget not found for the specified month and year.');
@@ -187,7 +186,7 @@ export const cloneBudget = async (req: AuthenticatedRequest, res: Response) => {
             const newGroupItems = group.items.map(item => ({
               type: item.type,
               label: item.label,
-              groupID: newGroup.id,
+              groupId: newGroup.id,
               amountBudget: item.amountBudget,
               allocatedBudget: item.amountBudget,
               dueDate: item.dueDate,

@@ -13,11 +13,13 @@ export const apiUrls = {
   group: {
     add: "/app/budget/group/",
     modify: (id: number) => `/app/budget/group/${id}`,
+    reorder: "/app/budget/group/reorder",
     delete: (id: number) => `/app/budget/group/${id}`,
   },
   expenses: {
-    add: "",
+    add: "/app/budget/transaction",
     edit: "",
+    all: "/app/budget/transaction",
     getExpenses: ({ from, to }: { from: string; to: string }) =>
       `/api/expenses?from=${from}&to=${to}`,
   },

@@ -23,6 +23,13 @@ export const reorderItemSchema = z.object({
 });
 export const reorderItemsSchemaArray = z.array(reorderItemSchema);
 
+const reorderGroupSchema = z.object({
+  id: z.number().min(1, 'Group ID is required'),
+
+  budgetId: z.number().min(1, 'Budget ID is required'),
+  position: z.number().min(0, 'Position must be a non-negative number'),
+});
+export const reorderGroupSchemaArray = z.array(reorderGroupSchema);
 export const updateTaskSchema = z.object({
   _id: z.string().min(1, 'Task Id is required'),
   title: z.string().min(1, 'Title is required'),
@@ -34,11 +41,17 @@ export const updateTaskSchema = z.object({
   priority: z.string().optional(),
 });
 
-export const boardScehma = z.object({
-  name: z.string().min(1, 'Board name is required'),
-  workspaceId: z.string().min(1, 'Workspace Id is required'),
+export const transactionSchema = z.object({
+  label: z.string().min(1, 'Transaction name is required'),
+  // itemId: z.number().min(1, 'Group Id is required'),
+  paidVia: z.string().min(1, 'Payment Mode is required'),
+  date: z.string().min(1, 'Spend date is required'),
+  category: z.string().min(1, 'Category is required'),
+  notes: z.string().optional(),
+  amount: z.string().min(0, 'Transaction amount is required'),
 });
 
+export type TransactionType = z.infer<typeof transactionSchema>;
 export const listValidationSchema = z.object({
   name: z.string().min(1, 'List name is required'),
   position: z.number().optional(),

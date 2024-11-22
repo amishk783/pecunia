@@ -49,7 +49,7 @@ function App() {
           >
             <Route path="dashboard" element={<Dashboard />} />
             <Route path="analytics" element={<Budget />} />
-            <Route path="users" element={<Expenses />} />
+            <Route path="expenses" element={<Expenses />} />
             <Route path="account" element={<Goals />} />
             <Route path="budget" element={<Budget />} />
           </Route>

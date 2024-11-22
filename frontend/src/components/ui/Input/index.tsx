@@ -2,19 +2,20 @@ import React from "react";
 import { FieldValues, UseFormRegister } from "react-hook-form";
 import { cn } from "@/lib/utils";
 
-type Props = {
+interface Props {
   name: string;
   label: string;
+  errorText?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<FieldValues & any>;
   required?: boolean;
   className?: string;
   placeholder?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  error: any;
+  error?: any;
   type?: "text" | "number" | "password" | "email";
   validate?: (value: string) => boolean | string;
-};
+}
 
 export const Input: React.FC<Props> = ({
   name,
@@ -23,6 +24,7 @@ export const Input: React.FC<Props> = ({
   register,
   className,
   placeholder,
+  errorText,
   error,
   type = "text",
   validate,
@@ -42,8 +44,8 @@ export const Input: React.FC<Props> = ({
           validate,
         })}
       />
-      {error && (
-        <div className=" text-sm mt-2 text-red-400">
+      {errorText && error && (
+        <div className=" text-sm mt-2 ml-2 text-red-400">
           {!error?.message && error?.type === "required"
             ? "This field is required"
             : error?.message}

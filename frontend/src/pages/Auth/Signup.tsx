@@ -21,7 +21,7 @@ import { financialAdvice } from "./constant";
 
 import { Input } from "@/components/ui/Input";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 
 import { Github, Loader, Eye, Plus } from "lucide-react";
 

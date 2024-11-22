@@ -20,7 +20,7 @@ import { useRef, useState } from "react";
 import { ItemType } from "@/type";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/providers/Theme";
-import Button from "../ui/Button";
+import { Button } from "../ui/Button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import {
@@ -70,32 +70,40 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
   const { theme } = useTheme();
   const { setBudget } = useBudget();
 
+  // logic is sometimes working and sometime not
   const handleDragEnd = async (event: DragEndEvent) => {
-    setActiveId(null);
-
     const { active, over } = event;
+
+    let movedArray: ItemType[] = [];
+
     if (over && active.id !== over.id) {
-      setItems((items) => {
-        const oldIndex = items.findIndex((item) => item.id === active.id);
-        const newIndex = items.findIndex((item) => item.id === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      const oldIndex = items.findIndex((item) => item.id === active.id);
+
+      const newIndex = items.findIndex((item) => item.id === over.id);
+
+      console.log("🚀 ~ handleDragEnd ~ movedArray:", movedArray);
+
+      setItems((items) => arrayMove(items, oldIndex, newIndex));
+
+      movedArray = arrayMove(items, oldIndex, newIndex);
       const reorderArray: {
         id: number;
         position: number;
-        groupID: number;
+        groupId: number;
       }[] = [];
-      for (const item of items) {
-        console.log(item.groupId);
+      for (const item of movedArray) {
         reorderArray.push({
           id: item.id,
           position: item.position,
-          groupID: item.groupId,
+          groupId: item.groupId,
         });
       }
+      console.log("🚀 ~ handleDragEnd ~ reorderArray:", reorderArray);
 
-      console.log("items", items);
       const result = await reorderCategory(reorderArray);
+
+      setActiveId(null);
+
       console.log("🚀 ~ handleDragEnd ~ result:", result);
     }
   };
@@ -361,16 +369,18 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                 items={items}
                 strategy={verticalListSortingStrategy}
               >
-                {items.map((item) => (
-                  <BudgetItem
-                    key={item.id}
-                    id={item.id}
-                    label={item.label}
-                    planned={item.amountBudget}
-                    received={item.amountBudget}
-                    handleItemDelete={handleItemDelete}
-                  />
-                ))}
+                {items.map((item) => {
+                  return (
+                    <BudgetItem
+                      key={item.id}
+                      id={item.id}
+                      label={item.label}
+                      planned={item.amountBudget}
+                      received={item.amountBudget}
+                      handleItemDelete={handleItemDelete}
+                    />
+                  );
+                })}
               </SortableContext>
               <DragOverlay>
                 {activeId

@@ -19,7 +19,7 @@ import { supabase } from "@/supabaseClient";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { financialAdvice } from "./constant";
 
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Github, Loader, Eye, Plus } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";

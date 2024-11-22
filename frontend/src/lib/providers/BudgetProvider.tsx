@@ -3,7 +3,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { format } from "date-fns";
 import api from "@/services/api";
+<<<<<<< HEAD
 
+=======
+import { useMemo } from "react";
+>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added)
 interface BudgetContextType {
   budget: BudgetType | null;
   setBudget: React.Dispatch<React.SetStateAction<BudgetType | null>>;
@@ -26,17 +30,38 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const { session } = useAuth();
   useEffect(() => {
+    console.log("Updated budget:", budget);
+  }, [budget]);
+  useEffect(() => {
     const fetchBudget = async () => {
-      if (!session) return;
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
+
+      if (!session) return;
       setLoading(true);
       try {
         const response = await api.post("/app/budget/by-date", {
           date,
         });
 
-        setBudget(response.data.currentBudget);
+        setBudget((prevBudget) => ({
+          ...prevBudget,
+          ...response.data.currentBudget,
+        }));
+      } catch (error) {
+        console.error("Error posting data:", error); // Handle the error
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchAllExistedBudget = async () => {
+      if (!session) return;
+      setLoading(true);
+      try {
+        const response = await api.get("app/budget/budgets");
+
+        setAllExistedBudget(response.data.budgetExitence);
       } catch (error) {
         console.error("Error posting data:", error); // Handle the error
       } finally {
@@ -59,12 +84,11 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchBudget();
     fetchAllExistedBudget();
   }, [session]);
+
+  const value = { budget, setBudget, loading, allExistedBudget };
+
   return (
-    <BudgetContext.Provider
-      value={{ budget, setBudget, loading, allExistedBudget }}
-    >
-      {children}
-    </BudgetContext.Provider>
+    <BudgetContext.Provider value={value}>{children}</BudgetContext.Provider>
   );
 };
 

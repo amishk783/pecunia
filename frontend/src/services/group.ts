@@ -36,3 +36,21 @@ export const modifyGroup = async (id: number, label: string) => {
     console.log(error);
   }
 };
+export const reorderGroup = async (
+  data: { id: number; position: number; budgetId: number }[]
+) => {
+  try {
+    const res = await api.post(apiUrls.group.reorder, {
+      data,
+    });
+
+    return res.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(
+        error.response.data.message || "Failed to reorder category"
+      );
+    }
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+};

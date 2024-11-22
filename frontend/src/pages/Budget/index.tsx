@@ -1,10 +1,11 @@
 import { BudgetGroup } from "@/components/expense/BudgetGroup";
 
-import Button from "@/components/ui/Button";
+import { Button } from "@/components/ui/Button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useBudget } from "@/lib/providers/BudgetProvider";
 
+<<<<<<< HEAD
 import { addGroup } from "@/services/group";
 import { BudgetType, GroupType } from "@/type";
 
@@ -16,6 +17,12 @@ import {
   Plus,
   LoaderCircle,
 } from "lucide-react";
+=======
+import { addGroup, reorderGroup } from "@/services/group";
+import { BudgetType, GroupType } from "@/type";
+
+import { ChevronLeft, ChevronRight, Plus, LoaderCircle } from "lucide-react";
+>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added)
 import { addMonths, format, getMonth, getYear } from "date-fns";
 import { useRef, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -41,7 +48,11 @@ const Budget = () => {
   const [isAddingGroup, setIsAddingGroup] = useState<boolean>(false);
   const itemInputRef = useRef<HTMLInputElement | null>(null);
   const { budget, setBudget, loading, allExistedBudget } = useBudget();
+<<<<<<< HEAD
   // console.log("🚀 ~ Budget ~ budget:", budget);
+=======
+
+>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added)
   const currentDate = new Date();
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(currentDate);
   const [isBudgetNotPresent, setIsBudgetNotPresent] = useState<boolean>(false);
@@ -139,13 +150,21 @@ const Budget = () => {
       },
     })
   );
-  const handleDragEnd = (event: DragEndEvent) => {
-    setActiveId(null);
+  // logic is sometimes working and sometime not
+  const handleDragEnd = async (event: DragEndEvent) => {
     const { active, over } = event;
-    if (over && active.id !== over.id) {
+    if (over && active.id !== over.id && budget) {
+      const oldIndex = budget.groups.findIndex((item) => item.id === active.id);
+
+      const newIndex = budget.groups.findIndex((item) => item.id === over.id);
+
+      const groups = budget && budget?.groups;
+
       setBudget((prev) => {
         if (!prev) return prev;
+
         const oldIndex = prev.groups.findIndex((item) => item.id === active.id);
+
         const newIndex = prev.groups.findIndex((item) => item.id === over.id);
         // Ensure valid indices before proceeding
         if (oldIndex === -1 || newIndex === -1) {
@@ -155,12 +174,35 @@ const Budget = () => {
           });
           return prev;
         }
+<<<<<<< HEAD
         const updatedGroups = arrayMove(prev.groups, oldIndex, newIndex);
+=======
+        console.log(prev.groups);
+        const updatedGroups = arrayMove(prev.groups, oldIndex, newIndex);
+
+>>>>>>> b7707fb (feat:reorder logic-2/3, table-filter,sorting,viewOptions completed,transaction api added)
         return {
           ...prev,
           groups: updatedGroups,
         };
       });
+      const reorderArray: {
+        id: number;
+        position: number;
+        budgetId: number;
+      }[] = [];
+
+      const movedArray = arrayMove(groups, oldIndex, newIndex);
+      console.log("🚀 ~ handleDragEnd ~ movedArray:", movedArray);
+      for (const group of movedArray) {
+        reorderArray.push({
+          id: group.id,
+          position: group.position,
+          budgetId: group.budgetID,
+        });
+      }
+      const result = await reorderGroup(reorderArray);
+      console.log("🚀 ~ handleDragEnd ~ result:", result);
     }
   };
   return (
@@ -221,7 +263,7 @@ const Budget = () => {
                         initialItems={group.items ?? []}
                       />
                     </div>
-                  ))}{" "}
+                  ))}
                   <DragOverlay>
                     {activeId
                       ? (() => {

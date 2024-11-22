@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMultiForm } from "@/lib/providers/FormProvider";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import Button from "./ui/Button";
+import { Button } from "./ui/Button";
 import { BadgeCheck } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -40,7 +40,7 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
 
   useEffect(() => {
     updateFormValue(category, selected);
-  },[])
+  }, []);
   const toggleCheck = (value: string) => {
     setSelected((prevSelected) =>
       prevSelected.includes(value)
