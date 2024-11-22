@@ -9,8 +9,10 @@ import {
 import {
   arrayMove,
   SortableContext,
+  useSortable,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 import { BudgetItem } from "./BudgetItem";
 import { useRef, useState } from "react";
 import { ItemType } from "@/type";
@@ -180,14 +182,32 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
     }
   };
   const [isConfirmDelete, setIsConfirmDelete] = useState<boolean>(false);
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
+
+  const style = {
+    transform: CSS.Translate.toString(transform),
+    transition,
+  };
   return (
-    <div className={cn("rounded-lg p-6", theme?.bgColor, theme?.textColor)}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...attributes}
+      {...listeners}
+      className={cn(
+        "w-full h-full rounded-lg p-6",
+        theme?.bgColor,
+        theme?.textColor
+      )}
+    >
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
       >
-        <div className=" flex flex-col gap-1 ">
+        <div className=" flex flex-col gap-1 w-full h-full">
           {!isGroupEdit && (
             <h2
               onClick={() => setIsGroupEdit(true)}
@@ -197,7 +217,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
             </h2>
           )}
 
-          <div className="flex  items-center gap-5" ref={groupref}>
+          <div className="flex  items-center gap-5 w-full " ref={groupref}>
             {isGroupEdit && (
               <>
                 <input
@@ -289,11 +309,6 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                       className="w-72 h-1 py-6 px-4 focus:outline-none bg-zinc-200 focus:border-0 focus:bg-blue-100 shadow-sm rounded-md"
                     />
                   </div>
-
-                  {/* <div className="flex w-full h-full pl-14">
-                    <p className="flex items-end w-full justify-center">0</p>
-                    <p className="flex items-end w-full ">0</p>
-                  </div> */}
                 </div>
               </div>
             </div>

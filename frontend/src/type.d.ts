@@ -21,3 +21,9 @@ export interface ItemType {
   label: string;
   type: string;
 }
+
+export interface BudgetsExitence {
+  [key: string]: {
+    [key: string]: number;
+  };
+}

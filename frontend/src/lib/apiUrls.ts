@@ -24,4 +24,7 @@ export const apiUrls = {
     add: "/api/income/add",
     modify: "/api/income",
   },
+  budget: {
+    cloneBudget: (id: number) => `/app/budget/${id}`,
+  },
 };

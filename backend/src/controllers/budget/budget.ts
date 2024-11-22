@@ -8,7 +8,7 @@ import { accounts } from '@/db/schema/User';
 import { Budget, budget, Group, groups, items } from '@/db/schema/Budget';
 import { seed } from '@/utils/seed';
 
-export const createBudget = async (req: AuthenticatedRequest, res: Response) => {
+export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Response) => {
   const { date } = req.body;
 
   const parsedDate = parse(date, 'dd/MM/yyyy', new Date());
@@ -18,7 +18,7 @@ export const createBudget = async (req: AuthenticatedRequest, res: Response) => 
 
   const userId = req.user.sub as string;
 
-  const account = await db.query.accounts.findMany({
+  const account = await db.query.accounts.findFirst({
     where: eq(accounts.id, userId),
   });
 
@@ -30,7 +30,7 @@ export const createBudget = async (req: AuthenticatedRequest, res: Response) => 
   const newBudget: Budget[] = await db
     .insert(budget)
     .values({
-      userId: account[0].id,
+      userId: account.id,
       year: fullyear,
       month,
       status: 'active',
@@ -38,7 +38,7 @@ export const createBudget = async (req: AuthenticatedRequest, res: Response) => 
     .returning();
   const parsedBudget = newBudget.map(({ userId, createdAt, ...rest }) => rest);
 
-  const result = await seed(parsedBudget[0].id, account[0].id);
+  const result = await seed(parsedBudget[0].id, account.id);
   const monthBudget = { ...parsedBudget[0], ...result };
   res.status(201).send({ monthBudget });
 };
@@ -91,5 +91,133 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
   } catch (error) {
     Logger.error('Error fetching budget data:', error);
     res.status(500).send('An error occurred while fetching the budget data.');
+  }
+};
+
+export const getAllExistenceBudget = async (req: AuthenticatedRequest, res: Response) => {
+  const userId = req.user.sub as string;
+  const account = await db.query.accounts.findFirst({
+    where: eq(accounts.id, userId),
+  });
+
+  if (!account) {
+    Logger.error('Account does not exit');
+    return res.status(400).send('Account does not exit');
+  }
+  const budgetData = await db.query.budget.findMany({
+    where: and(eq(budget.userId, userId)),
+  });
+
+  const budgetExitence = budgetData.reduce(
+    (acc, budget) => {
+      const { year, month, id } = budget;
+
+      if (!acc[year]) {
+        acc[year] = {};
+      }
+      acc[year][month] = id;
+
+      return acc;
+    },
+    {} as Record<string, Record<number, number>>,
+  );
+  console.log('🚀 ~ getAllExistenceBudget ~ budgetData:', budgetData);
+  if (!budgetData.length) {
+    Logger.error('Budget not found for the specified month and year.');
+    return res.status(404).send('Budget not found for the specified month and year.');
+  }
+  res.status(200).send({ budgetExitence });
+};
+
+export const cloneBudget = async (req: AuthenticatedRequest, res: Response) => {
+  const id = +req.params.id;
+  console.log('🚀 ~ cloneBudget ~ id:', id);
+
+  const { date } = req.body;
+  console.log('🚀 ~ cloneBudget ~ date:', date);
+
+  const prevExistingBudget = await db.query.budget.findFirst({
+    where: eq(budget.id, id),
+    with: {
+      groups: {
+        with: {
+          items: true,
+        },
+      },
+    },
+  });
+
+  if (!prevExistingBudget) {
+    Logger.error('Budget not found for the specified ID.');
+    return res.status(404).send('Budget not found.');
+  }
+
+  const year = getYear(date);
+  console.log('🚀 ~ cloneBudget ~ year:', year);
+  const month = getMonth(date);
+  console.log('🚀 ~ cloneBudget ~ month:', month);
+  try {
+    const result = await db.transaction(async tx => {
+      const [newBudget] = await tx
+        .insert(budget)
+        .values({
+          userId: prevExistingBudget.userId,
+          status: prevExistingBudget.status,
+          year,
+          month,
+        })
+        .returning();
+
+      if (!newBudget) {
+        throw new Error('Failed to create new budget');
+      }
+
+      if (prevExistingBudget.groups && prevExistingBudget.groups.length > 0) {
+        for (const group of prevExistingBudget.groups) {
+          const [newGroup] = await tx
+            .insert(groups)
+            .values({
+              budgetID: newBudget.id,
+              type: group.type,
+              label: group.label,
+              userID: group.userID,
+            })
+            .returning();
+          if (group.items && group.items.length > 0) {
+            const newGroupItems = group.items.map(item => ({
+              type: item.type,
+              label: item.label,
+              groupID: newGroup.id,
+              amountBudget: item.amountBudget,
+              allocatedBudget: item.amountBudget,
+              dueDate: item.dueDate,
+            }));
+            await tx.insert(items).values(newGroupItems);
+          }
+        }
+      }
+      const completeBudget = await tx.query.budget.findFirst({
+        where: eq(budget.id, newBudget.id),
+        with: {
+          groups: {
+            with: {
+              items: true,
+            },
+          },
+        },
+      });
+      return completeBudget;
+    });
+    Logger.info(`Successfully cloned budget ${id} to new budget ${result.id}`);
+    return res.status(201).json({
+      message: 'Budget successfully cloned',
+      budget: result,
+    });
+  } catch (error) {
+    Logger.error('Error cloning budget:', error);
+    return res.status(500).json({
+      message: 'Failed to clone budget',
+      error: error instanceof Error ? error.message : 'Unknown error occurred',
+    });
   }
 };
