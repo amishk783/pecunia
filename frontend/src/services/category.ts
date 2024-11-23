@@ -32,3 +32,20 @@ export const deleteCategory = async (id: number) => {
     throw new Error(error.message || "An unexpected error occurred");
   }
 };
+
+export const reorderCategory = async (
+  data: { id: number; position: number; groupId: number }[]
+) => {
+  try {
+    const res = await api.post(apiUrls.category.reorder, {
+      data,
+    });
+
+    return res.data;
+  } catch (error: any) {
+    if (error.response) {
+      throw new Error(error.response.data.message || "Failed to add category");
+    }
+    throw new Error(error.message || "An unexpected error occurred");
+  }
+};

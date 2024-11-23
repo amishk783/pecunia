@@ -21,6 +21,7 @@ export const groups = pgTable('groups', {
   userID: uuid('userID').references(() => accounts.id),
   budgetID: integer('budget_id').references(() => budget.id),
   label: varchar('label', { length: 50 }).notNull(),
+  position: serial('position').unique(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -32,6 +33,7 @@ export const items = pgTable('items', {
       onDelete: 'cascade',
     })
     .notNull(),
+  position: integer('position').unique(),
   label: varchar('label', { length: 50 }).notNull(),
   amountBudget: numeric('amountBudget').notNull(),
   allocatedBudget: numeric('allocated'),

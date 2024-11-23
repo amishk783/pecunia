@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import { db } from '@/db';
 import { eq } from 'drizzle-orm';
-import { budget, groups, items } from '@/db/schema/Budget';
+import { budget, groups, Item, items } from '@/db/schema/Budget';
 import Logger from '@/utils/logger';
 import { AuthenticatedRequest } from '@/types';
+import { itemsArraySchema, itemSchema, reorderItemSchema, reorderItemsSchemaArray } from '@/utils/validationSchema';
 
 export const updateItemByID = async (req: AuthenticatedRequest, res: Response) => {
   const id = +req.params.id;
@@ -72,5 +73,46 @@ export const deleteItem = async (req: AuthenticatedRequest, res: Response) => {
   } catch (error) {
     Logger.error('Error Deleting item:', error);
     res.status(500).json({ error: 'An error occurred' });
+  }
+};
+
+export const reorder = async (req: AuthenticatedRequest, res: Response) => {
+  const { data } = req.body;
+  console.log('🚀 ~ reorder ~ {data}:', data);
+  console.log("🚀 ~ reorder ~ data:", data)
+
+  const validation = reorderItemsSchemaArray.safeParse(data);
+
+  if (!validation.success) {
+    console.error(validation.error.format());
+  }
+
+  try {
+    const validatedData = validation.data;
+    const updateResult = validatedData.map((item, index: number) => {
+      item.position = index + 1;
+      return item;
+    });
+
+    // Fetch group to validate existence
+
+    const group = await db.query.groups.findFirst({
+      where: eq(groups.id, updateResult[0].groupID),
+    });
+
+    if (!group) {
+      Logger.error(`Group with ID ${updateResult[0].groupID} not found`);
+      return res.status(400).json({ error: 'Group not found' });
+    }
+
+    await db.transaction(async tx => {
+      for (const item of updateResult) {
+        await tx.update(items).set({ position: item.position }).where(eq(items.id, item.id));
+      }
+    });
+
+    res.status(201).json(updateResult);
+  } catch (error) {
+    console.log(error);
   }
 };

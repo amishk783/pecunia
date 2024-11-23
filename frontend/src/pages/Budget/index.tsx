@@ -26,6 +26,7 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
+  DragOverlay,
   PointerSensor,
   useSensor,
   useSensors,
@@ -40,13 +41,12 @@ const Budget = () => {
   const [isAddingGroup, setIsAddingGroup] = useState<boolean>(false);
   const itemInputRef = useRef<HTMLInputElement | null>(null);
   const { budget, setBudget, loading, allExistedBudget } = useBudget();
-  // console.log("🚀 ~ Budget ~ allExistedBudget:", allExistedBudget);
-
+  // console.log("🚀 ~ Budget ~ budget:", budget);
   const currentDate = new Date();
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(currentDate);
   const [isBudgetNotPresent, setIsBudgetNotPresent] = useState<boolean>(false);
   const [isLoading, setIsloading] = useState(false);
-
+  const [activeId, setActiveId] = useState<string | null>("");
   const handleCloseAdditem = async () => {
     if (itemInputRef.current && itemInputRef.current.value) {
       try {
@@ -140,6 +140,7 @@ const Budget = () => {
     })
   );
   const handleDragEnd = (event: DragEndEvent) => {
+    setActiveId(null);
     const { active, over } = event;
     if (over && active.id !== over.id) {
       setBudget((prev) => {
@@ -201,6 +202,7 @@ const Budget = () => {
               sensors={sensors}
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
+              onDragStart={(e) => setActiveId(e.active.id)}
             >
               <div className="flex h-full w-full flex-col gap-4 justify-normal items-start">
                 <SortableContext
@@ -219,7 +221,26 @@ const Budget = () => {
                         initialItems={group.items ?? []}
                       />
                     </div>
-                  ))}
+                  ))}{" "}
+                  <DragOverlay>
+                    {activeId
+                      ? (() => {
+                          const draggedGroup = budget?.groups.find(
+                            (group) => group.id === +activeId
+                          );
+                          return draggedGroup ? (
+                            <div className="bg-white rounded-md drop-shadow-md shadow-md shadow-slate-400">
+                              <BudgetGroup
+                                id={draggedGroup.id}
+                                type={draggedGroup.type}
+                                grouptitle={draggedGroup.label}
+                                initialItems={draggedGroup.items ?? []}
+                              />
+                            </div>
+                          ) : null;
+                        })()
+                      : null}
+                  </DragOverlay>
                 </SortableContext>
 
                 <div className="flex w-full h-full p-4 border-dashed rounded-2xl border-2">

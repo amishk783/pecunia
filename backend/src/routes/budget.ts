@@ -1,5 +1,5 @@
 import express from 'express';
-import { createItem, deleteItem, updateItemByID } from '@/controllers/budget/item';
+import { createItem, deleteItem, reorder, updateItemByID } from '@/controllers/budget/item';
 import { createGroup, deleteGroup, editGroupLabel } from '@/controllers/budget/group';
 import {
   cloneBudget,
@@ -9,8 +9,9 @@ import {
 } from '@/controllers/budget/budget';
 const router = express.Router();
 
+router.post('/item/reorder', reorder);
 router.post('/item', createItem); // post item
-router.put('item/:id', updateItemByID); // edit item by id
+router.put('/item/:id', updateItemByID); // edit item by id
 router.delete('/item/:id', deleteItem); //delete item by id
 
 router.put('/group/:id', editGroupLabel); //edit group label

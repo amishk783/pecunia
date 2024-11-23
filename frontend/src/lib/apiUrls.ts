@@ -7,6 +7,7 @@ export const apiUrls = {
   category: {
     add: "/app/item",
     modify: "",
+    reorder: "/app/budget/item/reorder",
     delete: (id: number) => `/app/item/${id}`,
   },
   group: {
@@ -23,6 +24,7 @@ export const apiUrls = {
   income: {
     add: "/api/income/add",
     modify: "/api/income",
+    reorder: "",
   },
   budget: {
     cloneBudget: (id: number) => `/app/budget/${id}`,

@@ -20,6 +20,7 @@ export interface ItemType {
   id: number;
   label: string;
   type: string;
+  position: number;
 }
 
 export interface BudgetsExitence {

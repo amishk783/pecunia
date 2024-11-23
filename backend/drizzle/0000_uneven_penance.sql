@@ -39,13 +39,16 @@ CREATE TABLE IF NOT EXISTS "groups" (
 	"userID" uuid,
 	"budget_id" integer,
 	"label" varchar(50) NOT NULL,
-	"created_at" timestamp with time zone DEFAULT now() NOT NULL
+	"position" serial NOT NULL,
+	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
+	CONSTRAINT "groups_position_unique" UNIQUE("position")
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "items" (
 	"id" serial PRIMARY KEY NOT NULL,
 	"type" "type",
-	"group_id" integer,
+	"group_id" integer NOT NULL,
+	"position" integer,
 	"label" varchar(50) NOT NULL,
 	"amountBudget" numeric NOT NULL,
 	"allocated" numeric,
@@ -78,7 +81,7 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "items" ADD CONSTRAINT "items_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE no action ON UPDATE no action;
+ ALTER TABLE "items" ADD CONSTRAINT "items_group_id_groups_id_fk" FOREIGN KEY ("group_id") REFERENCES "public"."groups"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
