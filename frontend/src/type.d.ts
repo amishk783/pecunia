@@ -15,8 +15,8 @@ export interface GroupType {
   items: ItemType[];
 }
 export interface ItemType {
-  allocatedBudget: number;
-  amountBudget: number;
+  allocatedBudget: string;
+  amountBudget: string;
   groupId: number;
   id: number;
   label: string;

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { SummeryItem } from "@/components/ui/SummeryItem";
 import { ChevronDown, ReceiptText, ScanLine, Table } from "lucide-react";
 import { columns } from "./columns";
@@ -6,7 +6,11 @@ import { columns } from "./columns";
 import { DataTable } from "@/components/table/data-table";
 import { Transaction } from "@/type";
 import { useEffect, useState } from "react";
-import { getAllTransaction } from "@/services/transaction";
+import {
+  copyTransaction,
+  deleteTransaction,
+  getAllTransaction,
+} from "@/services/transaction";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import {
   DropdownMenu,
@@ -17,6 +21,9 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
 import { AddExpense } from "@/components/expense/add";
+
+import { cn } from "@/lib/utils";
+import toast from "react-hot-toast";
 
 const Expenses = () => {
   const [transactions, setTransaction] = useState<Transaction[]>([]);
@@ -35,7 +42,38 @@ const Expenses = () => {
     };
     fetchTransactions();
   }, [session]);
-  console.log("🚀 ~ Expenses ~ transactions:", transactions);
+
+  const onActionDelete = async (id: number) => {
+    console.log(id);
+    try {
+      const res = await deleteTransaction(id);
+      const deletedTransaction: Transaction = res;
+      console.log(
+        "🚀 ~ onActionDelete ~ deletedTransaction:",
+        deletedTransaction
+      );
+      setTransaction((prev) =>
+        prev.filter((item) => item.id !== deletedTransaction.id)
+      );
+      toast.success("Succefully Deleted");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const onActionCopy = async (data: Transaction) => {
+    try {
+      if (!data.id) return;
+      if (!data.notes) delete data.notes;
+
+      const res = await copyTransaction(data, +data.id);
+      const updatedTransaction: Transaction = res;
+
+      setTransaction((prev) => [...prev, updatedTransaction]);
+      toast.success("Succefully Deleted");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const categories = Array.from(
     new Set(transactions.map((transaction) => transaction.category))
@@ -53,8 +91,10 @@ const Expenses = () => {
   >(null);
   const handleSetActiveTab = (tab: "single" | "scan" | "multiple" | null) =>
     setActiveTab(tab);
+
+  // const { theme } = useTheme();
   return (
-    <div className="flex w-full h-min  min-h-screen">
+    <div className={cn("flex w-full h-min  min-h-screen")}>
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4  pt-2">
         <div className=" w-full h-min flex flex-col gap-4 justify-between items-center ">
           <div className="w-full h-min flex justify-between items-center border-b  px-4">
@@ -114,6 +154,7 @@ const Expenses = () => {
                 columns={columns}
                 data={transactions}
                 categories={categories}
+                actions={{ onActionDelete, onActionCopy }}
               />
             }
           </div>

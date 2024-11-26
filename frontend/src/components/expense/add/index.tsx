@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import receiptIcon from "@/assets/receipt.png";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -19,12 +19,11 @@ import {
   SelectTrigger,
 } from "@/components/ui/select";
 import {
-  expensesPay,
   expensesPayMode,
   GroupWithCategoriesType,
-} from "@/Constants/constants";
+} from "@/constants/constants";
 import { useBudget } from "@/lib/providers/BudgetProvider";
-import { format } from "date-fns";
+
 import { addTransaction } from "@/services/transaction";
 import { X } from "lucide-react";
 // import {  } from "@radix-ui/react-select";
@@ -55,7 +54,7 @@ export const AddExpense: React.FC<Expense> = ({
 }) => {
   const [isOutsideDivActive, setIsOutsideDivActive] = useState(false);
 
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const ref = useClickOutside<HTMLDivElement>(() =>
     isOutsideDivActive ? handleSetActiveTab(null) : ""
   );
@@ -77,12 +76,16 @@ export const AddExpense: React.FC<Expense> = ({
 
   if (!budget) return; // render when budget is loaded
 
-  const handleFileChange = (event) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!event || !event.target.files) return;
     const file = event.target.files[0];
     setSelectedFile(file);
   };
 
-  const handleSelectDataChange = (field: string, value: string | Date) => {
+  const handleSelectDataChange = (
+    field: string,
+    value: Date | undefined | string
+  ) => {
     setSelectedData((prev) => ({
       ...prev,
       [field]: value,
@@ -177,7 +180,7 @@ export const AddExpense: React.FC<Expense> = ({
                       </label>
                       <div className="w-full">
                         <DatePicker
-                          onSelect={(value) =>
+                          onSelect={(value: Date | undefined) =>
                             handleSelectDataChange("date", value)
                           }
                           date={selectedData.date}

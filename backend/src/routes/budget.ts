@@ -8,7 +8,9 @@ import {
   getBudgetByMonth,
 } from '@/controllers/budget/budget';
 import {
+  copyTransaction,
   createTransaction,
+  deleteTransaction,
   getAllTransaction,
   getTransactionById,
   updateTransactionByID,
@@ -24,6 +26,8 @@ router.post('/transaction', createTransaction); // post item
 router.put('/transaction/:id', updateTransactionByID); // update item
 router.get('/transaction/', getAllTransaction); // update item
 router.get('/transaction/:id', getTransactionById); // update item
+router.delete('/transaction/:id', deleteTransaction);
+router.post('/transaction/copy/:id', copyTransaction);
 
 router.put('/group/:id', editGroupLabel); //edit group label
 router.post('/group', createGroup);

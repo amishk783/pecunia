@@ -2,10 +2,9 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { cn } from "@/lib/utils";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Delete, GripVertical, Loader, Trash2 } from "lucide-react";
+import { GripVertical, Loader, Trash2 } from "lucide-react";
 import { useRef, useState } from "react";
-import Button from "../ui/Button";
-import { deleteCategory } from "@/services/category";
+
 import { ConfirmDelete } from "../ConfirmDelete";
 
 export interface BudgetItemProps {
@@ -79,7 +78,7 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
       onClick={() => {
         setIsActive(true);
       }}
-      className={cn("", isDragging ? "bg-white" : "bg-white")}
+      className={cn("", isDragging ? "" : "")}
     >
       <div
         ref={setNodeRef}
@@ -88,7 +87,7 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
         className="flex w-full h-min relative items-center justify-center group  "
       >
         <GripVertical
-          className="absolute -left-8 text-zinc-500 opacity-0 group-hover:opacity-100 
+          className="absolute -left-8  opacity-0 group-hover:opacity-100 
              transition-opacity duration-500 ease-in-out "
           {...listeners}
         />
@@ -119,10 +118,10 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
               </div>
             </div>
             <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              0
+              {planned}
             </p>
             <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              0
+              {received}
             </p>
             {isActive && !isItemDeleted && (
               <div className=" flex w-20 h-full items-end justify-end">
@@ -192,7 +191,7 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
                 0
               </p>
               {isActive && !isItemDeleted && (
-                <div  className="w-20 h-full">
+                <div className="w-20 h-full">
                   <div className=" flex w-20 h-full absolute items-end basis-4 flex-shrink flex-grow-0 justify-end right-0 -top-1">
                     <Trash2
                       onClick={() => setIsConfirmDelete(true)}

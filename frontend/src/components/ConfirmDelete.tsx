@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Modal } from "./Modal";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
 interface ConfirmDeleteProps {
   isOpen: boolean;

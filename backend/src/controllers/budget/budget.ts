@@ -16,6 +16,8 @@ export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Res
   const month = getMonth(parsedDate) + 1;
   const fullyear = getYear(parsedDate);
 
+  if (!req.user) return;
+
   const userId = req.user.sub as string;
 
   const account = await db.query.accounts.findFirst({
@@ -24,7 +26,7 @@ export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Res
 
   if (!account) {
     Logger.error('Account does not exit');
-    res.status(400).send('Account does not exit');
+    return res.status(400).send('Account does not exit');
   }
 
   const newBudget: Budget[] = await db
@@ -58,6 +60,8 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
 
     const desiredYear = getYear(parsedDate);
 
+    if (!req.user) return;
+
     const userId = req.user.sub as string;
 
     const account = await db.query.accounts.findFirst({
@@ -76,6 +80,7 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
           with: {
             items: true,
           },
+          orderBy: (groups, { desc }) => [desc(groups.type)],
         },
       },
     });
@@ -95,6 +100,8 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response)
 };
 
 export const getAllExistenceBudget = async (req: AuthenticatedRequest, res: Response) => {
+  if (!req.user) return;
+
   const userId = req.user.sub as string;
   const account = await db.query.accounts.findFirst({
     where: eq(accounts.id, userId),
@@ -208,7 +215,7 @@ export const cloneBudget = async (req: AuthenticatedRequest, res: Response) => {
       });
       return completeBudget;
     });
-    Logger.info(`Successfully cloned budget ${id} to new budget ${result.id}`);
+    Logger.info(`Successfully cloned budget ${id} to new budget `);
     return res.status(201).json({
       message: 'Budget successfully cloned',
       budget: result,

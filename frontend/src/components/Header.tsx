@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
@@ -62,9 +62,9 @@ const Header: React.FC = () => {
         <h3 className="text-xl">/ home / {breadcrumb}</h3>
       </div>
       <div className="flex items-center ">
-        <div className="flex gap-4  ">
+        <div className="flex gap-4 items-center  ">
           <Button
-            className="text-white rounded-md"
+            className="rounded-md"
             variant="outline"
             onClick={() => setThemeOpen()}
           >
@@ -82,7 +82,7 @@ const Header: React.FC = () => {
                 </div>
               </SelectItem>
               <SelectItem value="dark">
-                <div className="flex items-center gap-3 px-2">
+                <div className="flex items-center gap-3 px-2 text-slate-700 ">
                   <Moon size={24} />
                   <h1 className="text-lg">Dark</h1>
                 </div>
@@ -95,7 +95,7 @@ const Header: React.FC = () => {
               </SelectItem>
             </SelectContent>
           </Select>
-          <Sun className={theme?.textColor} size={28} />
+          {/* <Sun className={theme?.textColor} size={28} /> */}
           <Mail className={theme?.textColor} size={28} />
         </div>
         <div></div>

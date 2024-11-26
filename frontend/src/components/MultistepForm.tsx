@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMultiForm } from "@/lib/providers/FormProvider";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { Button } from "./ui/Button";
+import { Button } from "./ui/button";
 import { BadgeCheck } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -101,7 +101,7 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
             Go Back
           </Button>
         )}
-        <Button variant="primary" className="rounded-md" onClick={handleNext}>
+        <Button variant="default" className="rounded-md" onClick={handleNext}>
           Continue
         </Button>
       </div>

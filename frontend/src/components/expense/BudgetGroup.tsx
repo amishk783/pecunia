@@ -1,7 +1,6 @@
 import {
   DndContext,
   DragEndEvent,
-  DragOverEvent,
   DragOverlay,
   PointerSensor,
   closestCenter,
@@ -20,7 +19,7 @@ import { useRef, useState } from "react";
 import { ItemType } from "@/type";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/lib/providers/Theme";
-import { Button } from "../ui/Button";
+import { Button } from "../ui/button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import {
@@ -108,13 +107,6 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
     }
   };
 
-  const handleDragOver = (e: DragOverEvent) => {
-    const overId = e.over?.id;
-    if (overId) {
-      const index = items.findIndex((item) => item.id === overId);
-    }
-  };
-
   const handleCloseAdditem = async () => {
     if (itemInputRef.current && itemInputRef.current.value) {
       console.log(itemInputRef.current.value);
@@ -132,10 +124,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         toast.success("Successfully created Category");
       } catch (error) {
         console.log(error);
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to create category. Please try again."
-        );
+        toast.error("Failed to create category. Please try again.");
       } finally {
         setIsloading(false);
       }
@@ -170,10 +159,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         toast.success("Successfully edited Group Name");
       } catch (error) {
         console.log(error);
-        toast.error(
-          error.response?.data?.message ||
-            "Failed to edit Group Name. Please try again."
-        );
+        toast.error("Failed to edit Group Name. Please try again.");
       } finally {
         setIsloading(false);
       }
@@ -203,10 +189,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       toast.success("Successfully deleted category");
     } catch (error) {
       console.log(error);
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to deleted category. Please try again."
-      );
+      toast.error("Failed to deleted category. Please try again.");
     } finally {
       setIsloading(false);
     }
@@ -227,10 +210,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       });
       toast.success("Successfully deleted group");
     } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to deleted category. Please try again."
-      );
+      toast.error("Failed to deleted category. Please try again.");
     } finally {
       setIsloading(false);
     }
@@ -259,7 +239,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         style={{ ...style, height: placeHolderHeight }}
         {...attributes}
         {...listeners}
-        className="flex opacity-40 w-full h-full content-none bg-blue-200 border-dashed border-2 border-blue-500 rounded-md  relative items-center justify-center "
+        className="flex opacity-40 w-full h-full content-none border-dashed border-2 border-blue-500 rounded-md  relative items-center justify-center "
       ></div>
     );
   }
@@ -278,22 +258,22 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragEnd={handleDragEnd}
-        onDragOver={handleDragOver}
-        onDragStart={(event) => handleDragStart(event.active.id)}
+        // onDragOver={handleDragOver}
+        onDragStart={(event) => handleDragStart(event.active.id as string)}
       >
         <div className=" flex flex-col gap-1 w-full h-full transition-transform duration-500 delay-100 ease-in-out px-8 py-4 ">
           <>
             {!isGroupEdit && (
               <div className="flex justify-between  group ">
                 <GripVertical
-                  className="absolute -left-0 text-zinc-500 opacity-0 group-hover:opacity-100 
+                  className="absolute -left-0  opacity-0 group-hover:opacity-100 
              transition-opacity duration-500 ease-in-out "
                   {...listeners}
                 />
                 <div className="flex items-center gap-1 flex-shrink flex-grow-0 basis-1/2 w-1/2">
                   <h2
                     onClick={() => setIsGroupEdit(true)}
-                    className=" text-xl font-semibold text-zinc-600"
+                    className={cn(" text-xl font-semibold ", theme?.textColor)}
                   >
                     {grouptitle}
                   </h2>
@@ -376,7 +356,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                       id={item.id}
                       label={item.label}
                       planned={item.amountBudget}
-                      received={item.amountBudget}
+                      received={item.allocatedBudget}
                       handleItemDelete={handleItemDelete}
                     />
                   );

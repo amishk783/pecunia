@@ -1,9 +1,9 @@
-import { BudgetType, BudgetsExitence } from "@/type";
+import { BudgetType } from "@/type";
 import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { format } from "date-fns";
 import api from "@/services/api";
-import { useMemo } from "react";
+
 interface BudgetContextType {
   budget: BudgetType | null;
   setBudget: React.Dispatch<React.SetStateAction<BudgetType | null>>;
@@ -17,7 +17,7 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [budget, setBudget] = useState<BudgetType | null>(null);
   const [allExistedBudget, setAllExistedBudget] = useState<Record<
     number,

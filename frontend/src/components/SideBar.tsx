@@ -5,8 +5,8 @@ import { cn } from "@/lib/utils";
 import { Settings, LogOut } from "lucide-react";
 import { useTheme } from "../lib/providers/Theme";
 
-import { adminDashboard } from "../Constants/constants";
-import { Button } from "@/components/ui/Button";
+import { adminDashboard } from "../constants/constants";
+import { Button } from "@/components/ui/button";
 
 const SideBar: React.FC = () => {
   const { pathname } = useLocation();

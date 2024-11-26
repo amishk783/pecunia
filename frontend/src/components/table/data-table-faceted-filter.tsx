@@ -2,8 +2,8 @@ import { Column } from "@tanstack/react-table";
 import { ComponentType } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-import { Button } from "../ui/Button";
-import { Check, CheckIcon, PlusCircle } from "lucide-react";
+import { Button } from "../ui/button";
+import { CheckIcon, PlusCircle } from "lucide-react";
 import { Separator } from "../ui/separator";
 import { Badge } from "../ui/badge";
 import {

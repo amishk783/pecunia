@@ -19,7 +19,7 @@ import { supabase } from "@/supabaseClient";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { financialAdvice } from "./constant";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Github, Loader, Eye, Plus } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
@@ -67,8 +67,7 @@ const Login = () => {
       });
       navigate("/app/dashboard");
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      // toast.error(error);
     }
     setLoading(false);
   };
@@ -77,11 +76,9 @@ const Login = () => {
     setLoading(true);
     setActive("github");
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: selectedProvider as Provider,
       });
-      console.log(data.provider);
-      console.log(data.url);
       if (error) {
         throw new Error(error.message);
       }
@@ -216,7 +213,7 @@ const Login = () => {
               </div>
               <Button
                 className="my-2 flex items-center justify-center gap-3 "
-                variant="primary"
+                variant="default"
                 size="lg"
                 type="submit"
                 disabled={loading}

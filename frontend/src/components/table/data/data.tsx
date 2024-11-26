@@ -57,28 +57,28 @@ export const priorities = [
 export const dates = [
   {
     label: "All",
-    value: "low",
+    value: "all",
     icon: ArrowDown,
   },
   {
     label: "This Week",
-    value: "medium",
+    value: "thisWeek",
     icon: ArrowRight,
   },
   {
     label: "This Month",
-    value: "high",
+    value: "thisMmonth",
     icon: ArrowUp,
   },
 
   {
     label: "Past Week",
-    value: "high",
+    value: "pastWeek",
     icon: ArrowUp,
   },
   {
     label: "Past Month",
-    value: "high",
+    value: "pastMonth",
     icon: ArrowUp,
   },
 ];

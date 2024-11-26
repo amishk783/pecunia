@@ -19,7 +19,9 @@ export const apiUrls = {
   expenses: {
     add: "/app/budget/transaction",
     edit: "",
+    copy: (id: number) => `/app/budget/transaction/copy/${id}`,
     all: "/app/budget/transaction",
+    delete: (id: number) => `/app/budget/transaction/${id}`,
     getExpenses: ({ from, to }: { from: string; to: string }) =>
       `/api/expenses?from=${from}&to=${to}`,
   },

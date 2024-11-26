@@ -1,16 +1,14 @@
-
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 import { useAuth } from "@/lib/providers/AuthProvider";
 
 import { ArrowLeftIcon, Loader } from "lucide-react";
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 
 const schema = z.object({
@@ -117,7 +115,6 @@ const ForgotPassword = () => {
 
               <Button
                 className="my-2 flex items-center justify-center gap-3 "
-                variant="primary"
                 size="lg"
                 type="submit"
                 disabled={loading}

@@ -1,8 +1,8 @@
 import { ColumnDef } from "@tanstack/react-table";
 
-import { MoreHorizontal } from "lucide-react";
+import { MoreHorizontal, Trash2 } from "lucide-react";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import {
   DropdownMenu,
@@ -90,8 +90,16 @@ export const columns: ColumnDef<Transaction>[] = [
 
   {
     id: "actions",
-    cell: ({ row }) => {
-      const payment = row.original;
+    cell: (props) => {
+      const {
+        row,
+        table: {
+          options: { meta },
+        },
+      } = props;
+      const transaction = row.original;
+      const id = transaction.id ? transaction.id : "";
+      // console.log("🚀 ~ id:", id)
 
       return (
         <DropdownMenu>
@@ -107,14 +115,20 @@ export const columns: ColumnDef<Transaction>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
+            <DropdownMenuItem onClick={() => meta?.onActionCopy(row.original)}>
+              Copy transaction
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
             <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="focus:bg-red-700/30 group"
+              onClick={() => meta?.onActionDelete(+id)}
+            >
+              <div className="flex gap-2 w-full items-center">
+                <p>Delete Transaction</p>
+                <Trash2 className="group-focus:text-red-400" />
+              </div>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

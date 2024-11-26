@@ -108,6 +108,7 @@ export const HiddenExpense = () => {
 
 export const OnboardingComplete = () => {
   const { formValue } = useMultiForm();
+  console.log("🚀 ~ OnboardingComplete ~ formValue:", formValue);
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -120,6 +121,7 @@ export const OnboardingComplete = () => {
         const response = await api.post("/app/budget/onboarding-complete", {
           date,
         });
+        console.log("🚀 ~ postOboardingData ~ response:", response);
 
         navigate("/");
         setIsLoading(false);
@@ -129,6 +131,7 @@ export const OnboardingComplete = () => {
     };
     postOboardingData();
   }, [navigate]);
+
   return (
     isLoading && (
       <div className="w-full h-screen flex items-center justify-center align-middle top-1/2">

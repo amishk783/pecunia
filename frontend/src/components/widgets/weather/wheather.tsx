@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Cloud } from "lucide-react";
-import axios from "axios";
+
 import { cn } from "@/lib/utils";
 
 interface Position {
@@ -38,8 +38,10 @@ const Weather = () => {
     latitude: 27,
     longitude: 72,
   });
+  console.log("🚀 ~ Weather ~ position:", position);
   // const [bgClass, setBgClass] = useState<string>("");
   const [weather, setWeather] = useState<WeatherData>();
+  console.log("🚀 ~ Weather ~ setWeather:", setWeather);
   console.log("🚀 ~ Wheather ~ wheather:", weather);
   console.log(weatherDesgin["snow"]);
   const getLocation = async () => {

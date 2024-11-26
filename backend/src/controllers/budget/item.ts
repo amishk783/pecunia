@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { budget, groups, Item, items } from '@/db/schema/Budget';
 import Logger from '@/utils/logger';
 import { AuthenticatedRequest } from '@/types';
-import { itemsArraySchema, itemSchema, reorderItemsSchemaArray } from '@/utils/validationSchema';
+import { reorderItemsSchemaArray } from '@/utils/validationSchema';
 
 export const updateItemByID = async (req: AuthenticatedRequest, res: Response) => {
   const id = +req.params.id;
@@ -46,6 +46,7 @@ export const createItem = async (req: AuthenticatedRequest, res: Response) => {
         type,
         groupId,
         amountBudget,
+        allocatedBudget: '0',
       })
       .returning();
     res.status(201).json(newItem[0]);
@@ -83,6 +84,7 @@ export const reorder = async (req: AuthenticatedRequest, res: Response) => {
 
   if (!validation.success) {
     console.error(validation.error.format());
+    return;
   }
 
   try {

@@ -9,9 +9,9 @@ export const frequencyEnum = pgEnum('frequency', ['weekly', 'monthly', 'quaterly
 export const budget = pgTable('budget', {
   id: serial('id').primaryKey(),
   userId: uuid('userID').references(() => accounts.id),
-  year: integer('year'),
-  status: stausEnum('status'),
-  month: integer('month'),
+  year: integer('year').notNull(),
+  status: stausEnum('status').notNull(),
+  month: integer('month').notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
 
@@ -36,7 +36,7 @@ export const items = pgTable('items', {
   position: integer('position').unique(),
   label: varchar('label', { length: 50 }).notNull(),
   amountBudget: numeric('amountBudget').notNull(),
-  allocatedBudget: numeric('allocated'),
+  allocatedBudget: numeric('allocated').notNull(),
 
   dueDate: date('date'),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),

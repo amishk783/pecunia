@@ -1,10 +1,10 @@
 import { Table } from "@tanstack/react-table";
-import { Input } from "../ui/Input";
-import { Button } from "../ui/Button";
+
+import { Button } from "../ui/button";
 import { X } from "lucide-react";
 import { DataTableViewOptions } from "./data-table-view-options";
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
-import { dates, priorities, statuses } from "./data/data";
+import { dates } from "./data/data";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -26,7 +26,9 @@ export function DataTableToolbar<TData>({
       <div className="flex flex-1 items-center space-x-2">
         <input
           placeholder="Filter tasks..."
-          value={(table.getColumn("category")?.getFilterValue() as string) ?? ""}
+          value={
+            (table.getColumn("category")?.getFilterValue() as string) ?? ""
+          }
           onChange={(event) =>
             table.getColumn("category")?.setFilterValue(event.target.value)
           }

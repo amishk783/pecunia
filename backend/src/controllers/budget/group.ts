@@ -32,7 +32,7 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) =
       })
       .where(eq(groups.id, id))
       .returning();
-    const relatedItems = await db.select().from(items).where(eq(items.groupID, updatedGroup[0].id));
+    const relatedItems = await db.select().from(items).where(eq(items.groupId, updatedGroup[0].id));
     console.log('🚀 ~ editGroupLabel ~ relatedItems:', relatedItems);
     Logger.silly('Group label succesfully');
     const groupWithItems = {
@@ -50,7 +50,7 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) =
 export const createGroup = async (req: AuthenticatedRequest, res: Response) => {
   const { type, label, budgetId } = req.body;
   const user = req.user;
-  console.log(type, label, budgetId);
+  if (!user) return;
   try {
     const account = await db.query.accounts.findMany({
       where: eq(accounts.id, user.sub as string),
@@ -112,6 +112,7 @@ export const reorderGroups = async (req: AuthenticatedRequest, res: Response) =>
 
   if (!validation.success) {
     console.error(validation.error.format());
+    return;
   }
 
   try {

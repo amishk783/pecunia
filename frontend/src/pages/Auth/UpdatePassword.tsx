@@ -4,7 +4,7 @@ import * as z from "zod";
 import { useState } from "react";
 
 import { Input } from "@/components/ui/Input";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/providers/AuthProvider";
@@ -116,7 +116,7 @@ const UpdatePassword = () => {
 
               <Button
                 className="my-2 flex items-center justify-center gap-3 "
-                variant="primary"
+                variant="default"
                 size="lg"
                 type="submit"
                 disabled={loading}

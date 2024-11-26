@@ -21,7 +21,7 @@ import { financialAdvice } from "./constant";
 
 import { Input } from "@/components/ui/Input";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { Github, Loader, Eye, Plus } from "lucide-react";
 
@@ -210,7 +210,7 @@ const Signup = () => {
               <PasswordStrengthChecker password={watchPassword} />
               <Button
                 className="my-2 flex items-center justify-center gap-3 "
-                variant="primary"
+                variant="default"
                 size="lg"
                 type="submit"
                 disabled={loading}

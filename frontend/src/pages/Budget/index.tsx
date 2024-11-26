@@ -1,6 +1,6 @@
 import { BudgetGroup } from "@/components/expense/BudgetGroup";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useBudget } from "@/lib/providers/BudgetProvider";
@@ -11,8 +11,7 @@ import { BudgetType, GroupType } from "@/type";
 import { ChevronLeft, ChevronRight, Plus, LoaderCircle } from "lucide-react";
 import { addMonths, format, getMonth, getYear } from "date-fns";
 import { useRef, useState } from "react";
-import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/providers/Theme";
+
 import api from "@/services/api";
 import { cloneBudget } from "@/services/budget";
 import {
@@ -222,7 +221,7 @@ const Budget = () => {
               sensors={sensors}
               collisionDetection={closestCenter}
               onDragEnd={handleDragEnd}
-              onDragStart={(e) => setActiveId(e.active.id)}
+              onDragStart={(e) => setActiveId(e.active.id as string)}
             >
               <div className="flex h-full w-full flex-col gap-4 justify-normal items-start">
                 <SortableContext
@@ -249,7 +248,7 @@ const Budget = () => {
                             (group) => group.id === +activeId
                           );
                           return draggedGroup ? (
-                            <div className="bg-white rounded-md drop-shadow-md shadow-md shadow-slate-400">
+                            <div className="rounded-md drop-shadow-md shadow-md shadow-slate-400">
                               <BudgetGroup
                                 id={draggedGroup.id}
                                 type={draggedGroup.type}

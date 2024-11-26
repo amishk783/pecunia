@@ -1,5 +1,7 @@
 import { apiUrls } from "@/lib/apiUrls";
 import api from "./api";
+import { notification } from "@/components/Notification";
+import { AxiosError } from "axios";
 
 interface GroupType {
   type: "expense" | "income";
@@ -13,7 +15,15 @@ export const addGroup = async (data: GroupType) => {
 
     return res.data.group;
   } catch (error) {
-    console.log(error);
+    const message = (error as AxiosError<{ message: string }>).response?.data
+      ?.message;
+
+    notification({
+      type: "error",
+      message: `Error while posting Budget. ${message ?? ""}`,
+    });
+
+    throw error;
   }
 };
 
@@ -23,7 +33,15 @@ export const deleteGroup = async (id: number) => {
 
     return res.data;
   } catch (error) {
-    console.log(error);
+    const message = (error as AxiosError<{ message: string }>).response?.data
+      ?.message;
+
+    notification({
+      type: "error",
+      message: `Error while posting Budget. ${message ?? ""}`,
+    });
+
+    throw error;
   }
 };
 
@@ -33,7 +51,15 @@ export const modifyGroup = async (id: number, label: string) => {
 
     return res.data.group;
   } catch (error) {
-    console.log(error);
+    const message = (error as AxiosError<{ message: string }>).response?.data
+      ?.message;
+
+    notification({
+      type: "error",
+      message: `Error while posting Budget. ${message ?? ""}`,
+    });
+
+    throw error;
   }
 };
 export const reorderGroup = async (
@@ -45,12 +71,15 @@ export const reorderGroup = async (
     });
 
     return res.data;
-  } catch (error: any) {
-    if (error.response) {
-      throw new Error(
-        error.response.data.message || "Failed to reorder category"
-      );
-    }
-    throw new Error(error.message || "An unexpected error occurred");
+  } catch (error) {
+    const message = (error as AxiosError<{ message: string }>).response?.data
+      ?.message;
+
+    notification({
+      type: "error",
+      message: `Error while posting Budget. ${message ?? ""}`,
+    });
+
+    throw error;
   }
 };

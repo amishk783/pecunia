@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import ReactDOM from "react-dom";
 
 export const Modal: React.FC<{
@@ -7,7 +8,12 @@ export const Modal: React.FC<{
   const modalRoot = document.getElementById("portal") as Element;
 
   return ReactDOM.createPortal(
-    <div className="fixed inset-0 flex items-start pt-20 justify-center bg-gray-900 bg-opacity-50 z-50">
+    <div
+      className={cn(
+        "fixed inset-0 flex items-start pt-20 justify-center bg-gray-900 bg-opacity-50 z-50",
+        className
+      )}
+    >
       {children}
     </div>,
     modalRoot

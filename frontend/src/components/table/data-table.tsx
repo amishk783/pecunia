@@ -10,6 +10,7 @@ import {
   getSortedRowModel,
   ColumnFiltersState,
   getFilteredRowModel,
+  RowData,
 } from "@tanstack/react-table";
 
 import {
@@ -24,6 +25,17 @@ import {
 import { useState } from "react";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
+import { Transaction } from "@/type";
+
+declare module "@tanstack/react-table" {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  interface TableMeta<TData extends RowData> {
+    onActionDelete: (id: number) => void;
+    onActionCopy: (data: Transaction) => void;
+    // onEdit: (data: any) => void;
+    // onChange?: (data: any) => void;
+  }
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,11 +45,16 @@ interface DataTableProps<TData, TValue> {
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
+  actions: {
+    onActionDelete: (id: number) => void;
+    onActionCopy: (data: Transaction) => void;
+  };
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  actions,
   categories,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -57,7 +74,10 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
+    meta: actions,
   });
+
+  // console.log(table.getSelectedRowModel().rows);
 
   return (
     <div className="space-y-4">
