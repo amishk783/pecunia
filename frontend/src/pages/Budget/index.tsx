@@ -185,24 +185,27 @@ const Budget = () => {
   return (
     <div className="flex w-full h-min  min-h-screen">
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4 overflow-auto">
-        <div className="flex justify-between   w-[90%] px-10 pt-5 pb-10  h-min">
-          <h2 className=" text-4xl">
+        <div className="flex justify-center  md:justify-between   w-[90%] md:px-10 pt-5 pb-10  h-min">
+          <h2 className="hidden md:block  text-4xl">
             <span className=" font-semibold">{monthName}'s </span>
             {year} Budget
           </h2>
-          <div className="flex">
+          <div className="flex space-x-14 items-center">
             <Button
               onClick={() => handleMonthClick(-1)}
-              className="relative group"
+              className=" group max-sm:bg-transparent hover:bg-transparent  "
             >
-              <ChevronLeft />
+              <ChevronLeft className=" " />
               <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-white top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-300 transition-transform">
                 prev month
               </div>
             </Button>
+            <h2 className="text-lg md:hidden">
+              {monthName}'s {year}
+            </h2>
             <Button
               onClick={() => handleMonthClick(1)}
-              className="relative group"
+              className="relative group max-sm:bg-transparent hover:bg-transparent"
             >
               <ChevronRight />
               <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-white top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-200 transition-all">
@@ -211,7 +214,7 @@ const Budget = () => {
             </Button>
           </div>
         </div>
-        <div className="flex flex-col  w-2/3 h-full items-center justify-center gap-4 ">
+        <div className="flex flex-col w-full max-sm:px-2  md:w-2/3 h-full items-center justify-center gap-4 ">
           {loading || isLoading ? (
             <div className="flex w-full mt-44 items-center  justify-center  ">
               <LoaderCircle size={36} className=" animate-spin " />

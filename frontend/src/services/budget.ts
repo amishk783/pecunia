@@ -14,7 +14,7 @@ export const cloneBudget = async (date: string, id: number) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while cloning Budget."}`,
     });
 
     throw error;

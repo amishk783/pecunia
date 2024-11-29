@@ -1,12 +1,13 @@
-import { Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 import { budget, groups, Item, items } from '@/db/schema/Budget';
 import Logger from '@/utils/logger';
 import { AuthenticatedRequest } from '@/types';
 import { reorderItemsSchemaArray } from '@/utils/validationSchema';
+import { AppError } from '@/utils/AppError';
 
-export const updateItemByID = async (req: AuthenticatedRequest, res: Response) => {
+export const updateItemByID = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
   const { amountBudget } = req.body;
 
@@ -15,7 +16,7 @@ export const updateItemByID = async (req: AuthenticatedRequest, res: Response) =
   });
   if (!item) {
     Logger.error('Item does not exit');
-    res.status(400).send('Item does not exit');
+    throw new AppError('Item does not exit', 400);
   }
   try {
     const updateItem = await db.update(items).set({ amountBudget: amountBudget }).where(eq(items.id, item[0].id));
@@ -23,12 +24,11 @@ export const updateItemByID = async (req: AuthenticatedRequest, res: Response) =
     res.status(200).send('Item updated successfully');
   } catch (error) {
     Logger.error('Error updating item:', error);
-    res.status(500).send('Internal server error');
-    console.log(error);
+    next(error);
   }
 };
 
-export const createItem = async (req: AuthenticatedRequest, res: Response) => {
+export const createItem = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { label, type, groupId, amountBudget } = req.body;
 
   try {
@@ -37,7 +37,7 @@ export const createItem = async (req: AuthenticatedRequest, res: Response) => {
     });
     if (!group) {
       Logger.error(`Group with ID ${groupId} not found`);
-      return res.status(400).json({ error: 'Group not found' });
+      throw new AppError('Group not found', 400);
     }
     const newItem = await db
       .insert(items)
@@ -52,39 +52,41 @@ export const createItem = async (req: AuthenticatedRequest, res: Response) => {
     res.status(201).json(newItem[0]);
   } catch (error) {
     Logger.error('Error creating item:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    next(error);
   }
 };
 
-export const deleteItem = async (req: AuthenticatedRequest, res: Response) => {
+export const deleteItem = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
-  console.log('🚀 ~ deleteItem ~ id:', id);
+
+  if (!id) {
+    throw new AppError('Id is missing in the request ', 400);
+  }
 
   try {
     const item = await db.query.items.findFirst({
       where: eq(items.id, id),
     });
-    console.log('🚀 ~ deleteItem ~ item:', item);
+
     if (!item) {
       Logger.error('Item does not exit');
-      return res.status(400).send('Item does not exit');
+      throw new AppError('Item does not exit', 400);
     }
     await db.delete(items).where(eq(items.id, id));
     res.status(201).json(item);
   } catch (error) {
     Logger.error('Error Deleting item:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    next(error);
   }
 };
 
-export const reorder = async (req: AuthenticatedRequest, res: Response) => {
+export const reorder = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { data } = req.body;
 
   const validation = reorderItemsSchemaArray.safeParse(data);
 
   if (!validation.success) {
-    console.error(validation.error.format());
-    return;
+    throw new AppError('Invalid reorder data', 400);
   }
 
   try {
@@ -100,7 +102,7 @@ export const reorder = async (req: AuthenticatedRequest, res: Response) => {
 
     if (!group) {
       Logger.error(`Group with ID ${updateResult[0].groupId} not found`);
-      return res.status(400).json({ error: 'Group not found' });
+      throw new AppError('Group not found', 400);
     }
 
     await db.transaction(async tx => {
@@ -118,18 +120,17 @@ export const reorder = async (req: AuthenticatedRequest, res: Response) => {
     });
 
     if (!updatedGroup || !updatedGroup.items) {
-      throw new Error('Failed to fetch updated items');
+      throw new AppError('Failed to fetch updated items', 400);
     }
-    console.log('🚀 ~ updatedItems ~ updatedItems:', updatedGroup.items);
 
     const updatesSuccessful = updatedGroup.items.every((item, index) => item.position === index);
 
     if (!updatesSuccessful) {
-      throw new Error('Position updates were not applied correctly');
+      throw new AppError('Position updates were not applied correctly', 500);
     }
 
     res.status(201).json({ updateResult: updatedGroup.items });
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };

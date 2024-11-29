@@ -1,5 +1,5 @@
 import { BudgetType } from "@/type";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import { format } from "date-fns";
 import api from "@/services/api";
@@ -32,6 +32,7 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     const fetchBudget = async () => {
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
+      console.log("🚀 ~ fetchBudget ~ date:", date);
 
       if (!session) return;
       setLoading(true);
@@ -68,7 +69,10 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchAllExistedBudget();
   }, [session]);
 
-  const value = { budget, setBudget, loading, allExistedBudget };
+  const value = useMemo(
+    () => ({ budget, setBudget, loading, allExistedBudget }),
+    [budget, setBudget, loading, allExistedBudget]
+  );
 
   return (
     <BudgetContext.Provider value={value}>{children}</BudgetContext.Provider>

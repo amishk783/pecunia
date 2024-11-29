@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { SummeryItem } from "@/components/ui/SummeryItem";
-import { ChevronDown, ReceiptText, ScanLine, Table } from "lucide-react";
+import {
+  ChevronDown,
+
+  ReceiptText,
+  ScanLine,
+  Table,
+} from "lucide-react";
 import { columns } from "./columns";
 
 import { DataTable } from "@/components/table/data-table";
@@ -23,7 +29,8 @@ import {
 import { AddExpense } from "@/components/expense/add";
 
 import { cn } from "@/lib/utils";
-import toast from "react-hot-toast";
+
+import { notification } from "@/components/Notification";
 
 const Expenses = () => {
   const [transactions, setTransaction] = useState<Transaction[]>([]);
@@ -37,27 +44,23 @@ const Expenses = () => {
 
         setTransaction(res);
       } catch (error) {
-        console.log(error);
+        throw new Error("Something Went wrong");
       }
     };
     fetchTransactions();
   }, [session]);
 
   const onActionDelete = async (id: number) => {
-    console.log(id);
     try {
       const res = await deleteTransaction(id);
       const deletedTransaction: Transaction = res;
-      console.log(
-        "🚀 ~ onActionDelete ~ deletedTransaction:",
-        deletedTransaction
-      );
+
       setTransaction((prev) =>
         prev.filter((item) => item.id !== deletedTransaction.id)
       );
-      toast.success("Succefully Deleted");
+      notification({ type: "success", message: "Succefully Deleted" });
     } catch (error) {
-      console.log(error);
+      throw new Error("Something Went wrong");
     }
   };
   const onActionCopy = async (data: Transaction) => {
@@ -69,9 +72,12 @@ const Expenses = () => {
       const updatedTransaction: Transaction = res;
 
       setTransaction((prev) => [...prev, updatedTransaction]);
-      toast.success("Succefully Deleted");
+      notification({
+        type: "success",
+        message: `Succefully Copied ${data.label}`,
+      });
     } catch (error) {
-      console.log(error);
+      throw new Error("Something Went wrong");
     }
   };
 
@@ -97,14 +103,14 @@ const Expenses = () => {
     <div className={cn("flex w-full h-min  min-h-screen")}>
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4  pt-2">
         <div className=" w-full h-min flex flex-col gap-4 justify-between items-center ">
-          <div className="w-full h-min flex justify-between items-center border-b  px-4">
+          <div className="w-full h-min flex justify-between items-center border-b  px-2 md:px-4">
             <h2 className=" text-3xl font-medium">Expenses</h2>
             <div className=" py-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button className="flex items-center justify-center rounded-3xl">
-                    New Expense
-                    <ChevronDown size={24} />
+                  <Button className="flex items-center justify-center w-28 md:w-full  text-xs   rounded-3xl">
+                    <p>New Expense</p>
+                    <ChevronDown size={24} className="max-sm:w-2 max-sm:h-2" />
                   </Button>
                 </DropdownMenuTrigger>
                 {/* <DropdownMenuSeparator /> */}
@@ -148,15 +154,13 @@ const Expenses = () => {
             </div>
           </div>
 
-          <div className="w-full mx-auto px-2">
-            {
-              <DataTable
-                columns={columns}
-                data={transactions}
-                categories={categories}
-                actions={{ onActionDelete, onActionCopy }}
-              />
-            }
+          <div className="w-full mx-auto px-2 pb-10">
+            <DataTable
+              columns={columns}
+              data={transactions}
+              categories={categories}
+              actions={{ onActionDelete, onActionCopy }}
+            />
           </div>
         </div>
       </div>

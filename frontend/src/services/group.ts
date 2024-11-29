@@ -20,7 +20,7 @@ export const addGroup = async (data: GroupType) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while adding group"}.`,
     });
 
     throw error;
@@ -38,7 +38,7 @@ export const deleteGroup = async (id: number) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: `${message ?? "Error while deleting group"}`,
     });
 
     throw error;
@@ -56,7 +56,7 @@ export const modifyGroup = async (id: number, label: string) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: `${message ?? "Error while editing group"}.`,
     });
 
     throw error;
@@ -77,7 +77,7 @@ export const reorderGroup = async (
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while reordering group"}.`,
     });
 
     throw error;

@@ -30,6 +30,8 @@ const Header: React.FC = () => {
         textColor: "text-black",
         bgSecondary: "bg-stone-300",
       });
+
+      document.documentElement.style.setProperty("--muted", "240 4.8% 95.9%");
     } else if (value === "dark") {
       setThemeState({
         type: "dark",
@@ -37,6 +39,7 @@ const Header: React.FC = () => {
         textColor: "text-white",
         bgSecondary: "bg-stone-700",
       });
+      document.documentElement.style.setProperty("--muted", "240 5% 25%");
     } else {
       setThemeState({
         type: "custom",
@@ -52,7 +55,7 @@ const Header: React.FC = () => {
   return (
     <div
       className={cn(
-        "flex py-6   w-full items-center justify-between  px-5 ",
+        "hidden md:flex py-6   w-full items-center justify-between  px-5  ",
         theme?.bgSecondary,
         theme?.textColor
       )}

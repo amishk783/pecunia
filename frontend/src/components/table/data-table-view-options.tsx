@@ -9,13 +9,16 @@ import {
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
 import { Table } from "@tanstack/react-table";
+import { cn } from "@/lib/utils";
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;
+  className?: string;
 }
 
 export function DataTableViewOptions<TData>({
   table,
+  className,
 }: DataTableViewOptionsProps<TData>) {
   return (
     <DropdownMenu>
@@ -23,7 +26,7 @@ export function DataTableViewOptions<TData>({
         <Button
           variant="outline"
           size="sm"
-          className="ml-auto hidden h-8 lg:flex"
+          className={cn("md:ml-auto  md:h-8 ", className)}
         >
           <Settings2 />
           Columns

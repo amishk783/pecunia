@@ -8,7 +8,7 @@ const Layout: FC = () => {
   return (
     <div className="flex relative bg-bgtest bg-no-repeat bg-center bg-cover bg-opacity-40 w-full h-full bg-blend-soft-light bg-zinc-600 ">
       <SideBar />
-      <div className="flex flex-col w-full h-full ml-72 z-40 ">
+      <div className="flex flex-col w-full h-full md:ml-20 lg:ml-[230px] z-40 ">
         <Header />
         <Outlet />
       </div>

@@ -12,7 +12,6 @@ const axiosInstance = axios.create({
 export const updateAxiosToken = (token: string | null) => {
   if (!token) delete api.defaults.headers.common["Authorization"];
 
-  console.log("🚀 ~ updateAxiosToken ~ token:", token);
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 };
 

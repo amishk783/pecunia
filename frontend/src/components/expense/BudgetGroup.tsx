@@ -249,7 +249,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       style={style}
       {...attributes}
       className={cn(
-        "w-full h-full rounded-lg p-6 relative",
+        "w-full h-full rounded-lg p-2 md:p-6 relative",
         theme?.bgColor,
         theme?.textColor
       )}
@@ -261,7 +261,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         // onDragOver={handleDragOver}
         onDragStart={(event) => handleDragStart(event.active.id as string)}
       >
-        <div className=" flex flex-col gap-1 w-full h-full transition-transform duration-500 delay-100 ease-in-out px-8 py-4 ">
+        <div className=" flex flex-col gap-1 w-full h-full transition-transform duration-500 delay-100 ease-in-out px-4 md:px-8 py-4 ">
           <>
             {!isGroupEdit && (
               <div className="flex justify-between  group ">

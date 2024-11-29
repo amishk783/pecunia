@@ -10,7 +10,7 @@ export const Modal: React.FC<{
   return ReactDOM.createPortal(
     <div
       className={cn(
-        "fixed inset-0 flex items-start pt-20 justify-center bg-gray-900 bg-opacity-50 z-50",
+        "fixed inset-0 flex md:items-start pt-20 justify-center bg-gray-900 bg-opacity-50 z-50",
         className
       )}
     >

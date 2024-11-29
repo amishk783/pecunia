@@ -15,7 +15,7 @@ export const getAllTransaction = async () => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while getting transactions"}.`,
     });
 
     throw error;

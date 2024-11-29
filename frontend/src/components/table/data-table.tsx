@@ -40,12 +40,13 @@ declare module "@tanstack/react-table" {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  categories: {
+  pagination?: boolean;
+  categories?: {
     label: string;
     value: string;
     icon?: React.ComponentType<{ className?: string }>;
   }[];
-  actions: {
+  actions?: {
     onActionDelete: (id: number) => void;
     onActionCopy: (data: Transaction) => void;
   };
@@ -54,6 +55,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pagination = true,
   actions,
   categories,
 }: DataTableProps<TData, TValue>) {
@@ -81,7 +83,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar categories={categories} table={table} />
+      {categories && <DataTableToolbar categories={categories} table={table} />}
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -133,7 +135,7 @@ export function DataTable<TData, TValue>({
         </Table>
       </div>
 
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   );
 }

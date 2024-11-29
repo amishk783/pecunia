@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils.ts";
 
 import Budget from "@/pages/Budget";
 import Layout from "./Layout.tsx";
-import Dashboard from "@/pages/Dashboard";
+import Dashboard from "@/pages/Dashboard/index.tsx";
 import Expenses from "@/pages/Expenses";
 import Goals from "@/pages/Goals";
 import Login from "@/pages/Auth/Login.tsx";
@@ -16,6 +16,7 @@ import PrivateRoute from "./lib/PrivateRoute.tsx";
 import UpdatePassword from "./pages/Auth/UpdatePassword.tsx";
 import Welcome from "./pages/Welcome/index.tsx";
 import CustomThemePicker from "./components/CustomThemePicker.tsx";
+import { Settings } from "./pages/Settings/index.tsx";
 
 function App() {
   const { theme, themePicker, setThemeOpen } = useTheme();
@@ -52,6 +53,7 @@ function App() {
             <Route path="expenses" element={<Expenses />} />
             <Route path="account" element={<Goals />} />
             <Route path="budget" element={<Budget />} />
+            <Route path="settings" element={<Settings />} />
           </Route>
         </Route>
       </Routes>

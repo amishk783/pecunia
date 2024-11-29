@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { db } from '@/db';
 import { eq } from 'drizzle-orm';
 
@@ -7,12 +7,13 @@ import Logger from '@/utils/logger';
 import { AuthenticatedRequest } from '@/types';
 import { accounts } from '@/db/schema/User';
 import { reorderGroupSchemaArray } from '@/utils/validationSchema';
+import { AppError } from '@/utils/AppError';
 
-export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) => {
+export const editGroupLabel = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
   const { label } = req.body;
-  console.log(id, label);
 
+  if (!id || !label) throw new AppError('Inouts are undefined ', 400);
   try {
     const group = await db.query.groups.findFirst({
       where: eq(groups.id, id),
@@ -22,7 +23,7 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) =
     });
     if (!group) {
       Logger.error('Group does not exit');
-      res.status(400).send('Group does not exit');
+      throw new AppError('Group does not exit', 400);
     }
 
     const updatedGroup = await db
@@ -33,7 +34,7 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) =
       .where(eq(groups.id, id))
       .returning();
     const relatedItems = await db.select().from(items).where(eq(items.groupId, updatedGroup[0].id));
-    console.log('🚀 ~ editGroupLabel ~ relatedItems:', relatedItems);
+
     Logger.silly('Group label succesfully');
     const groupWithItems = {
       ...updatedGroup[0],
@@ -42,12 +43,11 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response) =
     res.status(200).send({ message: 'Group label succesfully', group: groupWithItems });
   } catch (error) {
     Logger.error('Error updating group:', error);
-    console.log(error);
-    res.status(500).send('Internal server error');
+    next(error);
   }
 };
 
-export const createGroup = async (req: AuthenticatedRequest, res: Response) => {
+export const createGroup = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { type, label, budgetId } = req.body;
   const user = req.user;
   if (!user) return;
@@ -57,7 +57,7 @@ export const createGroup = async (req: AuthenticatedRequest, res: Response) => {
     });
     if (!account) {
       Logger.error('Account does not exit');
-      res.status(400).send('Account does not exit');
+      throw new AppError('Account does not exit', 400);
     }
     const newGroup = await db
       .insert(groups)
@@ -80,39 +80,40 @@ export const createGroup = async (req: AuthenticatedRequest, res: Response) => {
     });
   } catch (error) {
     Logger.error('Error creating group:', error);
-    console.log(error);
-    res.status(500).send('Internal server error');
+    next(error);
   }
 };
-export const deleteGroup = async (req: AuthenticatedRequest, res: Response) => {
+export const deleteGroup = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
-  console.log('🚀 ~ deletegroup ~ id:', id);
+
+  if (!id) {
+    throw new AppError('Id is missing in the request ', 400);
+  }
 
   try {
     const group = await db.query.groups.findFirst({
       where: eq(groups.id, id),
     });
-    console.log('🚀 ~ deletegroup ~ group:', group);
+
     if (!group) {
       Logger.error('group does not exit');
-      return res.status(400).send('group does not exit');
+      throw new AppError('Group does not exit', 400);
     }
     await db.delete(groups).where(eq(groups.id, id));
     res.status(201).json(group);
   } catch (error) {
     Logger.error('Error Deleting group:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    next(error);
   }
 };
 
-export const reorderGroups = async (req: AuthenticatedRequest, res: Response) => {
+export const reorderGroups = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { data } = req.body;
 
   const validation = reorderGroupSchemaArray.safeParse(data);
 
   if (!validation.success) {
-    console.error(validation.error.format());
-    return;
+    throw new AppError('Invalid reorder data', 400);
   }
 
   try {
@@ -131,7 +132,7 @@ export const reorderGroups = async (req: AuthenticatedRequest, res: Response) =>
 
     if (!budgetExits) {
       Logger.error(`Budget with ID ${updateResult[0].budgetId} not found`);
-      return res.status(400).json({ error: 'Budget not found' });
+      throw new AppError(`Budget with ID ${validatedData[0].budgetId} not found`, 404);
     }
 
     await db.transaction(async tx => {
@@ -148,20 +149,18 @@ export const reorderGroups = async (req: AuthenticatedRequest, res: Response) =>
     });
 
     if (!updatedBudget?.groups) {
-      throw new Error('Failed to fetch updated groups');
+      throw new AppError('Failed to fetch updated groups', 500);
     }
     console.log('🚀 ~ updatedItems ~ updatedItems:', updatedBudget.groups);
     const positionsAreCorrect = updatedBudget.groups.every((item, index) => item.position === index);
 
     if (!positionsAreCorrect) {
       Logger.error('Position mismatch:', updatedBudget.groups);
-      throw new Error('Position updates were not applied correctly');
+      throw new AppError('Position updates were not applied correctly', 500);
     }
-
-    console.log('🚀 ~ updatedBudget ~ updatedBudget:', updatedBudget);
 
     res.status(201).json(updateResult);
   } catch (error) {
-    console.log(error);
+    next(error);
   }
 };

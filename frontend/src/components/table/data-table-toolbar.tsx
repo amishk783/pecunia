@@ -22,8 +22,8 @@ export function DataTableToolbar<TData>({
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+    <div className="flex flex-col md:flex-row items-center justify-between gap-2">
+      <div className="flex flex-1 items-center w-full space-x-2">
         <input
           placeholder="Filter tasks..."
           value={
@@ -32,10 +32,11 @@ export function DataTableToolbar<TData>({
           onChange={(event) =>
             table.getColumn("category")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px]"
+          className=" w-full h-8 md:w-[150px] lg:w-[250px]"
         />
         {table.getColumn("category") && (
           <DataTableFacetedFilter
+            className=" "
             column={table.getColumn("category")}
             title="Category"
             options={categories}
@@ -53,15 +54,19 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <div className="flex space-x-2">
+      <div className="flex space-x-2 w-full">
         {table.getColumn("date") && (
           <DataTableFacetedFilter
+            className="max-sm:w-1/2 max-sm:text-md"
             column={table.getColumn("date")}
             title="All"
             options={dates}
           />
         )}
-        <DataTableViewOptions table={table} />
+        <DataTableViewOptions
+          className="max-sm:w-1/2 max-sm:text-md "
+          table={table}
+        />
       </div>
     </div>
   );

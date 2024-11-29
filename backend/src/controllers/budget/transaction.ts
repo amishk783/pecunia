@@ -4,17 +4,18 @@ import { AuthenticatedRequest } from '@/types';
 import Logger from '@/utils/logger';
 import { transactionSchema } from '@/utils/validationSchema';
 import { eq } from 'drizzle-orm';
-import { Response } from 'express';
+import { NextFunction, Response } from 'express';
 import { format, parse } from 'date-fns';
-import { date } from 'drizzle-orm/mysql-core';
 
-export const createTransaction = async (req: AuthenticatedRequest, res: Response) => {
+import { AppError } from '@/utils/AppError';
+
+export const createTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const inputData: Transaction = req.body;
   const validatedData = await transactionSchema.parseAsync(inputData);
   console.log('🚀 ~ createTransaction ~ validatedData:', validatedData);
 
   if (!validatedData) {
-    return res.send(400).send('');
+    throw new AppError('Invalid transaction data', 400);
   }
   try {
     // Parse the date from the DD/MM/YYYY format to a Date object
@@ -29,7 +30,7 @@ export const createTransaction = async (req: AuthenticatedRequest, res: Response
     // Check if item exists and item.id is valid
     if (!item || !item.id) {
       Logger.silly("Item doesn't exist ");
-      return res.status(400).send('Item does not exist');
+      throw new AppError('Item does not exist', 400);
     }
 
     const newTransaction = await db
@@ -50,37 +51,45 @@ export const createTransaction = async (req: AuthenticatedRequest, res: Response
     res.status(201).json(newTransaction[0]);
   } catch (error) {
     Logger.error('Error creating item:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    next(error);
   }
 };
 
-export const deleteTransaction = async (req: AuthenticatedRequest, res: Response) => {
+export const deleteTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
-  console.log('🚀 ~ deleteTransaction ~ id:', id);
+
+  if (!id) {
+    throw new AppError('Id is missing in the request ', 400);
+  }
 
   try {
     const transaction = await db.query.transactions.findFirst({
       where: eq(transactions.id, id),
     });
-    console.log('🚀 ~ deleteTransaction ~ transaction:', transaction);
 
     if (!transaction) {
       Logger.error('Transaction does not exit');
-      return res.status(400).send('Transaction does not exit');
+      throw new AppError('Transaction does not exit', 400);
     }
     const deletedTransaction = await db.delete(transactions).where(eq(transactions.id, id)).returning();
-    console.log('🚀 ~ deleteTransaction ~ deletedTransaction:', deletedTransaction[0]);
+
     res.status(201).json(deletedTransaction[0]);
   } catch (error) {
     Logger.error('Error Deleting Transaction:', error);
-    res.status(500).json({ error: 'An error occurred' });
+    next(error);
   }
 };
 
-export const updateTransactionByID = async (req: AuthenticatedRequest, res: Response) => {
+export const updateTransactionByID = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
+  if (!id) {
+    throw new AppError('Id is missing in the request ', 400);
+  }
+  const validatedData = await transactionSchema.parse(req.body);
 
-  const validatedData = transactionSchema.parse(req.body);
+  if (!validatedData) {
+    throw new AppError('Invalid transaction data', 400);
+  }
   try {
     // Parse the date from the DD/MM/YYYY format to a Date object
     const parsedDate = parse(validatedData.date, 'dd/MM/yyyy', new Date());
@@ -91,7 +100,7 @@ export const updateTransactionByID = async (req: AuthenticatedRequest, res: Resp
     });
     if (!transaction) {
       Logger.error('Transaction does not exit');
-      return res.status(400).send('Transaction does not exit');
+      throw new AppError('Transaction does not exit', 400);
     }
 
     const updateTransaction = await db
@@ -102,12 +111,11 @@ export const updateTransactionByID = async (req: AuthenticatedRequest, res: Resp
     res.status(200).send({ data: transaction, message: 'Transaction updated successfully' });
   } catch (error) {
     Logger.error('Error updating Transaction:', error);
-    res.status(500).send('Internal server error');
-    console.log(error);
+    next(error);
   }
 };
 
-export const getAllTransaction = async (req: AuthenticatedRequest, res: Response) => {
+export const getAllTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const allTransactions = await db.query.transactions.findMany({
       with: {
@@ -117,7 +125,7 @@ export const getAllTransaction = async (req: AuthenticatedRequest, res: Response
 
     if (!allTransactions) {
       Logger.error('Transactions does not exit');
-      return res.status(400).send('Transactions does not exit');
+      throw new AppError('Transactions does not exit', 400);
     }
     const transformedTransactions = allTransactions.map(transaction => ({
       ...transaction,
@@ -127,16 +135,15 @@ export const getAllTransaction = async (req: AuthenticatedRequest, res: Response
     res.status(200).send(transformedTransactions);
   } catch (error) {
     Logger.error('Error updating Transaction:', error);
-    res.status(500).send('Internal server error');
-    console.log(error);
+    next(error);
   }
 };
 
-export const getTransactionById = async (req: AuthenticatedRequest, res: Response) => {
+export const getTransactionById = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
   if (!id) {
-    Logger.error('Error updating Transaction:');
-    return res.status(500).send('Internal server error');
+    Logger.error('Id is missing in the request');
+    throw new AppError('Id is missing in the request', 400);
   }
   try {
     const transaction = await db.query.transactions.findFirst({
@@ -144,38 +151,35 @@ export const getTransactionById = async (req: AuthenticatedRequest, res: Respons
     });
     if (!transaction) {
       Logger.error('Transactions does not exit');
-      return res.status(400).send('Transactions does not exit');
+      throw new AppError('Transactions does not exit', 400);
     }
 
     res.status(200).send(transaction);
   } catch (error) {
     Logger.error('Error updating Transaction:', error);
-    res.status(500).send('Internal server error');
-    console.log(error);
+    next(error);
   }
 };
 
-export const copyTransaction = async (req: AuthenticatedRequest, res: Response) => {
+export const copyTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
   const inputData: Transaction = req.body;
   const validatedData = await transactionSchema.parseAsync(inputData);
-  console.log('🚀 ~ createTransaction ~ validatedData:', validatedData);
 
   if (!validatedData) {
-    return res.send(400).send('');
+    throw new AppError('Invalid transaction data', 400);
   }
   if (!id) {
-    Logger.error('Error updating Transaction:');
-    return res.status(500).send('Internal server error');
+    Logger.error('Id is missing in the request');
+    throw new AppError('Id is missing in the request', 400);
   }
-
   try {
     const transaction = await db.query.transactions.findFirst({
       where: eq(transactions.id, id),
     });
     if (!transaction) {
       Logger.error('Transactions does not exit');
-      return res.status(400).send('Transactions does not exit');
+      throw new AppError('Transactions does not exit', 400);
     }
 
     const copiedTransaction = await db
@@ -190,7 +194,6 @@ export const copyTransaction = async (req: AuthenticatedRequest, res: Response) 
     res.status(201).json(copiedTransaction[0]);
   } catch (error) {
     Logger.error('Error updating Transaction:', error);
-    res.status(500).send('Internal server error');
-    console.log(error);
+    next(error);
   }
 };

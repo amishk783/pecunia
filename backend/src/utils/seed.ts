@@ -81,7 +81,7 @@ export const seed = async (budgetId: number, userID: string): Promise<{ groups: 
             label: item.label,
             amountBudget: item.amountBudget,
             allocatedBudget: item.allocatedBudget,
-            groupID: group.id,
+            groupId: group.id,
           });
         });
       }

@@ -21,7 +21,7 @@ export const addCategory = async (data: ItemDataType) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while creating Category"}.`,
     });
 
     throw error;
@@ -38,7 +38,7 @@ export const deleteCategory = async (id: number) => {
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while deleting Category"}.`,
     });
 
     throw error;
@@ -60,7 +60,7 @@ export const reorderCategory = async (
 
     notification({
       type: "error",
-      message: `Error while posting Budget. ${message ?? ""}`,
+      message: ` ${message ?? "Error while reordering category"}.`,
     });
 
     throw error;

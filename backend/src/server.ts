@@ -10,6 +10,7 @@ const app = express();
 
 import { budgetRouter } from './routes/budget';
 import { itemRouter } from './routes/item';
+import { errorHandler } from './middleware/errorMiddleware';
 
 if (config.nodeEnv === 'production') {
   app.use(helmet());
@@ -29,8 +30,15 @@ if (config.nodeEnv !== 'test') {
 
 app.use('/', verifyUser);
 
-app.use('/app/budget', budgetRouter);
+app.use('/app/budget', budgetRouter);  
 app.use('/app/item', itemRouter);
+
+app.use(errorHandler); // centralized error approach
+
+process.on('uncaughtException', (error: Error) => {
+  Logger.error('uncaughtException', error);
+  process.exit(1);
+});
 
 app.listen(config.port, () => {
   Logger.info(
