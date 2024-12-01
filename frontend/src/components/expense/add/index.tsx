@@ -25,7 +25,8 @@ import {
 import { useBudget } from "@/lib/providers/BudgetProvider";
 
 import { addTransaction } from "@/services/transaction";
-import { CloudUpload,  X } from "lucide-react";
+import { CloudUpload, X } from "lucide-react";
+import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
 // import {  } from "@radix-ui/react-select";
 
 interface Expense {
@@ -158,171 +159,177 @@ export const AddExpense: React.FC<Expense> = ({
               })}
             </ul>
           </div>
-          <div className="mx-4 py-2">
-            <div className="w-full  h-min flex flex-col md:flex-row gap-5 md:gap-10 md:pt-5">
-              <div className=" w-full md:w-2/3 h-full md:p-4">
-                <form className="md:ml-10" onSubmit={handleSubmit(onSubmit)}>
-                  <ol className="flex flex-col gap-2  md:gap-4 list-none">
-                    <li className="flex flex-col   md:flex-row md:items-center justify-center gap-2 md:gap-4">
-                      <label className=" pr-2 py-1 relative w-28 md:text-end">
-                        Name
-                      </label>
-                      <Input
-                        className=" py-6 md:py-4 bg-slate-100"
-                        register={register}
-                        error={errors.label}
-                        name="label"
-                        label="name"
-                      />
-                    </li>
-                    <div className="flex md:flex-col gap-2 md:gap-0">
-                      <li className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+          {activeTab === "single" && (
+            <div className="mx-4 py-2">
+              <div className="w-full  h-min flex flex-col md:flex-row gap-5 md:gap-10 md:pt-5">
+                <div className=" w-full md:w-2/3 h-full md:p-4">
+                  <form className="md:ml-10" onSubmit={handleSubmit(onSubmit)}>
+                    <ol className="flex flex-col gap-2  md:gap-4 list-none">
+                      <li className="flex flex-col   md:flex-row md:items-center justify-center gap-2 md:gap-4">
                         <label className=" pr-2 py-1 relative w-28 md:text-end">
-                          Date
-                        </label>
-                        <div className="w-full">
-                          <DatePicker
-                            onSelect={(value: Date | undefined) =>
-                              handleSelectDataChange("date", value)
-                            }
-                            date={selectedData.date}
-                            className="gap-1 w-48 max-sm:h-12"
-                          />
-                        </div>
-                      </li>
-                      <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4">
-                        <label className=" pr-2 py-1 relative w-28 md:text-end">
-                          Amount
+                          Name
                         </label>
                         <Input
-                          className="py-6 md:py-4 bg-slate-100"
+                          className=" py-6 md:py-4 bg-slate-100"
                           register={register}
-                          error={errors.amount}
-                          name="amount"
-                          label="amount"
+                          error={errors.label}
+                          name="label"
+                          label="name"
                         />
                       </li>
-                    </div>
-                    <div className="flex flex-row md:flex-col max-sm:gap-2 ">
-                      <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4 w-full">
-                        <label className=" pr-2 py-1 relative w-28 md:text-end">
-                          Category
-                        </label>
-                        <Select
-                          value={selectedData.category}
-                          onValueChange={(value) =>
-                            handleSelectDataChange("category", value)
-                          }
-                        >
-                          <SelectTrigger
-                            onClick={() => setIsOutsideDivActive(true)}
-                          >
-                            <SelectValue placeholder="Food" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.keys(groupsWithCategories).map((key) => {
-                              return (
-                                <SelectGroup key={key}>
-                                  <SelectLabel className="w-full  px-2 text-left">
-                                    {key}
-                                  </SelectLabel>
-
-                                  {groupsWithCategories[key].map(
-                                    (item, index) => (
-                                      <SelectItem key={index} value={item.name}>
-                                        {item.name}
-                                      </SelectItem>
-                                    )
-                                  )}
-                                </SelectGroup>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </li>
-                      <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4 w-full">
-                        <label className=" pr-2 py-1 relative w-28 md:text-end">
-                          Paid Via
-                        </label>
-
-                        <Select
-                          onValueChange={(value) =>
-                            handleSelectDataChange("paidVia", value)
-                          }
-                        >
-                          <SelectTrigger
-                            onClick={() => setIsOutsideDivActive(true)}
-                          >
-                            <SelectValue placeholder="UPI" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {Object.keys(expensesPayMode).map((key) => {
-                              return (
-                                <SelectItem key={key} value={key}>
-                                  {expensesPayMode[key].name}
-                                </SelectItem>
-                              );
-                            })}
-                          </SelectContent>
-                        </Select>
-                      </li>
-                    </div>
-                    <li className="flex flex-col md:flex-row  md:justify-center gap-4">
-                      <label className=" pr-2 py-1 relative w-28 md:text-end">
-                        Notes
-                      </label>
-
-                      <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded- bg-slate-100"></textarea>
-                    </li>
-                  </ol>
-                </form>
-              </div>
-              <div className="flex w-full h-14 md:w-1/2 items-center justify-center  md:h-[350px]  ">
-                <div className=" w-full h-full   rounded-xl border-2 relative">
-                  <input
-                    onChange={(event) => handleFileChange(event)}
-                    type="file"
-                    className=" absolute w-full h-full top-0 left-0 right-0 opacity-0 cursor-pointer"
-                  />
-
-                  {!selectedFile && (
-                    <>
-                      <img
-                        className="hidden md:block"
-                        src={receiptIcon}
-                        width={400}
-                      />
-                      <div className="w-full h-full items-center justify-center flex gap-2 sm:hidden">
-                        <CloudUpload className="mt-1" />
-                        <p className="text-lg">Upload Receipt</p>
+                      <div className="flex md:flex-col gap-2 md:gap-0">
+                        <li className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
+                          <label className=" pr-2 py-1 relative w-28 md:text-end">
+                            Date
+                          </label>
+                          <div className="w-full">
+                            <DatePicker
+                              onSelect={(value: Date | undefined) =>
+                                handleSelectDataChange("date", value)
+                              }
+                              date={selectedData.date}
+                              className="gap-1 w-48 max-sm:h-12"
+                            />
+                          </div>
+                        </li>
+                        <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4">
+                          <label className=" pr-2 py-1 relative w-28 md:text-end">
+                            Amount
+                          </label>
+                          <Input
+                            className="py-6 md:py-4 bg-slate-100"
+                            register={register}
+                            error={errors.amount}
+                            name="amount"
+                            label="amount"
+                          />
+                        </li>
                       </div>
-                    </>
-                  )}
-                  {selectedFile && (
-                    <>
-                      <img
-                        src={URL.createObjectURL(selectedFile)}
-                        alt="Preview"
-                        className=" w-full h-full object-cover rounded-xl hidden md:block"
-                      />
-                      <div className="w-full h-full items-center justify-center flex gap-2 md:hidden">
-                        <CloudUpload className="mt-1" />
-                        <p className="text-lg">{selectedFile.name}</p>
+                      <div className="flex flex-row md:flex-col max-sm:gap-2 ">
+                        <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4 w-full">
+                          <label className=" pr-2 py-1 relative w-28 md:text-end">
+                            Category
+                          </label>
+                          <Select
+                            value={selectedData.category}
+                            onValueChange={(value) =>
+                              handleSelectDataChange("category", value)
+                            }
+                          >
+                            <SelectTrigger
+                              onClick={() => setIsOutsideDivActive(true)}
+                            >
+                              <SelectValue placeholder="Food" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.keys(groupsWithCategories).map((key) => {
+                                return (
+                                  <SelectGroup key={key}>
+                                    <SelectLabel className="w-full  px-2 text-left">
+                                      {key}
+                                    </SelectLabel>
+
+                                    {groupsWithCategories[key].map(
+                                      (item, index) => (
+                                        <SelectItem
+                                          key={index}
+                                          value={item.name}
+                                        >
+                                          {item.name}
+                                        </SelectItem>
+                                      )
+                                    )}
+                                  </SelectGroup>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </li>
+                        <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4 w-full">
+                          <label className=" pr-2 py-1 relative w-28 md:text-end">
+                            Paid Via
+                          </label>
+
+                          <Select
+                            onValueChange={(value) =>
+                              handleSelectDataChange("paidVia", value)
+                            }
+                          >
+                            <SelectTrigger
+                              onClick={() => setIsOutsideDivActive(true)}
+                            >
+                              <SelectValue placeholder="UPI" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {Object.keys(expensesPayMode).map((key) => {
+                                return (
+                                  <SelectItem key={key} value={key}>
+                                    {expensesPayMode[key].name}
+                                  </SelectItem>
+                                );
+                              })}
+                            </SelectContent>
+                          </Select>
+                        </li>
                       </div>
-                    </>
-                  )}
+                      <li className="flex flex-col md:flex-row  md:justify-center gap-4">
+                        <label className=" pr-2 py-1 relative w-28 md:text-end">
+                          Notes
+                        </label>
+
+                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded- bg-slate-100"></textarea>
+                      </li>
+                    </ol>
+                  </form>
+                </div>
+                <div className="flex w-full h-14 md:w-1/2 items-center justify-center  md:h-[350px]  ">
+                  <div className=" w-full h-full   rounded-xl border-2 relative">
+                    <input
+                      onChange={(event) => handleFileChange(event)}
+                      type="file"
+                      className=" absolute w-full h-full top-0 left-0 right-0 opacity-0 cursor-pointer"
+                    />
+
+                    {!selectedFile && (
+                      <>
+                        <img
+                          className="hidden md:block"
+                          src={receiptIcon}
+                          width={400}
+                        />
+                        <div className="w-full h-full items-center justify-center flex gap-2 sm:hidden">
+                          <CloudUpload className="mt-1" />
+                          <p className="text-lg">Upload Receipt</p>
+                        </div>
+                      </>
+                    )}
+                    {selectedFile && (
+                      <>
+                        <img
+                          src={URL.createObjectURL(selectedFile)}
+                          alt="Preview"
+                          className=" w-full h-full object-cover rounded-xl hidden md:block"
+                        />
+                        <div className="w-full h-full items-center justify-center flex gap-2 md:hidden">
+                          <CloudUpload className="mt-1" />
+                          <p className="text-lg">{selectedFile.name}</p>
+                        </div>
+                      </>
+                    )}
+                  </div>
                 </div>
               </div>
+              <div className="w-full py-4 h-min flex justify-end ">
+                <Button
+                  onClick={() => handleSubmit(onSubmit)()}
+                  className="px-10"
+                >
+                  Save
+                </Button>
+              </div>
             </div>
-            <div className="w-full py-4 h-min flex justify-end ">
-              <Button
-                onClick={() => handleSubmit(onSubmit)()}
-                className="px-10"
-              >
-                Save
-              </Button>
-            </div>
-          </div>
+          )}
+          {activeTab === "scan" && <ReceiptUploadComponent />}
         </div>
       </div>
     </Modal>

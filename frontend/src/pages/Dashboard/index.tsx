@@ -71,12 +71,10 @@ const Dashboard = () => {
   const { theme } = useTheme();
 
   return (
-    <div className={cn("p-5 w-full min-h-screen", theme?.textColor)}>
+    <div className={cn("p-5 w-full min-h-screen text-theme-themeText")}>
       <div className="flex flex-col gap-4">
         <div className="flex py-2  ">
-          <h2 className=" font-medium text-3xl ">
-            Good {timeOfDay}, Sujit
-          </h2>
+          <h2 className=" font-medium text-3xl ">Good {timeOfDay}, Sujit</h2>
         </div>
         <div className="flex w-full gap-4 ">
           <div className="flex gap-2">
@@ -94,12 +92,12 @@ const Dashboard = () => {
           <div className="flex  gap-2">
             <SummeryItem
               className="text-sm "
-              title="Total Income"
+              title="Total Balance"
               amount={32499}
             />
             <SummeryItem
               className="text-sm "
-              title="Total Income"
+              title="Total Savings"
               amount={32499}
             />
             <Weather />
@@ -107,14 +105,13 @@ const Dashboard = () => {
         </div>
 
         <div className="w-full gap-4  flex">
-          <MultipleLineChart className={cn("", theme?.bgColor)} />
+          <MultipleLineChart className={cn(" bg-theme-primary")} />
           <div
             className={cn(
-              "flex flex-col space-y-4 p-6 rounded-lg",
-              theme?.bgColor
+              "flex flex-col space-y-4 p-6 bg-theme-primary rounded-lg"
             )}
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between  items-center">
               <h2 className=" text-xl font-semibold">Expense Breakdown</h2>
               <div>Today</div>
             </div>
@@ -122,8 +119,7 @@ const Dashboard = () => {
           </div>
           <div
             className={cn(
-              "flex flex-col space-y-4 p-6 rounded-lg",
-              theme?.bgColor
+              "flex flex-col space-y-4 p-6 bg-theme-primary rounded-lg"
             )}
           >
             <div className="flex justify-between items-center">
@@ -137,8 +133,7 @@ const Dashboard = () => {
         <div className="flex gap-2 w-full h-full">
           <div
             className={cn(
-              "w-1/2 flex flex-col gap-4 h-full  px-4 py-3 rounded-lg",
-              theme?.bgColor
+              "w-1/2 flex flex-col gap-4 h-full bg-theme-primary px-4 py-3 rounded-lg"
             )}
           >
             <div className="py-2">
@@ -152,13 +147,12 @@ const Dashboard = () => {
           </div>
           <div
             className={cn(
-              "w-1/3 h-full  justify-center flex p-0 bg-white rounded-lg",
-              theme?.bgColor
+              "w-1/3 h-full bg-theme-primary justify-center flex p-0 rounded-lg"
             )}
           >
             <Calendar className=" " />
           </div>
-          <div className={cn("w-1/3  flex rounded-lg", theme?.bgColor)}>
+          <div className={cn("w-1/3  flex rounded-lg bg-theme-primary")}>
             <div className="p-6 flex flex-col justify-between w-full  h-full ">
               <div className="flex flex-col space-y-14">
                 <div className=" flex justify-between items-center">
@@ -180,7 +174,7 @@ const Dashboard = () => {
                     $19,99<span className="text-sm">/Month</span>
                   </h4>
                 </div>
-                <Button>Learn More</Button>
+                <Button className=" bg-theme-secondary">Learn More</Button>
               </div>
             </div>
           </div>

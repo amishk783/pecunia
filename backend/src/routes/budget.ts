@@ -15,6 +15,9 @@ import {
   getTransactionById,
   updateTransactionByID,
 } from '@/controllers/budget/transaction';
+import { checkScanStatus, scanTransaction } from '@/controllers/scanTransaction';
+import { upload } from '@/middleware/multer';
+import { getScanStatus } from '@/utils/scanSessionService';
 const router = express.Router();
 
 router.post('/item/reorder', reorder);
@@ -28,6 +31,9 @@ router.get('/transaction/', getAllTransaction); // update item
 router.get('/transaction/:id', getTransactionById); // update item
 router.delete('/transaction/:id', deleteTransaction);
 router.post('/transaction/copy/:id', copyTransaction);
+
+router.post('/transaction/scan', upload.single('image'), scanTransaction); //scan Transaction
+router.post('/transaction/scan/:id', checkScanStatus);
 
 router.put('/group/:id', editGroupLabel); //edit group label
 router.post('/group', createGroup);

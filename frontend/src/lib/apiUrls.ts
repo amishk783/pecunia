@@ -19,6 +19,8 @@ export const apiUrls = {
   expenses: {
     add: "/app/budget/transaction",
     edit: "",
+    scan: "/app/budget/transaction/scan",
+    checkScanStatus: (id: string) => `/app/budget/transaction/scan/${id}`,
     copy: (id: number) => `/app/budget/transaction/copy/${id}`,
     all: "/app/budget/transaction",
     delete: (id: number) => `/app/budget/transaction/${id}`,

@@ -6,29 +6,23 @@ import { useAuth } from "./providers/AuthProvider";
 import { Loader2 } from "lucide-react";
 
 const PrivateRoute: React.FC = () => {
-  const { user, session, loading } = useAuth();
-  const [isUserChecked, setIsUserChecked] = useState(false);
+  const { user, loading } = useAuth();
+  
+  console.log("🚀 ~ loading:", loading);
+  console.log("🚀 ~ user:", user);
 
-
-  useEffect(() => {
-    if (!loading) {
-      setIsUserChecked(true);
-    }
-  }, [loading]);
-
-  if (loading || !isUserChecked) {
+  if (loading) {
+    // console.log("🚀 ~private loading:", loading)
     return (
-      <div className="m-auto flex items-center justify-center h-screen ">
-        <Loader2 className="animate-spin " size={42} />
+      <div className="w-full h-screen absolute -ml-56 items-center justify-center bg-white ">
+        <div className="w-full items-center translate-x-1/2 h-screen translate-y-1/2  justify-center">
+          Loading...
+        </div>
       </div>
-    );
+    ); // Or a more sophisticated loading spinner
   }
 
-  return user || session?.access_token ? (
-    <Outlet />
-  ) : (
-    <Navigate to="/login" replace />
-  );
+  return user ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

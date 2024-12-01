@@ -100,7 +100,7 @@ const Expenses = () => {
 
   // const { theme } = useTheme();
   return (
-    <div className={cn("flex w-full h-min  min-h-screen")}>
+    <div className={cn("flex w-full h-min  min-h-screen text-theme-themeText")}>
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4  pt-2">
         <div className=" w-full h-min flex flex-col gap-4 justify-between items-center ">
           <div className="w-full h-min flex justify-between items-center border-b  px-2 md:px-4">
@@ -147,7 +147,7 @@ const Expenses = () => {
               )}
             </div>
           </div>
-          <div className=" w-full h-min px-2">
+          <div className=" w-full h-min px-2 text-theme-themeText">
             <div className="flex gap-2">
               <SummeryItem title="Total Transaction" amount={totalExpenses} />
               <SummeryItem title="Total Spent" amount={totalAmountSpent} />

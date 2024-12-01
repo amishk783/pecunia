@@ -44,7 +44,10 @@ export function DataTableFacetedFilter<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
-          className={cn(" md:h-8 border-dashed", className)}
+          className={cn(
+            " md:h-8 border-dashed bg-theme-secondary text-theme-themeText",
+            className
+          )}
         >
           <PlusCircle />
           {title}
@@ -84,7 +87,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
+        <Command className="bg-theme-secondary text-theme-themeText">
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
@@ -93,6 +96,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
+                    className="text-theme-themeText  "
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
@@ -108,17 +112,15 @@ export function DataTableFacetedFilter<TData, TValue>({
                   >
                     <div
                       className={cn(
-                        "mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary",
+                        "mr-2 flex h-4 w-4   items-center justify-center rounded-sm border border-primary",
                         isSelected
-                          ? "bg-primary text-primary-foreground"
-                          : "opacity-50 [&_svg]:invisible"
+                          ? "bg-theme-secondary  "
+                          : "opacity-50 [&_svg]:invisible "
                       )}
                     >
                       <CheckIcon className={cn("h-4 w-4")} />
                     </div>
-                    {option.icon && (
-                      <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-                    )}
+                    {option.icon && <option.icon className="mr-2 h-4 w-4  " />}
                     <span>{option.label}</span>
                     {facets?.get(option.value) && (
                       <span className="ml-auto flex h-4 w-4 items-center justify-center font-mono text-xs">

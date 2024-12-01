@@ -19,7 +19,7 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
   const [isPrimaryColor, setPrimary] = useState<string>("");
   console.log("🚀 ~ isPrimaryColor:", isPrimaryColor);
   const [isSecondaryColor, setSecondary] = useState<string>("");
-  console.log("🚀 ~ setSecondary:", setSecondary)
+  console.log("🚀 ~ setSecondary:", setSecondary);
   console.log("🚀 ~ isSecondaryColor:", isSecondaryColor);
 
   const handleColor = (
@@ -53,24 +53,18 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
     );
   };
   return (
-    <div className=" absolute flex flex-col w-[17%] bg-theme-primary right-0 px-2 border-l-3 h-full ">
+    <div className=" absolute flex flex-col w-[17%] bg-theme-secondary text-theme-themeText right-0 px-2 border-l-3 h-full ">
       <div className="flex justify-end items-end pt-3 ">
-        <CircleX size={32} className="text-white" onClick={handleOpen} />
+        <CircleX size={32} className="" onClick={handleOpen} />
       </div>
       <div className="px-2 ">
         <div>
-          <h2 className="text-xl text-white">Customize Your Theme </h2>
-          <h3 className="text-lg px-1 text-white">Try it </h3>
+          <h2 className="text-xl ">Customize Your Theme </h2>
+          <h3 className="text-lg px-1 ">Try it </h3>
         </div>
+
         <div className="flex flex-col pt-8 gap-2">
-          <h1 className="text-xl text-white">Layout Type</h1>
-          <div className="flex gap-2">
-            <img src={rtl} alt="dashboard" width={40} height={40} />
-            <img src={ltr} alt="dashboard" width={40} height={40} />
-          </div>
-        </div>
-        <div className="flex flex-col pt-8 gap-2">
-          <h1 className={`text-xl text-hello `}>Color</h1>
+          <p className="text-xl">Color</p>
           <div className="flex gap-2">
             <ul className="flex gap-4">
               <li
@@ -144,6 +138,10 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
                 </li>
               </ul>
             </div>
+          </div>
+          <div className="flex flex-col pt-4 ">
+            <p className="text-xl">Choose Fonts</p>
+            
           </div>
         </div>
       </div>

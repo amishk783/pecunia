@@ -110,7 +110,7 @@ const Weather = () => {
   return (
     <div
       className={cn(
-        "min-w-80   rounded-lg drop-shadow-xl glass, bgClass bg-white"
+        "min-w-80   rounded-xl drop-shadow-xl glass, bgClass bg-theme-primary border "
       )}
     >
       <div className=" flex items-center  h-full p-4">

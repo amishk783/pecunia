@@ -29,6 +29,10 @@ const defaultTheme: Theme = {
 };
 const ThemeContext = createContext(initalThemeContext);
 
+interface ThemeConfigType {
+  [key: string]: string;
+}
+
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -37,8 +41,20 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     const isTheme = localStorage.getItem("theme");
-    if (isTheme) {
-      setThemeState(defaultTheme);
+
+    const themeConfig = localStorage.getItem("themeConfig");
+    if (isTheme && themeConfig) {
+      setThemeState({
+        type: "light",
+        bgColor: "bg-white",
+        bgImage: "",
+        textColor: "text-black",
+      });
+      const parsedConfig: ThemeConfigType = JSON.parse(themeConfig);
+
+      Object.entries(parsedConfig).forEach(([key, value]) => {
+        document.documentElement.style.setProperty(key, value as string);
+      });
     } else {
       localStorage.setItem("theme", defaultTheme.type);
       setThemeState(defaultTheme);

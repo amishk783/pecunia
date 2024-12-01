@@ -82,10 +82,10 @@ export function DataTable<TData, TValue>({
   // console.log(table.getSelectedRowModel().rows);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       {categories && <DataTableToolbar categories={categories} table={table} />}
       <div className="rounded-md border">
-        <Table>
+        <Table className="bg-theme-primary text-theme-themeText">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

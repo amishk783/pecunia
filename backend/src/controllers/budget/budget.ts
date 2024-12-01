@@ -90,7 +90,7 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response,
           with: {
             items: true,
           },
-          orderBy: (groups, { desc }) => [desc(groups.type)],
+          orderBy: (groups, { asc }) => [asc(groups.position)],
         },
       },
     });

@@ -36,14 +36,14 @@ module.exports = {
           themeText: "var(--theme-text-color)",
         },
 
-        background: "hsl(var(--background))",
+        background: "var(--background-primary)",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "var(--theme-text-color)",
+          foreground: "var(--theme-text-color)",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
+          DEFAULT: "var(--background-primary)",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -51,16 +51,16 @@ module.exports = {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          // DEFAULT: "var(--theme-text-color)",
+          // foreground: "var(--theme-text-color)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "var(--background-primary)",
+          foreground: "var(--theme-text-color)",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "var(--background-secondary)",
+          foreground: "var(--theme-text-color)",
         },
         card: {
           DEFAULT: "hsl(var(--card))",

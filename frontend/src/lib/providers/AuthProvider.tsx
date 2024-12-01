@@ -40,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true);
 
       const { data, error } = await supabase.auth.getSession();
+      console.log("🚀 ~ loadSession ~ data:", data)
 
       if (error) throw new Error(error.message);
 

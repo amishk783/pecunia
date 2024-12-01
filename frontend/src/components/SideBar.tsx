@@ -20,9 +20,7 @@ const SideBar: React.FC = () => {
   return (
     <div
       className={cn(
-        " w-20 lg:w-[230px] h-full fixed hidden md:flex bottom-0 top-0 left-0 flex-col z-10   ",
-        theme?.bgColor,
-        theme?.textColor
+        " w-20 lg:w-[230px] bg-theme-secondary text-theme-themeText h-full fixed hidden md:flex bottom-0 top-0 left-0 flex-col z-10   "
       )}
     >
       <div className="flex flex-col px-5 pt-5 relative overflow-hidden   ">
@@ -30,8 +28,7 @@ const SideBar: React.FC = () => {
           {/* <img /> */}
           <h1
             className={cn(
-              " text-zinc-200 text-3xl drop-shadow-md hidden lg:block ",
-              theme?.textColor
+              " text-zinc-200 text-3xl  text-theme-themeText drop-shadow-md hidden lg:block "
             )}
           >
             Pecunia

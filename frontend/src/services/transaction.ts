@@ -50,3 +50,29 @@ export const copyTransaction = async (data: Transaction, id: number) => {
     console.log(error);
   }
 };
+
+export const uploadReceipt = async (image: File) => {
+  console.log("🚀 ~ uploadReceipt ~ image:", image);
+  try {
+    const formData = new FormData();
+    formData.append("image", image);
+    const res = await api.post(apiUrls.expenses.scan, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const checkScanStatus = async (id: string) => {
+  try {
+    const res = await api.post(apiUrls.expenses.checkScanStatus(id));
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
