@@ -4,12 +4,14 @@ import { useState } from "react";
 import receiptIcon from "@/assets/receipt.png";
 export const ReceiptUploadComponent = () => {
   const [scanSessionId, setScanSessionId] = useState<string | null>(null);
+  console.log("🚀 ~ ReceiptUploadComponent ~ scanSessionId:", scanSessionId)
   const [scanStatus, setScanStatus] = useState<
     "IDLE" | "PROCESSING" | "COMPLETED" | "FAILED"
   >("IDLE");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const [transactionDetails, setTransactionDetails] = useState(null);
+  console.log("🚀 ~ ReceiptUploadComponent ~ transactionDetails:", transactionDetails)
 
   const handleReceiptUpload = async (file: File) => {
     console.log("🚀 ~ handleReceiptUpload ~ file:", file);

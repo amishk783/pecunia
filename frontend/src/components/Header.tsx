@@ -19,6 +19,7 @@ const Header: React.FC = () => {
   const { setThemeOpen } = useTheme();
 
   const { theme, setThemeState } = useTheme();
+  console.log("🚀 ~ setThemeState:", setThemeState)
 
   const handleTheme = (value: string) => {
     console.log(value);

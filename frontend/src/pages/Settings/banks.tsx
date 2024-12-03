@@ -5,7 +5,8 @@ import { useState } from "react";
 
 export const BankSection = () => {
   const [openTransactionModal, setOpenTransactionModal] =
-    useState<boolean>(false);
+  useState<boolean>(false);
+  console.log("🚀 ~ BankSection ~ openTransactionModal:", openTransactionModal)
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   console.log("🚀 ~ BankSection ~ selectedFile:", selectedFile);

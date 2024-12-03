@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
 import { useAuth } from "./providers/AuthProvider";
 
-import { Loader2 } from "lucide-react";
 
 const PrivateRoute: React.FC = () => {
   const { user, loading } = useAuth();

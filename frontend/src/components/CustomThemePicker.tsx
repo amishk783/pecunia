@@ -1,6 +1,5 @@
 import { CircleX } from "lucide-react";
-import rtl from "./../assets/rtl.png";
-import ltr from "./../assets/ltr.png";
+
 import { useState } from "react";
 import bg1 from "../assets/bg1.jpg";
 import bg2 from "../assets/custom-bg/bg2.jpg";
