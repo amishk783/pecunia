@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 const envFound = dotenv.config();
 
-if (envFound.error) {
+if (process.env.NODE_ENV === 'development' && envFound.error) {
   throw new Error("Couldn't find .env file");
 }
 
@@ -15,7 +15,7 @@ interface ServerConfig {
   openAIApikey: string;
   logs: { level: string };
   upstashRedisKey: string;
-  upstashRedisUrl:string;
+  upstashRedisUrl: string;
 }
 
 const config: ServerConfig = {

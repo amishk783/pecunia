@@ -57,6 +57,7 @@ export const createTransaction = async (req: AuthenticatedRequest, res: Response
 
 export const deleteTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const id = +req.params.id;
+  console.log('🚀 ~ deleteTransaction ~ id:', id);
 
   if (!id) {
     throw new AppError('Id is missing in the request ', 400);
@@ -66,13 +67,13 @@ export const deleteTransaction = async (req: AuthenticatedRequest, res: Response
     const transaction = await db.query.transactions.findFirst({
       where: eq(transactions.id, id),
     });
+    console.log('🚀 ~ deleteTransaction ~ transaction:', transaction);
 
     if (!transaction) {
       Logger.error('Transaction does not exit');
       throw new AppError('Transaction does not exit', 400);
     }
     const deletedTransaction = await db.delete(transactions).where(eq(transactions.id, id)).returning();
-
     res.status(201).json(deletedTransaction[0]);
   } catch (error) {
     Logger.error('Error Deleting Transaction:', error);
@@ -197,3 +198,4 @@ export const copyTransaction = async (req: AuthenticatedRequest, res: Response, 
     next(error);
   }
 };
+

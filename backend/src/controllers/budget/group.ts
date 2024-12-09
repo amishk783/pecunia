@@ -34,7 +34,6 @@ export const editGroupLabel = async (req: AuthenticatedRequest, res: Response, n
       .where(eq(groups.id, id))
       .returning();
     const relatedItems = await db.select().from(items).where(eq(items.groupId, updatedGroup[0].id));
-
     Logger.silly('Group label succesfully');
     const groupWithItems = {
       ...updatedGroup[0],

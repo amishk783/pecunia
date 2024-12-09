@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { SummeryItem } from "@/components/ui/SummeryItem";
-import {
-  ChevronDown,
-
-  ReceiptText,
-  ScanLine,
-  Table,
-} from "lucide-react";
+import { ChevronDown, ReceiptText, ScanLine, Table } from "lucide-react";
 import { columns } from "./columns";
 
 import { DataTable } from "@/components/table/data-table";
@@ -17,7 +11,7 @@ import {
   deleteTransaction,
   getAllTransaction,
 } from "@/services/transaction";
-import { useAuth } from "@/lib/providers/AuthProvider";
+
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -31,14 +25,16 @@ import { AddExpense } from "@/components/expense/add";
 import { cn } from "@/lib/utils";
 
 import { notification } from "@/components/Notification";
+import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { PendingTransaction } from "@/components/expense/PendingTransaction";
 
 const Expenses = () => {
   const [transactions, setTransaction] = useState<Transaction[]>([]);
 
-  const { session } = useAuth();
+  const { pendingTransaction } = useExpense();
+
   useEffect(() => {
     const fetchTransactions = async () => {
-      if (!session) return;
       try {
         const res = await getAllTransaction();
 
@@ -48,7 +44,7 @@ const Expenses = () => {
       }
     };
     fetchTransactions();
-  }, [session]);
+  }, []);
 
   const onActionDelete = async (id: number) => {
     try {
@@ -98,7 +94,6 @@ const Expenses = () => {
   const handleSetActiveTab = (tab: "single" | "scan" | "multiple" | null) =>
     setActiveTab(tab);
 
-  // const { theme } = useTheme();
   return (
     <div className={cn("flex w-full h-min  min-h-screen text-theme-themeText")}>
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4  pt-2">
@@ -153,6 +148,14 @@ const Expenses = () => {
               <SummeryItem title="Total Spent" amount={totalAmountSpent} />
             </div>
           </div>
+
+          {pendingTransaction.length > 0 && (
+            <div className="flex w-full items-start justify-start px-2">
+              {pendingTransaction.map((transaction) => (
+                <PendingTransaction {...transaction} />
+              ))}
+            </div>
+          )}
 
           <div className="w-full mx-auto px-2 pb-10">
             <DataTable

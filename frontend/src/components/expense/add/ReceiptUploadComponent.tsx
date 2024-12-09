@@ -1,51 +1,19 @@
-import { checkScanStatus, uploadReceipt } from "@/services/transaction";
-import { CloudUpload, Loader2 } from "lucide-react";
+import { CloudUpload } from "lucide-react";
 import { useState } from "react";
-import receiptIcon from "@/assets/receipt.png";
-export const ReceiptUploadComponent = () => {
-  const [scanSessionId, setScanSessionId] = useState<string | null>(null);
-  console.log("🚀 ~ ReceiptUploadComponent ~ scanSessionId:", scanSessionId)
-  const [scanStatus, setScanStatus] = useState<
-    "IDLE" | "PROCESSING" | "COMPLETED" | "FAILED"
-  >("IDLE");
+
+import { useExpense } from "@/lib/providers/ExpenseProvier";
+
+interface Props {
+  handleSetActiveTab: (tab: "scan" | "multiple" | "single" | null) => void;
+}
+
+export const ReceiptUploadComponent: React.FC<Props> = ({
+  handleSetActiveTab,
+}) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const [transactionDetails, setTransactionDetails] = useState(null);
-  console.log("🚀 ~ ReceiptUploadComponent ~ transactionDetails:", transactionDetails)
+  const { handleReceiptUpload, scanStatus } = useExpense();
 
-  const handleReceiptUpload = async (file: File) => {
-    console.log("🚀 ~ handleReceiptUpload ~ file:", file);
-    try {
-      const res = await uploadReceipt(file);
-      console.log("🚀 ~ handleReceiptUpload ~ res:", res);
-
-      setScanSessionId(res.scanSessionId);
-      setScanStatus("PROCESSING");
-
-      pollScanStatus(res.scanSessionId);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const pollScanStatus = async (sessionId: string) => {
-    const intervalId = setInterval(async () => {
-      try {
-        const status = await checkScanStatus(sessionId);
-        if (status.status === "COMPLETED") {
-          clearInterval(intervalId);
-          setTransactionDetails(status.extractedData);
-          setScanStatus("COMPLETED");
-        }
-        if (status.status === "FAILED") {
-          clearInterval(intervalId);
-          setScanStatus("FAILED");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }, 2000);
-  };
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event || !event.target.files) return;
     const file = event.target.files[0];
@@ -53,13 +21,15 @@ export const ReceiptUploadComponent = () => {
 
     handleReceiptUpload(file);
     setSelectedFile(file);
+    handleSetActiveTab(null);
   };
 
   return (
     <div>
       {scanStatus === "IDLE" && (
-        <div className="flex w-full h-14 md:w-1/2 items-center justify-center  md:h-[350px]  ">
-          <div className=" w-full h-full   rounded-xl border-2 relative">
+        <div className="flex w-full flex-col h-14 p-4  gap-4 justify-center  md:h-[320px]  ">
+          <h2 className=" font-semibold text-lg">Upload a Receipt</h2>
+          <div className=" w-full h-full   rounded-xl  relative">
             <input
               onChange={(event) => handleFileChange(event)}
               type="file"
@@ -67,17 +37,19 @@ export const ReceiptUploadComponent = () => {
             />
 
             {!selectedFile && (
-              <>
-                <img
-                  className="hidden md:block"
-                  src={receiptIcon}
-                  width={400}
-                />
-                <div className="w-full h-full items-center justify-center flex gap-2 sm:hidden">
+              <div className="w-full flex relative bg-secondary/80 justify-center items-center h-60 border-dashed border-slate-600 border-2 rounded-lg pb-4">
+                <div className="flex flex-col items-center">
                   <CloudUpload className="mt-1" />
-                  <p className="text-lg">Upload Receipt</p>
+                  <h5 className="font-medium">
+                    Drop a file or click to browse
+                  </h5>
                 </div>
-              </>
+                <input
+                  onChange={(event) => handleFileChange(event)}
+                  type="file"
+                  className=" absolute w-full h-full top-0 left-0 right-0 opacity-0 cursor-pointer"
+                />
+              </div>
             )}
             {selectedFile && (
               <>
@@ -95,7 +67,6 @@ export const ReceiptUploadComponent = () => {
           </div>
         </div>
       )}
-      {scanStatus === "PROCESSING" && <Loader2 className="animate-spin" />}
     </div>
   );
 };

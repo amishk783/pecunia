@@ -66,7 +66,6 @@ const Signup = () => {
       });
       navigate("/welcome/lifestyle");
     } catch (error) {
-      console.log(error);
       erroMessageHandler(error);
     }
     setLoading(false);
@@ -89,7 +88,7 @@ const Signup = () => {
         throw new Error(error.message);
       }
     } catch (error) {
-      console.log(error);
+      erroMessageHandler(error);
     }
     setLoading(false);
     setActive("default");
@@ -102,7 +101,7 @@ const Signup = () => {
 
   return (
     <div className="h-screen">
-      <div className="h-full rounded-lg shadow-lg flex flex-col md:flex-row md:gap-5">
+      <div className="h-full rounded-lg shadow-lg flex flex-col md:flex-row ">
         {/* left part */}
         <div className="w-full md:w-1/2 xl:w-2/5 flex px-4 md:justify-center bg-red-50">
           <div className="flex flex-col items-center justify-center w-full  pt-10">
@@ -209,7 +208,7 @@ const Signup = () => {
               </div>
               <PasswordStrengthChecker password={watchPassword} />
               <Button
-                className="my-2 flex items-center justify-center gap-3 "
+                className="my-2 flex items-center bg-theme-primary text-theme-themeText justify-center gap-3 "
                 variant="default"
                 size="lg"
                 type="submit"

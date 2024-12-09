@@ -27,7 +27,6 @@ import { useBudget } from "@/lib/providers/BudgetProvider";
 import { addTransaction } from "@/services/transaction";
 import { CloudUpload, X } from "lucide-react";
 import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
-// import {  } from "@radix-ui/react-select";
 
 interface Expense {
   activeTab: "scan" | "multiple" | "single" | null;
@@ -329,7 +328,9 @@ export const AddExpense: React.FC<Expense> = ({
               </div>
             </div>
           )}
-          {activeTab === "scan" && <ReceiptUploadComponent />}
+          {activeTab === "scan" && (
+            <ReceiptUploadComponent handleSetActiveTab={handleSetActiveTab} />
+          )}
         </div>
       </div>
     </Modal>

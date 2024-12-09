@@ -6,9 +6,6 @@ import Weather from "@/components/widgets/weather/wheather";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { cn, getTimeOfDay } from "@/lib/utils";
 import { Transaction } from "@/type";
-import GridLayout from "react-grid-layout";
-import "react-grid-layout/css/styles.css";
-import "react-resizable/css/styles.css";
 
 import { columns } from "./columns";
 import { Calendar } from "@/components/ui/calendar";
@@ -70,41 +67,12 @@ const Dashboard = () => {
 
   const timeOfDay = getTimeOfDay(new Date());
 
- 
-  const layoutConfig = [
-    { i: "item1", x: 0, y: 0, w: 3, h: 3, minH: 3 },
-    { i: "item2", x: 3, y: 0, w: 3, h: 3, minH: 3 },
-
-    { i: "item3", x: 6, y: 0, w: 3, h: 3, minH: 3 },
-
-    { i: "item4", x: 9, y: 0, w: 3, h: 3, minH: 3 },
-  ];
   return (
     <div className={cn("p-5 w-full min-h-screen text-theme-themeText")}>
       <div className="flex py-2  ">
         <h2 className=" font-medium text-3xl ">Good {timeOfDay}, Sujit</h2>
       </div>
 
-      <GridLayout
-        className="w-full"
-        layout={layoutConfig}
-        cols={12}
-        rowHeight={30}
-        width={1500}
-      >
-        <div key="item1" className="bg-theme-primary rounded-2xl border ">
-          <SummeryItem className="text-sm" title="Total Spent" amount={32499} />
-        </div>
-        <div key="item2" className="bg-theme-primary rounded-2xl border ">
-          <SummeryItem className="text-sm" title="Total Spent" amount={32499} />
-        </div>
-        <div key="item3" className="bg-theme-primary rounded-2xl border ">
-          <SummeryItem className="text-sm" title="Total Spent" amount={32499} />
-        </div>
-        <div key="item4" className="bg-theme-primary rounded-2xl border ">
-          <SummeryItem className="text-sm" title="Total Spent" amount={32499} />
-        </div>
-      </GridLayout>
       <div className="flex flex-col gap-4">
         <div className="flex w-full gap-4 ">
           <SummeryItem

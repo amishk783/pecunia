@@ -11,12 +11,10 @@ import { AppError } from '@/utils/AppError';
 
 export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   const { date } = req.body;
-
   if (!date) {
     Logger.error('Date is missing in the request body.');
     throw new AppError('Date is required.', 400);
   }
-
   try {
     const parsedDate = parse(date, 'dd/MM/yyyy', new Date());
     console.log(parsedDate);
@@ -90,7 +88,7 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response,
           with: {
             items: true,
           },
-          orderBy: (groups, { asc }) => [asc(groups.position)],
+          orderBy: (groups, { desc }) => [desc(groups.type)],
         },
       },
     });

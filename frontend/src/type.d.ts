@@ -39,3 +39,9 @@ export type Transaction = {
   paidVia: string;
   notes?: string;
 };
+export type PendingTransactionType = {
+  sessionId: string;
+  label: string;
+  billImageUrl: File;
+  status: string;
+};

@@ -18,7 +18,7 @@ export const SummeryItem: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        "flex  h-full w-full text-lg   md:min-w-80  ",
+        "flex  h-full w-full text-lg bg-theme-primary rounded-md   md:min-w-80  ",
         className
       )}
     >
