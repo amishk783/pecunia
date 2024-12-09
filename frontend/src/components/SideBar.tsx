@@ -12,9 +12,7 @@ const SideBar: React.FC = () => {
   const { pathname } = useLocation();
   const { theme } = useTheme();
 
-  console.log(theme);
   const isActivePage = (path: string): boolean => {
-    console.log(path === pathname);
     return path === pathname;
   };
   return (

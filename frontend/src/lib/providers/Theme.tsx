@@ -57,6 +57,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       });
     } else {
       localStorage.setItem("theme", defaultTheme.type);
+      localStorage.setItem(
+        "themeConfig",
+        JSON.stringify({
+          "--background-secondary": "rgb(214 211 209)",
+          "--background-primary": "hsl(20, 5.88%, 90%)",
+          "--theme-text-color": "#0f172a",
+        })
+      );
       setThemeState(defaultTheme);
     }
   }, [setThemeState]);

@@ -21,11 +21,7 @@ axiosInstance.interceptors.request.use(
       const { data, error } = await supabase.auth.getSession();
 
       if (error || !data.session) {
-        console.error(
-          "No valid session found:",
-          error?.message || "Session is null"
-        );
-        throw new Error("User is not authenticated");
+        return Promise.resolve(request);
       }
 
       const accessToken = data.session.access_token;
@@ -35,8 +31,7 @@ axiosInstance.interceptors.request.use(
 
       return request;
     } catch (err) {
-      console.error("Error retrieving session:", err);
-      throw err;
+      return Promise.resolve(request);
     }
   },
   (error) => {

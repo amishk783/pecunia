@@ -3,6 +3,7 @@ import { supabase } from "@/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
 
 import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextProps {
   user: User | null;
@@ -32,6 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
 
+  const navigate = useNavigate();
+
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -40,11 +43,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setLoading(true);
 
       const { data, error } = await supabase.auth.getSession();
-      console.log("🚀 ~ loadSession ~ data:", data)
+     
 
       if (error) throw new Error(error.message);
 
-      if (!data.session) throw new Error("No session");
+      if (!data.session) navigate("/login");
       setSession(data.session);
       setUser(data.session?.user as User);
 

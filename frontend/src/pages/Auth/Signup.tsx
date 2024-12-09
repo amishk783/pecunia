@@ -208,7 +208,7 @@ const Signup = () => {
               </div>
               <PasswordStrengthChecker password={watchPassword} />
               <Button
-                className="my-2 flex items-center bg-theme-primary text-theme-themeText justify-center gap-3 "
+                className="my-2 flex items-center  bg-theme-secondary text-theme-themeText justify-center gap-3 "
                 variant="default"
                 size="lg"
                 type="submit"
@@ -234,7 +234,7 @@ const Signup = () => {
             <div className="xl:w-3/5 py-4 flex gap-4 ">
               <div className="flex gap-4 w-full">
                 <Button
-                  className="flex gap-2 items-center w-full justify-center"
+                  className="flex gap-2 bg-theme-secondary items-center w-full justify-center"
                   variant="outline"
                   size="lg"
                   onClick={() => signItWithOAuth("google")}
@@ -274,7 +274,7 @@ const Signup = () => {
                   )}
                 </Button>
                 <Button
-                  className="flex gap-2 items-center w-full justify-center"
+                  className="flex gap-2  bg-theme-secondary items-center w-full justify-center"
                   variant="outline"
                   size="lg"
                   disabled={loading}

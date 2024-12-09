@@ -29,29 +29,27 @@ import { useExpense } from "@/lib/providers/ExpenseProvier";
 import { PendingTransaction } from "@/components/expense/PendingTransaction";
 
 const Expenses = () => {
-  const [transactions, setTransaction] = useState<Transaction[]>([]);
-
-  const { pendingTransaction } = useExpense();
+  const { pendingTransaction, expenses, setExpenses } = useExpense();
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
         const res = await getAllTransaction();
 
-        setTransaction(res);
+        setExpenses(res);
       } catch (error) {
         throw new Error("Something Went wrong");
       }
     };
     fetchTransactions();
-  }, []);
+  }, [setExpenses]);
 
   const onActionDelete = async (id: number) => {
     try {
       const res = await deleteTransaction(id);
       const deletedTransaction: Transaction = res;
 
-      setTransaction((prev) =>
+      setExpenses((prev) =>
         prev.filter((item) => item.id !== deletedTransaction.id)
       );
       notification({ type: "success", message: "Succefully Deleted" });
@@ -67,7 +65,7 @@ const Expenses = () => {
       const res = await copyTransaction(data, +data.id);
       const updatedTransaction: Transaction = res;
 
-      setTransaction((prev) => [...prev, updatedTransaction]);
+      setExpenses((prev) => [...prev, updatedTransaction]);
       notification({
         type: "success",
         message: `Succefully Copied ${data.label}`,
@@ -78,14 +76,14 @@ const Expenses = () => {
   };
 
   const categories = Array.from(
-    new Set(transactions.map((transaction) => transaction.category))
+    new Set(expenses.map((transaction) => transaction.category))
   ).map((category) => ({
     label: category,
     value: category,
   }));
-  const totalExpenses = transactions.length;
-  const totalAmountSpent = transactions.reduce((acc, transactions) => {
-    return acc + +transactions.amount;
+  const totalExpenses = expenses.length;
+  const totalAmountSpent = expenses.reduce((acc, expense) => {
+    return acc + +expense.amount;
   }, 0);
 
   const [activeTab, setActiveTab] = useState<
@@ -160,7 +158,7 @@ const Expenses = () => {
           <div className="w-full mx-auto px-2 pb-10">
             <DataTable
               columns={columns}
-              data={transactions}
+              data={expenses}
               categories={categories}
               actions={{ onActionDelete, onActionCopy }}
             />

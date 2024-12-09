@@ -1,5 +1,5 @@
 import { db } from '@/db';
-import { items, Transaction, transactions } from '@/db/schema/Budget';
+import { groups, items, Transaction, transactions } from '@/db/schema/Budget';
 import { AuthenticatedRequest } from '@/types';
 import Logger from '@/utils/logger';
 import { transactionSchema } from '@/utils/validationSchema';
@@ -39,6 +39,7 @@ export const createTransaction = async (req: AuthenticatedRequest, res: Response
         ...validatedData,
         date: isoDateString, // Use the correctly formatted date here
         itemId: item.id,
+        userId: req.user?.sub as string,
       })
       .returning();
     const amountSpent = +item?.allocatedBudget + +newTransaction[0].amount;
@@ -118,10 +119,18 @@ export const updateTransactionByID = async (req: AuthenticatedRequest, res: Resp
 
 export const getAllTransaction = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
+    const user = req.user;
+    console.log('🚀 ~ getAllTransaction ~ user:', user);
+
+    if (!user) {
+      throw new AppError('User does not exit', 400);
+    }
+
     const allTransactions = await db.query.transactions.findMany({
       with: {
         items: true,
       },
+      where: eq(transactions.userId, user.sub as string),
     });
 
     if (!allTransactions) {
@@ -133,6 +142,7 @@ export const getAllTransaction = async (req: AuthenticatedRequest, res: Response
 
       date: format(new Date(transaction.date), 'MMM dd, yyyy'),
     }));
+
     res.status(200).send(transformedTransactions);
   } catch (error) {
     Logger.error('Error updating Transaction:', error);
@@ -198,4 +208,3 @@ export const copyTransaction = async (req: AuthenticatedRequest, res: Response, 
     next(error);
   }
 };
-

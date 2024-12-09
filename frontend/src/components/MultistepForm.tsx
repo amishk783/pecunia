@@ -97,11 +97,19 @@ const MultistepForm: React.FC<MultistepFormProps> = ({
         )}
       >
         {currentStep > 1 && (
-          <Button variant="ghost" onClick={handlePrev}>
+          <Button
+            variant="ghost"
+            className="bg-theme-secondary"
+            onClick={handlePrev}
+          >
             Go Back
           </Button>
         )}
-        <Button variant="default" className="rounded-md" onClick={handleNext}>
+        <Button
+          variant="default"
+          className="rounded-md bg-theme-secondary"
+          onClick={handleNext}
+        >
           Continue
         </Button>
       </div>

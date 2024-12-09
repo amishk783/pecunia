@@ -5,7 +5,6 @@ import { SummeryItem } from "@/components/ui/SummeryItem";
 import Weather from "@/components/widgets/weather/wheather";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { cn, getTimeOfDay } from "@/lib/utils";
-import { Transaction } from "@/type";
 
 import { columns } from "./columns";
 import { Calendar } from "@/components/ui/calendar";
@@ -13,55 +12,6 @@ import { Button } from "@/components/ui/button";
 import { RadarChart } from "@/components/charts/RadarChart";
 import { useExpense } from "@/lib/providers/ExpenseProvier";
 import { useBudget } from "@/lib/providers/BudgetProvider";
-
-const recentTransacaction: Transaction[] = [
-  {
-    id: "26",
-    label: "daily commute",
-    amount: "500",
-    paidVia: "Cash",
-    notes: undefined,
-    date: "Nov 22, 2024",
-    category: "Swiggy",
-  },
-  {
-    id: "28",
-    label: "daily commute",
-    amount: "500",
-    paidVia: "Cash",
-    notes: undefined,
-    date: "Nov 22, 2024",
-    category: "Swiggy",
-  },
-  {
-    id: "29",
-    label: "daily commute",
-    amount: "500",
-    paidVia: "Cash",
-    notes: undefined,
-    date: "Nov 26, 2024",
-    category: "Amazon",
-  },
-  {
-    id: "30",
-    label: "daily commute",
-    amount: "20000",
-    paidVia: "Cash",
-    notes: undefined,
-    date: "Nov 26, 2024",
-    category: "Amazon",
-  },
-
-  {
-    id: "32",
-    label: "daily commute",
-    amount: "20000",
-    paidVia: "Cash",
-    notes: undefined,
-    date: "Nov 26, 2024",
-    category: "Amazon",
-  },
-];
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -99,12 +49,12 @@ const Dashboard = () => {
     return acc;
   }, 0);
 
-  const totalBalance = totalIncome! - totalSpent!;
+  const totalBalance = totalIncome ?? 0 - (totalSpent ?? 0);
   console.log("🚀 ~ totalSpent ~ totalSpent:", totalSpent);
   return (
     <div className={cn("p-5 w-full min-h-screen text-theme-themeText")}>
-      <div className="flex py-2  ">
-        <h2 className=" font-medium text-3xl ">Good {timeOfDay}, Sujit</h2>
+      <div className="flex py-4 ">
+        <h2 className=" font-medium text-4xl ">Good {timeOfDay}</h2>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -129,7 +79,11 @@ const Dashboard = () => {
         </div>
 
         <div className="w-full gap-4  flex">
-          <MultipleLineChart className={cn(" bg-theme-primary")} />
+          <MultipleLineChart
+            totalExpense={totalSpent ?? 0}
+            totalIncome={totalIncome ?? 0}
+            className={cn(" bg-theme-primary")}
+          />
           <div
             className={cn(
               "flex flex-col space-y-4 p-6 bg-theme-primary rounded-lg"
@@ -157,7 +111,7 @@ const Dashboard = () => {
         <div className="flex gap-2 w-full h-full">
           <div
             className={cn(
-              "w-1/2 flex flex-col gap-4 h-full bg-theme-primary px-4 py-3 rounded-lg"
+              "w-1/2 flex flex-col gap-4 h-full bg-theme-primary min-h-[405px] px-4 py-3 rounded-lg"
             )}
           >
             <div className="py-2">
@@ -165,7 +119,7 @@ const Dashboard = () => {
             </div>
             <DataTable
               pagination={false}
-              data={recentTransacaction}
+              data={expenses}
               columns={columns}
             />
           </div>

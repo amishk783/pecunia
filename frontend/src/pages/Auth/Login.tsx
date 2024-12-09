@@ -212,7 +212,7 @@ const Login = () => {
                 </Button>
               </div>
               <Button
-                className="my-2 flex items-center justify-center gap-3 "
+                className="my-2 flex items-center bg-theme-secondary justify-center gap-3 "
                 variant="default"
                 size="lg"
                 type="submit"
@@ -227,7 +227,7 @@ const Login = () => {
               </Button>
             </form>
             {/* serperation */}
-            <div className="xl:w-3/5 py-4 flex gap-4 justify-center">
+            <div className="xl:w-3/5 py-4 flex gap-4   justify-center">
               <div className="border-b-2 border-zinc-300 w-1/3  mb-3"></div>
               <p className="text-2xl">or</p>
               <div className="border-b-2 border-zinc-300 w-1/3  mb-3"></div>
@@ -238,7 +238,7 @@ const Login = () => {
             <div className="xl:w-3/5 py-4 flex gap-4 ">
               <div className="flex gap-4 w-full">
                 <Button
-                  className="flex gap-2 items-center w-full justify-center"
+                  className="flex gap-2 items-center bg-theme-secondary w-full justify-center"
                   variant="outline"
                   size="lg"
                   onClick={() => signItWithOAuth("google")}
@@ -278,7 +278,7 @@ const Login = () => {
                   )}
                 </Button>
                 <Button
-                  className="flex gap-2 items-center w-full justify-center"
+                  className="flex gap-2 items-center bg-theme-secondary w-full justify-center"
                   variant="outline"
                   size="lg"
                   disabled={loading}

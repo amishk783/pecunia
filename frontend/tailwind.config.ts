@@ -19,7 +19,9 @@ export default {
     },
     extend: {
       backgroundImage: {
-        bgtest: "var(--background-image)",
+        bgtest:
+           "var(--background-image)"
+    
       },
       colors: {
         border: "hsl(var(--border))",

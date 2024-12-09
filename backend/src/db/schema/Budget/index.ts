@@ -51,6 +51,7 @@ export const transactions = pgTable('transactions', {
   paidVia: varchar('paid_via', { length: 50 }).notNull(),
   notes: varchar('notes', { length: 50 }),
   date: date('date').notNull(),
+  userId: uuid('userId').references(() => accounts.id),
   category: varchar('category', { length: 50 }).notNull(),
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });

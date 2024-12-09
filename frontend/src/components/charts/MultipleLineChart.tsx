@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown } from "lucide-react";
-import { CartesianGrid, Line, LineChart, XAxis} from "recharts";
+import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import { CardContent } from "@/components/ui/card";
 import {
@@ -41,9 +41,15 @@ const chartConfig = {
 
 interface Props {
   className?: string;
+  totalIncome: string | number;
+  totalExpense: string | number;
 }
 
-export const MultipleLineChart: React.FC<Props> = ({ className }) => {
+export const MultipleLineChart: React.FC<Props> = ({
+  className,
+  totalExpense,
+  totalIncome,
+}) => {
   return (
     <div className={cn(" w-7/12 rounded-lg", className)}>
       <div className="flex flex-col space-y-2 rounded-lg p-4  font-medium">
@@ -55,7 +61,7 @@ export const MultipleLineChart: React.FC<Props> = ({ className }) => {
                 <div className="w-2 h-2 pl-1  mt-[6px] rounded-full bg-green-400"></div>
                 <div className="flex flex-col space-y-1">
                   <h5 className=" text-sm  text-secondary/70">Total Income</h5>
-                  <p className="text-md  font-bold">$25222</p>
+                  <p className="text-md  font-bold">${totalIncome}</p>
                 </div>
               </div>
               <div className="flex flex-col">
@@ -65,7 +71,7 @@ export const MultipleLineChart: React.FC<Props> = ({ className }) => {
                     <h5 className="text-sm  text-secondary/70">
                       Total Expense
                     </h5>
-                    <p className="text-md  font-bold">$25222</p>
+                    <p className="text-md  font-bold">${totalExpense}</p>
                   </div>
                 </div>
               </div>

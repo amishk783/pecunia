@@ -27,6 +27,7 @@ import { useBudget } from "@/lib/providers/BudgetProvider";
 import { addTransaction } from "@/services/transaction";
 import { CloudUpload, X } from "lucide-react";
 import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
+import { useExpense } from "@/lib/providers/ExpenseProvier";
 
 interface Expense {
   activeTab: "scan" | "multiple" | "single" | null;
@@ -53,6 +54,7 @@ export const AddExpense: React.FC<Expense> = ({
   handleSetActiveTab,
 }) => {
   const [isOutsideDivActive, setIsOutsideDivActive] = useState(false);
+  const { setExpenses } = useExpense();
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   console.log("🚀 ~ selectedFile:", selectedFile);
@@ -107,6 +109,7 @@ export const AddExpense: React.FC<Expense> = ({
       const res = await addTransaction(data);
       handleSetActiveTab(null);
       console.log(res);
+      setExpenses((prev) => [...prev, res]);
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +129,7 @@ export const AddExpense: React.FC<Expense> = ({
 
   return (
     <Modal className=" items-end">
-      <div className="flex justify-end md:justify-center md:items-center w-full md:w-[40%] rounded-xl  bg-white ">
+      <div className="flex justify-end md:justify-center md:items-center w-full md:w-[80%]  xl:w-[50%] rounded-xl  bg-theme-secondary ">
         <div ref={ref} className="w-full h-min   ">
           <div className="w-full h-min py-5 pb-10 px-4  relative flex  justify-between items-center  ">
             <p className=" w-full text-lg font-semibold">New Expense</p>
@@ -169,14 +172,14 @@ export const AddExpense: React.FC<Expense> = ({
                           Name
                         </label>
                         <Input
-                          className=" py-6 md:py-4 bg-slate-100"
+                          className=" py-6 md:py-4 bg-theme-secondary"
                           register={register}
                           error={errors.label}
                           name="label"
                           label="name"
                         />
                       </li>
-                      <div className="flex md:flex-col gap-2 md:gap-0">
+                      <div className="flex md:flex-col gap-2 md:gap-4">
                         <li className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
                           <label className=" pr-2 py-1 relative w-28 md:text-end">
                             Date
@@ -196,7 +199,7 @@ export const AddExpense: React.FC<Expense> = ({
                             Amount
                           </label>
                           <Input
-                            className="py-6 md:py-4 bg-slate-100"
+                            className="py-6 md:py-4 bg-theme-secondary"
                             register={register}
                             error={errors.amount}
                             name="amount"
@@ -204,7 +207,7 @@ export const AddExpense: React.FC<Expense> = ({
                           />
                         </li>
                       </div>
-                      <div className="flex flex-row md:flex-col max-sm:gap-2 ">
+                      <div className="flex flex-row md:flex-col max-sm:gap-2 gap-4 ">
                         <li className="flex flex-col md:flex-row md:items-center justify-center gap-2 md:gap-4 w-full">
                           <label className=" pr-2 py-1 relative w-28 md:text-end">
                             Category
@@ -276,7 +279,7 @@ export const AddExpense: React.FC<Expense> = ({
                           Notes
                         </label>
 
-                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded- bg-slate-100"></textarea>
+                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded- bg-theme-secondary"></textarea>
                       </li>
                     </ol>
                   </form>

@@ -21,7 +21,7 @@ const PasswordStrengthChecker: React.FC<{ password: string }> = ({
   zxcvbnOptions.setOptions(options);
 
   const strength = zxcvbn(password);
-  console.log(strength.score);
+  
   return (
     <div className="flex w-full h-2 items-center">
       <div

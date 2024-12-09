@@ -3,14 +3,14 @@ import { Outlet, Navigate } from "react-router-dom";
 
 import { useAuth } from "./providers/AuthProvider";
 
-
 const PrivateRoute: React.FC = () => {
-  const { user, loading } = useAuth();
-  
+  const { user, loading, session } = useAuth();
+  console.log("🚀 ~ user:", user);
+
   console.log("🚀 ~ loading:", loading);
   console.log("🚀 ~ user:", user);
 
-  if (loading) {
+  if (!loading) {
     // console.log("🚀 ~private loading:", loading)
     return (
       <div className="w-full h-screen absolute -ml-56 items-center justify-center bg-white ">
@@ -21,7 +21,7 @@ const PrivateRoute: React.FC = () => {
     ); // Or a more sophisticated loading spinner
   }
 
-  return user ? <Outlet /> : <Navigate to="/login" replace />;
+  return user || session ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;
