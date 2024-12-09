@@ -1,6 +1,6 @@
-/** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line no-undef
-module.exports = {
+import type { Config } from "tailwindcss";
+
+export default {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -19,12 +19,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        bgtest: ({ opacityValue }) => {
-          if (opacityValue) {
-            return `var(--background-image),${opacityValue}`;
-          }
-          return "var(--background-image)";
-        },
+        bgtest: "var(--background-image)",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -91,4 +86,4 @@ module.exports = {
   },
   // eslint-disable-next-line no-undef
   plugins: [require("tailwindcss-animate")],
-};
+} satisfies Config;

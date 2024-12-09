@@ -11,6 +11,8 @@ import { columns } from "./columns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { RadarChart } from "@/components/charts/RadarChart";
+import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { useBudget } from "@/lib/providers/BudgetProvider";
 
 const recentTransacaction: Transaction[] = [
   {
@@ -67,6 +69,38 @@ const Dashboard = () => {
 
   const timeOfDay = getTimeOfDay(new Date());
 
+  const { expenses } = useExpense();
+  console.log("🚀 ~ Dashboard ~ expenses:", expenses);
+  const { budget } = useBudget();
+
+  const totalIncome = budget?.groups.reduce((acc, group) => {
+    if (group.type === "income") {
+      return group.items.reduce(
+        (itemAcc, item) => itemAcc + +item.allocatedBudget,
+        0
+      );
+    }
+    return acc;
+  }, 0);
+  const totalSpent = budget?.groups.reduce((acc, group) => {
+    if (group.type === "expense") {
+      return (
+        acc +
+        group.items.reduce((itemAcc, item) => {
+          console.log(
+            "🚀 ~ returngroup.items.reduce ~ item:",
+            item.allocatedBudget
+          );
+
+          return itemAcc + +item.allocatedBudget;
+        }, 0)
+      );
+    }
+    return acc;
+  }, 0);
+
+  const totalBalance = totalIncome! - totalSpent!;
+  console.log("🚀 ~ totalSpent ~ totalSpent:", totalSpent);
   return (
     <div className={cn("p-5 w-full min-h-screen text-theme-themeText")}>
       <div className="flex py-2  ">
@@ -77,19 +111,19 @@ const Dashboard = () => {
         <div className="flex w-full gap-4 ">
           <SummeryItem
             className="text-sm "
-            title="Total Spent"
-            amount={32499}
+            title="Total Income"
+            amount={totalIncome ?? 0}
           />
 
           <SummeryItem
             className="text-sm "
             title="Total Balance"
-            amount={32499}
+            amount={totalBalance ?? 0}
           />
           <SummeryItem
             className="text-sm "
-            title="Total Savings"
-            amount={32499}
+            title="Total Spent"
+            amount={totalSpent ?? 0}
           />
           <Weather />
         </div>
