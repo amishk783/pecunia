@@ -10,7 +10,7 @@ WORKDIR /home/app/frontend
 
 COPY --chown=app:app package*.json ./
 
-RUN npm install
+RUN npm install --force
 
 COPY --chown=app:app . .
 

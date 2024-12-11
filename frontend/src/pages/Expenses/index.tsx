@@ -30,7 +30,7 @@ import { PendingTransaction } from "@/components/expense/PendingTransaction";
 
 const Expenses = () => {
   const { pendingTransaction, expenses, setExpenses } = useExpense();
-
+ 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {

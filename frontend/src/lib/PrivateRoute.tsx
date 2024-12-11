@@ -7,13 +7,9 @@ const PrivateRoute: React.FC = () => {
   const { user, loading, session } = useAuth();
   console.log("🚀 ~ user:", user);
 
-  console.log("🚀 ~ loading:", loading);
-  console.log("🚀 ~ user:", user);
-
-  if (!loading) {
-    // console.log("🚀 ~private loading:", loading)
+  if (loading) {
     return (
-      <div className="w-full h-screen absolute -ml-56 items-center justify-center bg-white ">
+      <div className="w-full h-screen absolute left-0 top-0 items-center justify-center bg-white ">
         <div className="w-full items-center translate-x-1/2 h-screen translate-y-1/2  justify-center">
           Loading...
         </div>

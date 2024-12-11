@@ -185,12 +185,12 @@ const Budget = () => {
   return (
     <div className="flex w-full h-min  min-h-screen">
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4 overflow-auto">
-        <div className="flex justify-center  md:justify-between   w-[90%] md:px-10 pt-5 pb-10  h-min">
+        <div className="flex justify-center  md:justify-between   w-[80%] md:px-10 pt-5 pb-10  h-min">
           <h2 className="hidden md:block  text-4xl">
             <span className=" font-semibold">{monthName}'s </span>
             {year} Budget
           </h2>
-          <div className="flex space-x-14 items-center">
+          <div className="flex space-x-4 items-center">
             <Button
               onClick={() => handleMonthClick(-1)}
               className=" group max-sm:bg-transparent hover:bg-transparent  "

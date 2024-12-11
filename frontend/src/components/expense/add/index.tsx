@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { date, z } from "zod";
 import receiptIcon from "@/assets/receipt.png";
 import { Button } from "@/components/ui/button";
 import {
@@ -28,8 +28,12 @@ import { addTransaction } from "@/services/transaction";
 import { CloudUpload, X } from "lucide-react";
 import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
 import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { Transaction } from "@/type";
+import { parse } from "date-fns";
 
-interface Expense {
+interface ExpenseType {
+  isEdit?: boolean;
+  initalEditState?: Partial<Transaction>;
   activeTab: "scan" | "multiple" | "single" | null;
   handleSetActiveTab: (tab: "scan" | "multiple" | "single" | null) => void;
 }
@@ -43,37 +47,59 @@ const expenseSingleSchema = z.object({
 });
 type FormData = z.infer<typeof expenseSingleSchema>;
 
-const initalState = {
+const initialState = {
   date: new Date(),
   category: "",
   paidVia: "",
 };
 
-export const AddExpense: React.FC<Expense> = ({
+export const AddExpense: React.FC<ExpenseType> = ({
   activeTab,
   handleSetActiveTab,
+  initalEditState,
+  isEdit = false,
 }) => {
+  console.log("🚀 ~ activeTab:", activeTab);
   const [isOutsideDivActive, setIsOutsideDivActive] = useState(false);
   const { setExpenses } = useExpense();
 
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  console.log("🚀 ~ selectedFile:", selectedFile);
+
   const ref = useClickOutside<HTMLDivElement>(() =>
     isOutsideDivActive ? handleSetActiveTab(null) : ""
   );
 
+  const parsedEditDate = initalEditState?.date
+    ? parse(initalEditState?.date, "dd-MM-yyyy", new Date())
+    : new Date();
+  const selectedInitalData = isEdit
+    ? {
+        date: parsedEditDate,
+        category: initalEditState?.category ?? "",
+        paidVia: initalEditState?.paidVia ?? "",
+      }
+    : initialState;
+  const [isLoading, setIsLoading] = useState(false);
   const [selectedData, setSelectedData] = useState<{
     date: Date;
     category: string;
     paidVia: string;
-  }>(initalState);
-
+  }>(selectedInitalData);
+  const [selectedFieldErrors, setSelectedFieldErrors] = useState<{
+    [key: string]: string;
+  }>({});
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<FormData>({
     resolver: zodResolver(expenseSingleSchema),
+    defaultValues: isEdit
+      ? {
+          label: initalEditState?.label,
+          amount: `${initalEditState?.amount}` as string,
+        }
+      : {},
   });
   const { budget } = useBudget();
 
@@ -97,6 +123,12 @@ export const AddExpense: React.FC<Expense> = ({
 
   const onSubmit = async (formDetails: FormData) => {
     const { amount, label, notes } = formDetails;
+    console.log("🚀 ~ onSubmit ~ amount:", amount);
+
+    setSelectedFieldErrors((prev) => ({
+      ...prev,
+      category: selectedData.category.trim(),
+    }));
 
     const data = {
       amount,
@@ -106,14 +138,17 @@ export const AddExpense: React.FC<Expense> = ({
     };
     console.log("🚀 ~ onSubmit ~ data:", data);
     try {
+      setIsLoading(true);
       const res = await addTransaction(data);
       handleSetActiveTab(null);
       console.log(res);
       setExpenses((prev) => [...prev, res]);
     } catch (error) {
       console.log(error);
+      setIsLoading(false);
     }
   };
+  console.log("Form Errors:", errors);
 
   const groupsWithCategories: GroupWithCategoriesType = budget.groups.reduce(
     (acc, group) => {
@@ -172,7 +207,7 @@ export const AddExpense: React.FC<Expense> = ({
                           Name
                         </label>
                         <Input
-                          className=" py-6 md:py-4 bg-theme-secondary"
+                          className=" py-6 md:py-4 bg-theme-primary"
                           register={register}
                           error={errors.label}
                           name="label"
@@ -199,7 +234,7 @@ export const AddExpense: React.FC<Expense> = ({
                             Amount
                           </label>
                           <Input
-                            className="py-6 md:py-4 bg-theme-secondary"
+                            className="py-6 md:py-4 bg-theme-primary"
                             register={register}
                             error={errors.amount}
                             name="amount"
@@ -212,18 +247,19 @@ export const AddExpense: React.FC<Expense> = ({
                           <label className=" pr-2 py-1 relative w-28 md:text-end">
                             Category
                           </label>
-                          <Select
+                          <Select 
                             value={selectedData.category}
                             onValueChange={(value) =>
                               handleSelectDataChange("category", value)
                             }
                           >
                             <SelectTrigger
+                              
                               onClick={() => setIsOutsideDivActive(true)}
                             >
-                              <SelectValue placeholder="Food" />
+                              <SelectValue placeholder="Not Selected" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent >
                               {Object.keys(groupsWithCategories).map((key) => {
                                 return (
                                   <SelectGroup key={key}>
@@ -260,7 +296,7 @@ export const AddExpense: React.FC<Expense> = ({
                             <SelectTrigger
                               onClick={() => setIsOutsideDivActive(true)}
                             >
-                              <SelectValue placeholder="UPI" />
+                              <SelectValue placeholder="Not Selected" />
                             </SelectTrigger>
                             <SelectContent>
                               {Object.keys(expensesPayMode).map((key) => {
@@ -279,7 +315,7 @@ export const AddExpense: React.FC<Expense> = ({
                           Notes
                         </label>
 
-                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded- bg-theme-secondary"></textarea>
+                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm bg-theme-primary rounded-lg"></textarea>
                       </li>
                     </ol>
                   </form>
@@ -323,7 +359,10 @@ export const AddExpense: React.FC<Expense> = ({
               </div>
               <div className="w-full py-4 h-min flex justify-end ">
                 <Button
-                  onClick={() => handleSubmit(onSubmit)()}
+                  onClick={() => {
+                    handleSubmit(onSubmit)();
+                  }}
+                  disabled={isLoading}
                   className="px-10"
                 >
                   Save

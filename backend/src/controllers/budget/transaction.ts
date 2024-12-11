@@ -143,6 +143,7 @@ export const getAllTransaction = async (req: AuthenticatedRequest, res: Response
       date: format(new Date(transaction.date), 'MMM dd, yyyy'),
     }));
 
+    console.log('🚀 ~ getAllTransaction ~ transformedTransactions:', transformedTransactions);
     res.status(200).send(transformedTransactions);
   } catch (error) {
     Logger.error('Error updating Transaction:', error);

@@ -33,7 +33,7 @@ export interface BudgetsExitence {
 export type Transaction = {
   id?: string;
   amount: number | string;
-  date: string | Date;
+  date: string ;
   label: string;
   category: string;
   paidVia: string;
@@ -44,4 +44,5 @@ export type PendingTransactionType = {
   label: string;
   billImageUrl: File;
   status: string;
+  partialTransaction?: Partial<Transaction>;
 };

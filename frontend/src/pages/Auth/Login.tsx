@@ -50,6 +50,8 @@ const Login = () => {
   const { logIn } = useAuth();
 
   const navigate = useNavigate();
+
+  const { updateIsAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [active, setActive] = useState<activeLoginButton>("password");
 
@@ -76,12 +78,18 @@ const Login = () => {
     setLoading(true);
     setActive("github");
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const {  error } = await supabase.auth.signInWithOAuth({
         provider: selectedProvider as Provider,
+        options: {
+          redirectTo: "http://localhost:5173/app/dashboard",
+        },
       });
+
+    
       if (error) {
         throw new Error(error.message);
       }
+    
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +98,6 @@ const Login = () => {
   };
 
   const handleViewPassword = () => {
-    event?.preventDefault();
     setViewPassword((prevState) => !prevState);
   };
 

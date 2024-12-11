@@ -127,6 +127,8 @@ export const OnboardingComplete = () => {
         setIsLoading(false);
       } catch (error) {
         console.error("Error posting data:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     postOboardingData();

@@ -265,11 +265,13 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
           <>
             {!isGroupEdit && (
               <div className="flex justify-between  group ">
-                <GripVertical
-                  className="absolute -left-0  opacity-0 group-hover:opacity-100 
+                {type === "expense" && (
+                  <GripVertical
+                    className="absolute -left-0  opacity-0 group-hover:opacity-100 
              transition-opacity duration-500 ease-in-out "
-                  {...listeners}
-                />
+                    {...listeners}
+                  />
+                )}
                 <div className="flex items-center gap-1 flex-shrink flex-grow-0 basis-1/2 w-1/2">
                   <h2
                     onClick={() => setIsGroupEdit(true)}

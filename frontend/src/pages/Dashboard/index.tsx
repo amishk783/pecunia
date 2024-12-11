@@ -49,16 +49,16 @@ const Dashboard = () => {
     return acc;
   }, 0);
 
-  const totalBalance = totalIncome ?? 0 - (totalSpent ?? 0);
-  console.log("🚀 ~ totalSpent ~ totalSpent:", totalSpent);
+  const totalBalance = (totalIncome ?? 0) - (totalSpent ?? 0);
+ 
   return (
-    <div className={cn("p-5 w-full min-h-screen text-theme-themeText")}>
+    <div className={cn("p-2 md:p-5 w-full min-h-screen text-theme-themeText")}>
       <div className="flex py-4 ">
         <h2 className=" font-medium text-4xl ">Good {timeOfDay}</h2>
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="flex w-full gap-4 ">
+        <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 ">
           <SummeryItem
             className="text-sm "
             title="Total Income"
@@ -78,7 +78,7 @@ const Dashboard = () => {
           <Weather />
         </div>
 
-        <div className="w-full gap-4  flex">
+        <div className="w-full gap-4  flex max-lg:flex-wrap">
           <MultipleLineChart
             totalExpense={totalSpent ?? 0}
             totalIncome={totalIncome ?? 0}
@@ -86,7 +86,7 @@ const Dashboard = () => {
           />
           <div
             className={cn(
-              "flex flex-col space-y-4 p-6 bg-theme-primary rounded-lg"
+              "flex flex-col space-y-4 max-md:w-full p-4 bg-theme-primary rounded-lg"
             )}
           >
             <div className="flex justify-between  items-center">
@@ -97,7 +97,7 @@ const Dashboard = () => {
           </div>
           <div
             className={cn(
-              "flex flex-col space-y-4 p-6 bg-theme-primary rounded-lg"
+              "flex flex-col space-y-4 p-5 max-md:w-full bg-theme-primary rounded-lg"
             )}
           >
             <div className="flex justify-between items-center">
@@ -108,30 +108,30 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="flex gap-2 w-full h-full">
+        <div className="flex max-lg:flex-wrap gap-2 w-full h-full">
           <div
             className={cn(
-              "w-1/2 flex flex-col gap-4 h-full bg-theme-primary min-h-[405px] px-4 py-3 rounded-lg"
+              " w-full lg:w-1/2 flex flex-col gap-4 h-full bg-theme-primary md:min-h-[405px] px-4 py-3 rounded-lg"
             )}
           >
             <div className="py-2">
               <h2 className=" text-2xl ">Recent Transactions</h2>
             </div>
-            <DataTable
-              pagination={false}
-              data={expenses}
-              columns={columns}
-            />
+            <DataTable pagination={false} data={expenses} columns={columns} />
           </div>
           <div
             className={cn(
-              "w-1/3 h-full bg-theme-primary justify-center flex p-0 rounded-lg"
+              "w-full md:w-1/2  lg:w-1/3 h-full bg-theme-primary justify-center flex p-0 rounded-lg"
             )}
           >
             <Calendar className=" " />
           </div>
-          <div className={cn("w-1/3  flex rounded-lg bg-theme-primary")}>
-            <div className="p-6 flex flex-col justify-between w-full  h-full ">
+          <div
+            className={cn(
+              " md:w-1/2 lg:w-1/3  flex rounded-lg bg-theme-primary"
+            )}
+          >
+            <div className="p-4 flex flex-col justify-between w-full  h-full ">
               <div className="flex flex-col space-y-14">
                 <div className=" flex justify-between items-center">
                   <h5 className="text-xl font-semibold">Pro Version</h5>

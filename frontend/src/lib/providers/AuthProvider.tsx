@@ -12,20 +12,23 @@ interface AuthContextProps {
   logIn: (email: string, password: string) => Promise<void>;
   signUp: (email: string, password: string) => Promise<void>;
   logOut: () => Promise<void>;
-
+  updateIsAuth: () => void;
   resetPassword: (email: string) => Promise<void>;
   updatePassword: (new_password: string) => Promise<void>;
+  isAuth: boolean;
 }
 
 const AuthContext = createContext<AuthContextProps>({
   user: null,
   session: null,
   loading: false,
+  updateIsAuth: () => {},
   logIn: () => Promise.resolve(),
   signUp: () => Promise.resolve(),
   logOut: () => Promise.resolve(),
   resetPassword: () => Promise.resolve(),
   updatePassword: () => Promise.resolve(),
+  isAuth: false,
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -38,12 +41,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [isAuth, setIsAuth] = useState<boolean>(false);
+
   useEffect(() => {
     const loadSession = async () => {
       setLoading(true);
 
       const { data, error } = await supabase.auth.getSession();
-     
 
       if (error) throw new Error(error.message);
 
@@ -64,10 +68,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setSession(session);
 
       if (session) setUser(session?.user);
+      
+      if (session && session.access_token)
+        updateAxiosToken(session?.access_token);
+
+      setIsAuth(session && !loading ? true : false);
     });
     return () => {
       subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const signUp = async (email: string, password: string) => {
@@ -89,6 +99,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
   const logOut = async () => {
+    navigate("/login");
     const { error } = await supabase.auth.signOut();
     if (error) throw new Error(error.message);
   };
@@ -109,13 +120,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
+  const updateIsAuth = () => {
+    setIsAuth((prev) => !prev);
+  };
+
   return (
     <AuthContext.Provider
       value={{
         user,
         session,
         loading,
+        updateIsAuth,
         signUp,
+        isAuth,
         logIn,
         logOut,
         resetPassword,

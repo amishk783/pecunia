@@ -51,7 +51,7 @@ export const MultipleLineChart: React.FC<Props> = ({
   totalIncome,
 }) => {
   return (
-    <div className={cn(" w-7/12 rounded-lg", className)}>
+    <div className={cn(" w-full lg:w-7/12 rounded-lg", className)}>
       <div className="flex flex-col space-y-2 rounded-lg p-4  font-medium">
         <div className=" flex flex-row justify-between">
           <div className="flex flex-col space-y-4 ">

@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { format } from "date-fns";
 import api from "@/services/api";
+import { useAuth } from "./AuthProvider";
 
 interface BudgetContextType {
   budget: BudgetType | null;
@@ -24,7 +25,9 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     Record<number, string>
   > | null>(null);
 
- 
+  const { isAuth } = useAuth();
+  console.log("🚀 ~ isAuth:", isAuth);
+
   useEffect(() => {
     console.log("Updated budget:", budget);
   }, [budget]);
@@ -33,6 +36,7 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
 
+      if (!isAuth) return;
       setLoading(true);
       try {
         const response = await api.post("/app/budget/by-date", {
@@ -51,8 +55,9 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     const fetchAllExistedBudget = async () => {
-      setLoading(true);
       try {
+        if (!isAuth) return;
+        setLoading(true);
         const response = await api.get("app/budget/budgets");
 
         setAllExistedBudget(response.data.budgetExitence);
@@ -64,7 +69,7 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
     };
     fetchBudget();
     fetchAllExistedBudget();
-  }, []);
+  }, [isAuth]);
 
   const value = useMemo(
     () => ({ budget, setBudget, loading, allExistedBudget }),

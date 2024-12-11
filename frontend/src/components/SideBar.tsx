@@ -7,6 +7,7 @@ import { useTheme } from "../lib/providers/Theme";
 
 import { adminDashboard } from "../constants/constants";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/providers/AuthProvider";
 
 const SideBar: React.FC = () => {
   const { pathname } = useLocation();
@@ -15,6 +16,8 @@ const SideBar: React.FC = () => {
   const isActivePage = (path: string): boolean => {
     return path === pathname;
   };
+
+  const { logOut } = useAuth();
   return (
     <div
       className={cn(
@@ -62,10 +65,13 @@ const SideBar: React.FC = () => {
           </Link>
         </div>
       </div>
-      <div className="gap-4 bottom-0 px-5 py-5 absolute">
-        <Button className=" flex gap-4 items-center w-full hover:bg-red-700 hover:bg-opacity-30 lg:pl-5 lg:pr-20 py-3 rounded-lg">
+      <div className="gap-4 bottom-0 px-5 py-5 absolute w-full">
+        <Button
+          onClick={logOut}
+          className=" flex gap-4 items-center w-full  hover:bg-opacity-30 hover:text-red-600  py-3 rounded-lg"
+        >
           <LogOut size={36} />
-          <h2 className="hidden lg:block font-semibold text-xl">Log Out</h2>
+          <h2 className="hidden lg:block font-semibold text-xl ">Log Out</h2>
         </Button>
       </div>
     </div>

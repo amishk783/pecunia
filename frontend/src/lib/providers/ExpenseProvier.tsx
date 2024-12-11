@@ -28,14 +28,14 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
   const [expenses, setExpenses] = useState<Transaction[]>([]);
 
   const handleReceiptUpload = async (file: File) => {
-    console.log("🚀 ~ handleReceiptUpload ~ file:", file);
     try {
       const res = await uploadReceipt(file);
-      console.log("🚀 ~ handleReceiptUpload ~ res:", res);
 
       setScanSessionId(res.scanSessionId);
       setScanStatus("PROCESSING");
 
+      const data = res.extractedData;
+      console.log("🚀 ~ handleReceiptUpload ~ data:", data);
       const expense: PendingTransactionType = {
         sessionId: res.scanSessionId,
         label: "",
@@ -52,12 +52,14 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
 
   const updateTransactionStatus = (
     sessionId: string,
-    status: PendingTransactionType["status"]
+    status: PendingTransactionType["status"],
+    data?: Partial<Transaction>
   ) => {
+    console.log("🚀 ~ ExpenseProvier ~ data:", data);
     setPendingTransaction((prev) =>
       prev.map((transaction) =>
         transaction.sessionId === sessionId
-          ? { ...transaction, status }
+          ? { ...transaction, status, partialTransaction: data }
           : transaction
       )
     );
@@ -78,15 +80,25 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
   const pollScanStatus = async (sessionId: string) => {
     const intervalId = setInterval(async () => {
       try {
-        const status = await checkScanStatus(sessionId);
-        if (status.status === "COMPLETED") {
+        const res = await checkScanStatus(sessionId);
+        if (res.status === "COMPLETED") {
           clearInterval(intervalId);
 
-          updateTransactionStatus(sessionId, "COMPLETED");
+          const data = res.extractedData;
+          console.log("🚀 ~ intervalId ~ data:", data);
+
+          // update null to empty string
+          for (const key in data) {
+            if (data[key] === null) {
+              data[key] = "";
+            }
+          }
+
+          updateTransactionStatus(sessionId, "COMPLETED", data);
           // removePendingTransaction(sessionId);
           setScanStatus("COMPLETED");
         }
-        if (status.status === "FAILED") {
+        if (res.status === "FAILED") {
           clearInterval(intervalId);
           updateTransactionStatus(sessionId, "FAILED");
           // removePendingTransaction(sessionId);

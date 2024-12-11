@@ -39,7 +39,7 @@ const chartConfig = {
 
 export function RadarChart() {
   return (
-    <div className="border-0">
+    <div className="border-0 ">
       <CardContent className="pb-0 ">
         <ChartContainer
           config={chartConfig}
