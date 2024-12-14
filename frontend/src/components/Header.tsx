@@ -1,4 +1,4 @@
-import { Sun, Home, Mail, Moon, Wrench } from "lucide-react";
+import { Sun, Home, Mail, Moon, Wrench, Menu } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../lib/providers/Theme";
 import { cn } from "../lib/utils";
@@ -12,14 +12,18 @@ import {
 } from "@/components/ui/select";
 
 import { Button } from "./ui/button";
+import { useState } from "react";
+import SideBar from "./SideBar";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const breadcrumb = pathname.slice(1, pathname.length);
+
+  const [isOpenSidebar, setIsOpenSidebar] = useState(false);
   const { setThemeOpen } = useTheme();
 
   const { theme, setThemeState } = useTheme();
-  console.log("🚀 ~ setThemeState:", setThemeState)
+  console.log("🚀 ~ setThemeState:", setThemeState);
 
   const handleTheme = (value: string) => {
     console.log(value);
@@ -53,7 +57,10 @@ const Header: React.FC = () => {
       //   textColor: "text-black",
       //   bgSecondary: "bg-stone-300",
       // });
-      document.documentElement.style.setProperty("--muted", "hsl(240 7.8% 75.9%)");
+      document.documentElement.style.setProperty(
+        "--muted",
+        "hsl(240 7.8% 75.9%)"
+      );
     } else if (value === "dark") {
       document.documentElement.style.setProperty(
         "--background-primary",
@@ -95,60 +102,80 @@ const Header: React.FC = () => {
   };
 
   return (
-    <div
-      className={cn(
-        "hidden md:flex py-6     bg-theme-primary text-theme-themeText w-full items-center justify-between  px-5  ",
-        theme?.bgSecondary,
-        theme?.textColor
-      )}
-    >
-      <div className="flex gap-2 items-center">
-        <Home className=" text-theme-themeText" size={28} />
-        <h3 className="text-xl text-theme-themeText">/ home / {breadcrumb}</h3>
-      </div>
-      <div className="flex items-center ">
-        <div className="flex gap-4 items-center  ">
-          <Button
-            className="rounded-md"
-            variant="outline"
-            onClick={() => setThemeOpen()}
-          >
-            Theme
-          </Button>
-          <Select onValueChange={handleTheme}>
-            <SelectTrigger className="w-[140px] bg-theme-primary ">
-              <SelectValue
-                className="text-theme-themeText"
-                placeholder={theme?.type}
-              />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="light">
-                <div className="flex items-center text-theme-themeText gap-3 px-2">
-                  <Sun size={24} />
-                  <h1 className="text-lg">Light</h1>
-                </div>
-              </SelectItem>
-              <SelectItem value="dark">
-                <div className="flex items-center text-theme-themeText gap-3 px-2 text-slate-700 ">
-                  <Moon size={24} />
-                  <h1 className="text-lg">Dark</h1>
-                </div>
-              </SelectItem>
-              <SelectItem value="system">
-                <div className="flex items-center text-theme-themeText gap-3 px-2 ">
-                  <Wrench size={24} />
-                  <h1 className="text-lg">Custom</h1>
-                </div>
-              </SelectItem>
-            </SelectContent>
-          </Select>
-          {/* <Sun className={theme?.textColor} size={28} /> */}
-          <Mail className={theme?.textColor} size={28} />
+    <>
+      <div
+        className={cn(
+          "hidden md:flex py-6     bg-theme-primary text-theme-themeText w-full items-center justify-between  px-5  ",
+          theme?.bgSecondary,
+          theme?.textColor
+        )}
+      >
+        <div className="flex gap-2 items-center">
+          <Home className=" text-theme-themeText" size={28} />
+          <h3 className="text-xl text-theme-themeText">
+            / home / {breadcrumb}
+          </h3>
         </div>
-        <div></div>
+        <div className="flex items-center ">
+          <div className="flex gap-4 items-center  ">
+            <Button
+              className="rounded-md"
+              variant="outline"
+              onClick={() => setThemeOpen()}
+            >
+              Theme
+            </Button>
+            <Select onValueChange={handleTheme}>
+              <SelectTrigger className="w-[140px] bg-theme-primary ">
+                <SelectValue
+                  className="text-theme-themeText"
+                  placeholder={theme?.type}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">
+                  <div className="flex items-center text-theme-themeText gap-3 px-2">
+                    <Sun size={24} />
+                    <h1 className="text-lg">Light</h1>
+                  </div>
+                </SelectItem>
+                <SelectItem value="dark">
+                  <div className="flex items-center text-theme-themeText gap-3 px-2 text-slate-700 ">
+                    <Moon size={24} />
+                    <h1 className="text-lg">Dark</h1>
+                  </div>
+                </SelectItem>
+                <SelectItem value="system">
+                  <div className="flex items-center text-theme-themeText gap-3 px-2 ">
+                    <Wrench size={24} />
+                    <h1 className="text-lg">Custom</h1>
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {/* <Sun className={theme?.textColor} size={28} /> */}
+            <Mail className={theme?.textColor} size={28} />
+          </div>
+          <div></div>
+        </div>
       </div>
-    </div>
+      <div className="flex items-center px-4  py-4  drop-shadow-md shadow-sm justify-between bg-theme-primary w-full md:hidden">
+        <div className="w-full ">
+          <h2 className="text-2xl font-medium">Pecunia</h2>
+        </div>
+        <div className="" onClick={() => setIsOpenSidebar((prev) => !prev)}>
+          <Menu size={28} />
+        </div>
+      </div>
+
+      <SideBar
+        onSidebarClose={() => setIsOpenSidebar(false)}
+        className={cn(
+          "w-1/2 flex md:hidden transition-all duration-400 delay-100 ease-in-out",
+          isOpenSidebar ? " translate-x-0" : " -translate-x-[110%]"
+        )}
+      />
+    </>
   );
 };
 export default Header;

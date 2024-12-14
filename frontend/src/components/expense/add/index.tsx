@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { date, z } from "zod";
+import { z } from "zod";
 import receiptIcon from "@/assets/receipt.png";
 import { Button } from "@/components/ui/button";
 import {
@@ -103,8 +103,6 @@ export const AddExpense: React.FC<ExpenseType> = ({
   });
   const { budget } = useBudget();
 
-  if (!budget) return; // render when budget is loaded
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event || !event.target.files) return;
     const file = event.target.files[0];
@@ -150,17 +148,15 @@ export const AddExpense: React.FC<ExpenseType> = ({
   };
   console.log("Form Errors:", errors);
 
-  const groupsWithCategories: GroupWithCategoriesType = budget.groups.reduce(
-    (acc, group) => {
+  const groupsWithCategories: GroupWithCategoriesType | undefined =
+    budget?.groups.reduce((acc, group) => {
       if (group.items.length === 0) return acc;
       acc[group.label] = group.items.map((item) => ({
         name: item.label,
       }));
 
       return acc;
-    },
-    {} as GroupWithCategoriesType
-  );
+    }, {} as GroupWithCategoriesType);
 
   return (
     <Modal className=" items-end">
@@ -247,39 +243,39 @@ export const AddExpense: React.FC<ExpenseType> = ({
                           <label className=" pr-2 py-1 relative w-28 md:text-end">
                             Category
                           </label>
-                          <Select 
+                          <Select
                             value={selectedData.category}
                             onValueChange={(value) =>
                               handleSelectDataChange("category", value)
                             }
                           >
                             <SelectTrigger
-                              
                               onClick={() => setIsOutsideDivActive(true)}
                             >
                               <SelectValue placeholder="Not Selected" />
                             </SelectTrigger>
-                            <SelectContent >
-                              {Object.keys(groupsWithCategories).map((key) => {
-                                return (
-                                  <SelectGroup key={key}>
-                                    <SelectLabel className="w-full  px-2 text-left">
-                                      {key}
-                                    </SelectLabel>
+                            <SelectContent>
+                              {groupsWithCategories &&
+                                Object.keys(groupsWithCategories).map((key) => {
+                                  return (
+                                    <SelectGroup key={key}>
+                                      <SelectLabel className="w-full  px-2 text-left">
+                                        {key}
+                                      </SelectLabel>
 
-                                    {groupsWithCategories[key].map(
-                                      (item, index) => (
-                                        <SelectItem
-                                          key={index}
-                                          value={item.name}
-                                        >
-                                          {item.name}
-                                        </SelectItem>
-                                      )
-                                    )}
-                                  </SelectGroup>
-                                );
-                              })}
+                                      {groupsWithCategories[key].map(
+                                        (item, index) => (
+                                          <SelectItem
+                                            key={index}
+                                            value={item.name}
+                                          >
+                                            {item.name}
+                                          </SelectItem>
+                                        )
+                                      )}
+                                    </SelectGroup>
+                                  );
+                                })}
                             </SelectContent>
                           </Select>
                         </li>

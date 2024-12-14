@@ -2,14 +2,19 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
-import { Settings, LogOut, Home } from "lucide-react";
+import { Settings, LogOut, Home, ChevronLeft } from "lucide-react";
 import { useTheme } from "../lib/providers/Theme";
 
 import { adminDashboard } from "../constants/constants";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/providers/AuthProvider";
 
-const SideBar: React.FC = () => {
+interface Props {
+  className?: string;
+  onSidebarClose?: () => void;
+}
+
+const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
   const { pathname } = useLocation();
   const { theme } = useTheme();
 
@@ -21,20 +26,29 @@ const SideBar: React.FC = () => {
   return (
     <div
       className={cn(
-        " w-20 lg:w-[230px] bg-theme-secondary text-theme-themeText h-full fixed hidden md:flex bottom-0 top-0 left-0 flex-col z-10   "
+        " w-20 lg:w-[230px] bg-theme-secondary hidden text-theme-themeText h-full fixed  md:flex bottom-0 top-0 left-0 flex-col z-10   ",
+        className
       )}
     >
-      <div className="flex flex-col px-5 pt-5 relative overflow-hidden   ">
-        <div className="flex justify-between items-center  py-5 border-b-2 border-stone-400 ">
+      <div className="flex flex-col px-5 pt-5 relative   ">
+        <div className="flex justify-between items-center relative  py-5 border-b-2 border-stone-400 ">
           {/* <img /> */}
           <h1
             className={cn(
-              " text-zinc-200 text-3xl  text-theme-themeText drop-shadow-md hidden lg:block "
+              " text-zinc-200 text-3xl  text-theme-themeText drop-shadow-md md:hidden lg:block "
             )}
           >
             Pecunia
           </h1>
-          <Home size={36} className=" lg:hidden" />
+          <div className="max-sm:hidden w-full h-full  lg:hidden">
+            <img  width={500} height={100} src="/logo.png" alt="logo"></img>
+          </div>
+          <div
+            onClick={onSidebarClose}
+            className=" flex items-center md:hidden justify-center rounded-full absolute -right-9 text-red-700 z-50 w-10  h-10 bg-theme-primary "
+          >
+            <ChevronLeft className="" />
+          </div>
         </div>
 
         <div className="flex flex-col gap-4 text-xl pt-10 pb-6 ">
@@ -49,7 +63,7 @@ const SideBar: React.FC = () => {
               key={item.text}
             >
               <item.icon size={36} />
-              <h2 className=" hidden lg:block font-semibold">{item.text}</h2>
+              <h2 className=" md:hidden lg:block font-semibold">{item.text}</h2>
             </Link>
           ))}
         </div>
@@ -61,7 +75,9 @@ const SideBar: React.FC = () => {
             to={"/app/settings"}
           >
             <Settings size={36} />
-            <h2 className="hidden lg:block font-semibold text-xl">Settings</h2>
+            <h2 className="md:hidden lg:block font-semibold text-xl">
+              Settings
+            </h2>
           </Link>
         </div>
       </div>

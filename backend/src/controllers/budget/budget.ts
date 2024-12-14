@@ -10,7 +10,7 @@ import { seed } from '@/utils/seed';
 import { AppError } from '@/utils/AppError';
 
 export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  const { date } = req.body;
+  const { date, data } = req.body;
   if (!date) {
     Logger.error('Date is missing in the request body.');
     throw new AppError('Date is required.', 400);
@@ -34,20 +34,29 @@ export const createOnboardingBudget = async (req: AuthenticatedRequest, res: Res
       return res.status(400).send('Account does not exit');
     }
 
-    const newBudget: Budget[] = await db
-      .insert(budget)
-      .values({
-        userId: account.id,
-        year: fullyear,
-        month,
-        status: 'active',
-      })
-      .returning();
+    const newBudget: Budget[] = await db.transaction(async tx => {
+      const createdBudget = await tx
+        .insert(budget)
+        .values({
+          userId: userId,
+          year: fullyear,
+          month,
+          status: 'active',
+        })
+        .returning();
+      console.log('🚀 ~ createOnboardingBudget ~ createdBudget:', createdBudget);
+      const parsedBudget = createdBudget.map(({ userId, createdAt, ...rest }) => rest);
+      await seed(parsedBudget[0].id, account.id, tx, data);
+      return createdBudget;
+    });
+
     const parsedBudget = newBudget.map(({ userId, createdAt, ...rest }) => rest);
 
-    const result = await seed(parsedBudget[0].id, account.id);
-    const monthBudget = { ...parsedBudget[0], ...result };
-    res.status(201).send({ monthBudget });
+    Logger.error('Budget create successfully');
+
+    // const result = await seed(parsedBudget[0].id, account.id);
+    const monthBudget = { ...parsedBudget[0] };
+    res.status(201).send({ monthBudget, budgetCreated: true });
   } catch (error) {
     next(error);
   }
@@ -65,8 +74,10 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response,
     const parsedDate = parse(date, 'dd/MM/yyyy', new Date());
     console.log(parsedDate);
     const desiredMonth = getMonth(parsedDate) + 1;
+    console.log('🚀 ~ getBudgetByMonth ~ desiredMonth:', desiredMonth);
 
     const desiredYear = getYear(parsedDate);
+    console.log('🚀 ~ getBudgetByMonth ~ desiredYear:', desiredYear);
 
     if (!req.user) return;
 
@@ -80,6 +91,10 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response,
       Logger.error('Account does not exit');
       throw new AppError('Account does not exist.', 400);
     }
+    console.log('🚀 ~ getBudgetByMonth ~ account:', account);
+
+    const budgetTes = await db.query.budget.findMany({ where: eq(budget.userId, account.id) });
+    console.log(budgetTes);
 
     const budgetData = await db.query.budget.findFirst({
       where: and(eq(budget.userId, userId), eq(budget.month, desiredMonth), eq(budget.year, desiredYear)),
@@ -95,7 +110,8 @@ export const getBudgetByMonth = async (req: AuthenticatedRequest, res: Response,
 
     if (!budgetData) {
       Logger.error('Budget not found for the specified month and year.');
-      throw new AppError('Budget not found for the specified month and year.', 404);
+
+      throw new AppError('Budget not found for the specified month and year.', 400);
     }
 
     const currentBudget = budgetData;
@@ -137,7 +153,7 @@ export const getAllExistenceBudget = async (req: AuthenticatedRequest, res: Resp
     {} as Record<string, Record<number, number>>,
   );
 
-  if (!budgetData.length) {
+  if (!budgetExitence) {
     Logger.error('Budget not found for the specified month and year.');
     throw new AppError('Budget not found for the specified month and year.', 400);
   }

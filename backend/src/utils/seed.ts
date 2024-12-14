@@ -1,6 +1,7 @@
 import { groups, budget, items, Item, Group, groupTypeEnum } from '@/db/schema/Budget';
 import { db } from '@/db/';
 import Logger from './logger';
+import { PgTransaction} from 'drizzle-orm/pg-core';
 
 const seedGroup: { type: 'expense' | 'income'; label: string }[] = [
   {
@@ -58,21 +59,34 @@ const seedItems: SeedItems = {
   ],
 };
 
-export const seed = async (budgetId: number, userID: string): Promise<{ groups: Group[] }> => {
-  try {
-    const groupData: Group[] = seedGroup.map(group => ({
-      type: group.type,
-      label: group.label,
-      budgetID: budgetId,
-      userID,
-    }));
+interface SeedDataType {
+  [key: string]: string[];
+}
 
-    Logger.silly('Seed start');
-    const insertedGroup = await db.insert(groups).values(groupData).returning();
+export const seed = async (budgetId: number, userID: string, tx: typeof db, data: SeedDataType) => {
+  const groupData: Group[] = seedGroup.map(group => ({
+    type: group.type,
+    label: group.label,
+    budgetID: budgetId,
+    userID,
+  }));
 
-    const budgetItemsData: Item[] = [];
+  Logger.silly('Seed start');
 
-    insertedGroup.forEach(group => {
+  const clientSeed: Group[] = Object.entries(data).map(([key, value]) => ({
+    type: 'expense',
+    label: key,
+    budgetID: budgetId,
+    userID,
+  }));
+
+  const megeredGroups = [...groupData, ...clientSeed];
+  const insertedGroup = await tx.insert(groups).values(megeredGroups).returning();
+
+  const budgetItemsData: Item[] = [];
+
+  insertedGroup.forEach(group => {
+    if (seedItems[group.label as keyof typeof seedItems]) {
       const itemsForGroup = seedItems[group.label as keyof typeof seedItems];
       if (itemsForGroup) {
         itemsForGroup.forEach(item => {
@@ -85,25 +99,22 @@ export const seed = async (budgetId: number, userID: string): Promise<{ groups: 
           });
         });
       }
-    });
-    await db.insert(items).values(budgetItemsData);
-    const groupsWithItems = await db.query.groups.findMany({
-      columns: {
-        userID: false,
-        createdAt: false,
-      },
-      with: {
-        items: {
-          columns: {
-            createdAt: false,
-          },
-        },
-      },
-      where: (groups, { eq }) => eq(groups.budgetID, budgetId),
-    });
-    Logger.silly('Seed Completed');
-    return { groups: groupsWithItems };
-  } catch (error) {
-    console.log('Error', error);
-  }
+    } else {
+      const itemsForGroup = data[group.label as keyof typeof data];
+      if (itemsForGroup) {
+        itemsForGroup.forEach(item => {
+          budgetItemsData.push({
+            type: 'expense',
+            label: item,
+            amountBudget: '0',
+            allocatedBudget: '0',
+            groupId: group.id,
+          });
+        });
+      }
+    }
+  });
+  await tx.insert(items).values(budgetItemsData);
+
+  Logger.silly('Seed Completed');
 };
