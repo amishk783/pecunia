@@ -3,7 +3,7 @@ import { RadialChart } from "@/components/charts/ReadialChart";
 import { DataTable } from "@/components/table/data-table";
 import { SummeryItem } from "@/components/ui/SummeryItem";
 import Weather from "@/components/widgets/weather/wheather";
-import { useAuth } from "@/lib/providers/AuthProvider";
+// import { useAuth } from "@/lib/providers/AuthProvider";
 import { cn, getTimeOfDay } from "@/lib/utils";
 
 import { columns } from "./columns";
@@ -14,13 +14,12 @@ import { useExpense } from "@/lib/providers/ExpenseProvier";
 import { useBudget } from "@/lib/providers/BudgetProvider";
 
 const Dashboard = () => {
-  const { user } = useAuth();
-  console.log(user);
+  // const { user } = useAuth();
 
   const timeOfDay = getTimeOfDay(new Date());
 
   const { expenses } = useExpense();
-  console.log("🚀 ~ Dashboard ~ expenses:", expenses);
+
   const { budget } = useBudget();
 
   const totalIncome = budget?.groups.reduce((acc, group) => {
@@ -37,11 +36,6 @@ const Dashboard = () => {
       return (
         acc +
         group.items.reduce((itemAcc, item) => {
-          console.log(
-            "🚀 ~ returngroup.items.reduce ~ item:",
-            item.allocatedBudget
-          );
-
           return itemAcc + +item.allocatedBudget;
         }, 0)
       );
@@ -50,7 +44,9 @@ const Dashboard = () => {
   }, 0);
 
   const totalBalance = (totalIncome ?? 0) - (totalSpent ?? 0);
- 
+  const recentTransactions = expenses
+    .slice(0, 4)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return (
     <div className={cn("p-2 md:p-5 w-full min-h-screen text-theme-themeText")}>
       <div className="flex py-4 ">
@@ -117,7 +113,11 @@ const Dashboard = () => {
             <div className="py-2">
               <h2 className=" text-2xl ">Recent Transactions</h2>
             </div>
-            <DataTable pagination={false} data={expenses} columns={columns} />
+            <DataTable
+              pagination={false}
+              data={recentTransactions}
+              columns={columns}
+            />
           </div>
           <div
             className={cn(

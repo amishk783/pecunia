@@ -68,7 +68,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       setThemeState(defaultTheme);
     }
   }, [setThemeState]);
-  console.log(theme);
+ 
   const setThemeOpen = () => {
     setThemePicker((prev) => !prev);
   };

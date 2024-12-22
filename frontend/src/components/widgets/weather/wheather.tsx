@@ -36,11 +36,11 @@ const weatherDesgin: { [key: string]: { icon: string; bgColor: string } } = {
 
 const Weather = () => {
   const [position, setPosition] = useState<Position | null>(null);
-  console.log("🚀 ~ Weather ~ position:", position);
+ 
   // const [bgClass, setBgClass] = useState<string>("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
-  console.log(weatherDesgin["snow"]);
+  // console.log(weatherDesgin["snow"]);
   const getLocation = async () => {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
@@ -80,7 +80,7 @@ const Weather = () => {
 
         setWeather(response.data);
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     getWeather();

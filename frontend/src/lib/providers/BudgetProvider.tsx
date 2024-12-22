@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import api from "@/services/api";
 import { useAuth } from "./AuthProvider";
+import { supabase } from "@/supabaseClient";
 
 interface BudgetContextType {
   budget: BudgetType | null;
@@ -26,17 +27,14 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
   > | null>(null);
 
   const { isAuth } = useAuth();
-  console.log("🚀 ~ isAuth:", isAuth);
 
-  useEffect(() => {
-    console.log("Updated budget:", budget);
-  }, [budget]);
   useEffect(() => {
     const fetchBudget = async () => {
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
 
       if (!isAuth) return;
+
       setLoading(true);
       try {
         const response = await api.post("/app/budget/by-date", {

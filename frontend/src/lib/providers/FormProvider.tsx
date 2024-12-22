@@ -6,7 +6,7 @@ import {
   SetStateAction,
   useEffect,
 } from "react";
-import { loadFromLocalStorage } from "../utils";
+import { loadFromLocalStorage, removeFromLocalStorage } from "../utils";
 
 interface FormValueType {
   formValue: Record<string, string[]>;
@@ -21,7 +21,6 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [formValue, setFormValue] = useState<Record<string, string[]>>({});
   const [currentStep, setCurrentStep] = useState<number>(1);
- 
 
   const updateFormValue = (category: string, selections: string[]) => {
     setFormValue((prev) => ({ ...prev, [category]: selections }));
@@ -36,7 +35,7 @@ export const FormProvider: React.FC<{ children: React.ReactNode }> = ({
       "Goals",
       "GuiltFree",
       "Extra",
-    ]; 
+    ];
     const initialFormValue = categories.reduce((acc, category) => {
       acc[category] = loadFromLocalStorage(category, []);
       return acc;

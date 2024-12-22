@@ -39,6 +39,7 @@ import { deleteGroup, modifyGroup } from "@/services/group";
 import { useBudget } from "@/lib/providers/BudgetProvider";
 import toast from "react-hot-toast";
 import { ConfirmDelete } from "../ConfirmDelete";
+import { notification } from "../Notification";
 
 interface BudgetGroupProps {
   id: number;
@@ -66,7 +67,6 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
     setActiveId(id);
   };
 
-  const { theme } = useTheme();
   const { setBudget } = useBudget();
 
   // logic is sometimes working and sometime not
@@ -79,8 +79,6 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       const oldIndex = items.findIndex((item) => item.id === active.id);
 
       const newIndex = items.findIndex((item) => item.id === over.id);
-
-      console.log("🚀 ~ handleDragEnd ~ movedArray:", movedArray);
 
       setItems((items) => arrayMove(items, oldIndex, newIndex));
 
@@ -97,20 +95,15 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
           groupId: item.groupId,
         });
       }
-      console.log("🚀 ~ handleDragEnd ~ reorderArray:", reorderArray);
 
       const result = await reorderCategory(reorderArray);
 
       setActiveId(null);
-
-      console.log("🚀 ~ handleDragEnd ~ result:", result);
     }
   };
 
   const handleCloseAdditem = async () => {
     if (itemInputRef.current && itemInputRef.current.value) {
-      console.log(itemInputRef.current.value);
-
       try {
         setIsloading(true);
         const newCategory = await addCategory({
@@ -121,10 +114,15 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         });
         setItems((prev) => [...prev, newCategory]);
         setIsAddItem(false);
-        toast.success("Successfully created Category");
+        notification({
+          type: "success",
+          message: "Successfully created Category",
+        });
       } catch (error) {
-        console.log(error);
-        toast.error("Failed to create category. Please try again.");
+        notification({
+          type: "error",
+          message: "Failed to create category. Please try again.",
+        });
       } finally {
         setIsloading(false);
       }
@@ -158,8 +156,10 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         setIsGroupEdit(false);
         toast.success("Successfully edited Group Name");
       } catch (error) {
-        console.log(error);
-        toast.error("Failed to edit Group Name. Please try again.");
+        notification({
+          type: "error",
+          message: "Failed to edit Group Name. Please try again.",
+        });
       } finally {
         setIsloading(false);
       }
@@ -249,9 +249,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       style={style}
       {...attributes}
       className={cn(
-        "w-full h-full rounded-lg p-2 md:p-6 relative",
-        theme?.bgColor,
-        theme?.textColor
+        "w-full h-full bg-theme-primary text-theme-themeText rounded-lg p-2 md:p-6 relative"
       )}
     >
       <DndContext
@@ -275,7 +273,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                 <div className="flex items-center gap-1 flex-shrink flex-grow-0 basis-1/2 w-1/2">
                   <h2
                     onClick={() => setIsGroupEdit(true)}
-                    className={cn(" text-xl font-semibold ", theme?.textColor)}
+                    className={cn(" text-xl font-semibold ")}
                   >
                     {grouptitle}
                   </h2>
@@ -395,8 +393,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                 >
                   <div
                     className={cn(
-                      "flex items-center justify-center w-[110%] h-min absolute -left-12 rounded-md drop-shadow-lg shadow-md ",
-                      theme?.bgSecondary
+                      "flex items-center bg-theme-secondary justify-center w-[110%] h-min absolute -left-12 rounded-md drop-shadow-lg shadow-md "
                     )}
                   >
                     <div className="flex items-center justify-between w-full px-2 py-2 ">

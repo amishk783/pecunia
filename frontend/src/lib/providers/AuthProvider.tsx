@@ -1,3 +1,4 @@
+import { defaultAvatarUrls } from "@/constants/constants";
 import { updateAxiosToken } from "@/services/api";
 import { supabase } from "@/supabaseClient";
 import { Session, User } from "@supabase/supabase-js";
@@ -68,7 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setSession(session);
 
       if (session) setUser(session?.user);
-      
+
       if (session && session.access_token)
         updateAxiosToken(session?.access_token);
 
@@ -81,9 +82,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   const signUp = async (email: string, password: string) => {
+    const storageUrl = `${process.env.SUPABASE_URL}/storage/v1/object/public/file`;
+
+    const randomAvatar =
+      defaultAvatarUrls[Math.floor(Math.random() * defaultAvatarUrls.length)];
+
+    const avatarUrl = `${storageUrl}${randomAvatar}`;
+
     const { error } = await supabase.auth.signUp({
       email: email,
       password: password,
+      options: {
+        data: {
+          avatar_url: avatarUrl,
+        },
+      },
     });
     if (error) {
       throw new Error(error.message);

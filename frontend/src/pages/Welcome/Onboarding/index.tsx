@@ -15,6 +15,7 @@ import api from "@/services/api";
 import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
+import { removeFromLocalStorage } from "@/lib/utils";
 
 export const Lifestyle = () => {
   return (
@@ -108,7 +109,7 @@ export const HiddenExpense = () => {
 
 export const OnboardingComplete = () => {
   const { formValue } = useMultiForm();
-  console.log("🚀 ~ OnboardingComplete ~ formValue:", formValue);
+
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -120,8 +121,13 @@ export const OnboardingComplete = () => {
         const date = format(currentDate, "dd/MM/yyyy");
         const response = await api.post("/app/budget/onboarding-complete", {
           date,
+          data: formValue,
         });
         console.log("🚀 ~ postOboardingData ~ response:", response);
+
+        const formKeys = Object.keys(formValue);
+
+        removeFromLocalStorage(formKeys);
 
         navigate("/");
         setIsLoading(false);

@@ -15,6 +15,10 @@ export const loadFromLocalStorage = (key: string, defaultValue: unknown) => {
   return savedValue ? JSON.parse(savedValue) : defaultValue;
 };
 
+export const removeFromLocalStorage = (keys: string[]) => {
+  keys.map((key) => localStorage.removeItem(key));
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const erroMessageHandler = (error: any) => {
   toast.error(error.message);

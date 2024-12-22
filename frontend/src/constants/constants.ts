@@ -15,16 +15,7 @@ export const adminDashboard: DashboardType[] = [
     text: "Dashboard",
     pathUrl: "app/dashboard",
   },
-  {
-    icon: CircleGauge,
-    text: "Goals",
-    pathUrl: "app/analytics",
-  },
-  {
-    icon: CandlestickChartIcon,
-    text: "Insights",
-    pathUrl: "app/users",
-  },
+
   {
     icon: Bitcoin,
     text: "Budget",
@@ -58,3 +49,12 @@ export interface GroupWithCategoriesType {
     name: string;
   }[];
 }
+
+export const defaultAvatarUrls = [
+  "/avatar1.jpg",
+  "/avatar2.jpg",
+  "/avatar3.jpg",
+  "/avatar4.jpg",
+  "/avatar5.jpg",
+  "/avatar6.jpg",
+];

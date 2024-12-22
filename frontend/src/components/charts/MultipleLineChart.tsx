@@ -20,10 +20,10 @@ import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
 const chartData = [
-  { month: "January", income: 186, expense: 80 },
-  { month: "February", income: 305, expense: 200 },
+  { month: "January"},
+  { month: "February",  },
   { month: "March", income: 237, expense: 120 },
-  { month: "April", income: 73, expense: 190 },
+  { month: "April", },
   { month: "May", income: 209, expense: 130 },
   { month: "June", income: 214, expense: 140 },
 ];

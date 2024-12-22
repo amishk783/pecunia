@@ -1,4 +1,4 @@
-import { Sun, Home, Mail, Moon, Wrench, Menu } from "lucide-react";
+import { Sun, Home, Mail, Moon, Wrench, Menu, Loader2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
 import { useTheme } from "../lib/providers/Theme";
 import { cn } from "../lib/utils";
@@ -11,22 +11,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Button } from "./ui/button";
 import { useState } from "react";
 import SideBar from "./SideBar";
+import { useAuth } from "@/lib/providers/AuthProvider";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();
+  const { user, loading } = useAuth();
+ 
   const breadcrumb = pathname.slice(1, pathname.length);
 
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
-  const { setThemeOpen } = useTheme();
 
-  const { theme, setThemeState } = useTheme();
-  console.log("🚀 ~ setThemeState:", setThemeState);
+  const userAvtarUrl = user?.user_metadata.avatar_url as string;
+
+
+  const { theme } = useTheme();
+ 
 
   const handleTheme = (value: string) => {
-    console.log(value);
+  
 
     if (value === "light") {
       document.documentElement.style.setProperty(
@@ -112,19 +116,10 @@ const Header: React.FC = () => {
       >
         <div className="flex gap-2 items-center">
           <Home className=" text-theme-themeText" size={28} />
-          <h3 className="text-xl text-theme-themeText">
-            / home / {breadcrumb}
-          </h3>
+          <h3 className="text-xl  text-theme-themeText">/home/{breadcrumb}</h3>
         </div>
         <div className="flex items-center ">
           <div className="flex gap-4 items-center  ">
-            <Button
-              className="rounded-md"
-              variant="outline"
-              onClick={() => setThemeOpen()}
-            >
-              Theme
-            </Button>
             <Select onValueChange={handleTheme}>
               <SelectTrigger className="w-[140px] bg-theme-primary ">
                 <SelectValue
@@ -153,10 +148,18 @@ const Header: React.FC = () => {
                 </SelectItem>
               </SelectContent>
             </Select>
+
+            <div className="flex items-center justify-center rounded-full relative border-2 border-theme-themeText overflow-hidden w-10 h-10">
+              {!loading ? (
+                <img className=" absolute " src={`${userAvtarUrl}`}></img>
+              ) : (
+                <Loader2 size={14} className=" absolute animate-spin" />
+              )}
+            </div>
+
             {/* <Sun className={theme?.textColor} size={28} /> */}
             <Mail className={theme?.textColor} size={28} />
           </div>
-          <div></div>
         </div>
       </div>
       <div className="flex items-center px-4  py-4  drop-shadow-md shadow-sm justify-between bg-theme-primary w-full md:hidden">

@@ -55,7 +55,6 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
     status: PendingTransactionType["status"],
     data?: Partial<Transaction>
   ) => {
-    console.log("🚀 ~ ExpenseProvier ~ data:", data);
     setPendingTransaction((prev) =>
       prev.map((transaction) =>
         transaction.sessionId === sessionId

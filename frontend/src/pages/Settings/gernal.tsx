@@ -1,6 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/lib/providers/AuthProvider";
+import { Loader2 } from "lucide-react";
 
 export const GernalSection = () => {
+  const { user, loading } = useAuth();
+  const userAvtarUrl = user?.user_metadata.avatar_url as string;
+  console.log("🚀 ~ GernalSection ~ userAvtarUrl:", userAvtarUrl);
   return (
     <section className="flex flex-col space-y-6">
       <div className="xl:w-2/3 pt-4 px-4 py-6 rounded-lg bg-theme-primary  ">
@@ -11,7 +16,17 @@ export const GernalSection = () => {
               <p>This will be displayed as your profile</p>
             </div>
             <div className="flex items-center  ">
-              <div className="w-16 h-16 rounded-full bg-black"></div>
+              <div className="flex items-center justify-center rounded-full relative border-2 border-theme-themeText overflow-hidden w-20 h-20">
+                {!loading ? (
+                  <img className=" absolute " src={`${userAvtarUrl}`}></img>
+                ) : (
+                  <Loader2
+                    size={14}
+                    className=" absolute w-10 h-10 animate-spin"
+                  />
+                )}
+              </div>
+
               <Button variant="ghost">Delete</Button>
               <Button variant="ghost">Update</Button>
             </div>

@@ -196,7 +196,7 @@ const Budget = () => {
               className=" group max-sm:bg-transparent hover:bg-transparent  "
             >
               <ChevronLeft className=" " />
-              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-white top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-300 transition-transform">
+              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-theme-secondary top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-300 transition-transform">
                 prev month
               </div>
             </Button>
@@ -208,7 +208,7 @@ const Budget = () => {
               className="relative group max-sm:bg-transparent hover:bg-transparent"
             >
               <ChevronRight />
-              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-white top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-200 transition-all">
+              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-theme-secondary top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-200 transition-all">
                 next month
               </div>
             </Button>
