@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-import { cn, erroMessageHandler } from "@/lib/utils";
+import { cn} from "@/lib/utils";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { financialAdvice } from "./constant";
 

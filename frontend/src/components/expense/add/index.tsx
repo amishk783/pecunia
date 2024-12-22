@@ -88,6 +88,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
   const [selectedFieldErrors, setSelectedFieldErrors] = useState<{
     [key: string]: string;
   }>({});
+  console.log("🚀 ~ selectedFieldErrors:", selectedFieldErrors);
   const {
     handleSubmit,
     register,
@@ -132,6 +133,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
       label,
       notes,
       ...selectedData,
+      date: selectedData.date as unknown as string,
     };
 
     try {

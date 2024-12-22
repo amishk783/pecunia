@@ -18,7 +18,7 @@ import { BudgetItem } from "./BudgetItem";
 import { useRef, useState } from "react";
 import { ItemType } from "@/type";
 import { cn } from "@/lib/utils";
-import { useTheme } from "@/lib/providers/Theme";
+
 import { Button } from "../ui/button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
@@ -37,7 +37,7 @@ import {
 } from "lucide-react";
 import { deleteGroup, modifyGroup } from "@/services/group";
 import { useBudget } from "@/lib/providers/BudgetProvider";
-import toast from "react-hot-toast";
+
 import { ConfirmDelete } from "../ConfirmDelete";
 import { notification } from "../Notification";
 

@@ -12,6 +12,7 @@ export const PendingTransaction: React.FC<PendingTransactionType> = ({
   status,
   partialTransaction,
 }) => {
+  console.log("🚀 ~ sessionId:", sessionId)
   console.log("🚀 ~ label:", label);
   console.log(new Date());
   console.log("🚀 ~ sessionId:", partialTransaction);

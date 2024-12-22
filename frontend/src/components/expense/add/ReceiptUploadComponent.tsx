@@ -12,7 +12,7 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const { handleReceiptUpload, scanStatus } = useExpense();
+  const { handleReceiptUpload} = useExpense();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event || !event.target.files) return;

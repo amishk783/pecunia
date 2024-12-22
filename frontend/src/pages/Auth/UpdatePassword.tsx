@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { Loader } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";

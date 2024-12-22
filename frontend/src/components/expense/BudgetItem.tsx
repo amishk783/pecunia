@@ -6,7 +6,6 @@ import { GripVertical, Loader, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { ConfirmDelete } from "../ConfirmDelete";
-import { notification } from "../Notification";
 
 export interface BudgetItemProps {
   id: number;
@@ -49,14 +48,14 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
   });
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  const handleClose = () => {
-    setIsActive(false);
-    setIsEditOpen((prev) => ({
-      ...prev,
-      label: false,
-      allocatedBudget: false,
-    }));
-  };
+  // const handleClose = () => {
+  //   setIsActive(false);
+  //   setIsEditOpen((prev) => ({
+  //     ...prev,
+  //     label: false,
+  //     allocatedBudget: false,
+  //   }));
+  // };
 
   const ref = useClickOutside<HTMLDivElement>(() => {
     setIsActive(false);

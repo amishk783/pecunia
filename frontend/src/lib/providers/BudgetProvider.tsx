@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { format } from "date-fns";
 import api from "@/services/api";
 import { useAuth } from "./AuthProvider";
-import { supabase } from "@/supabaseClient";
+
 import { notification } from "@/components/Notification";
 
 interface BudgetContextType {

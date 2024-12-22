@@ -6,7 +6,7 @@ import {
   SetStateAction,
   useEffect,
 } from "react";
-import { loadFromLocalStorage, removeFromLocalStorage } from "../utils";
+import { loadFromLocalStorage} from "../utils";
 
 interface FormValueType {
   formValue: Record<string, string[]>;

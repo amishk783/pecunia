@@ -33,6 +33,7 @@ const weatherDesgin: { [key: string]: { icon: string; bgColor: string } } = {
     bgColor: "",
   },
 };
+console.log("🚀 ~ weatherDesgin:", weatherDesgin)
 
 const Weather = () => {
   const [position, setPosition] = useState<Position | null>(null);

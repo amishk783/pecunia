@@ -52,7 +52,6 @@ const Login = () => {
 
   const navigate = useNavigate();
 
-  const { updateIsAuth } = useAuth();
   const [loading, setLoading] = useState(false);
   const [active, setActive] = useState<activeLoginButton>("password");
 
