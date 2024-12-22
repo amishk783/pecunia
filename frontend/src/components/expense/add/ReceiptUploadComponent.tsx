@@ -17,7 +17,6 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event || !event.target.files) return;
     const file = event.target.files[0];
-    console.log("🚀 ~ handleFileChange ~ file:", file);
 
     handleReceiptUpload(file);
     setSelectedFile(file);

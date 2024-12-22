@@ -6,6 +6,7 @@ import { GripVertical, Loader, Trash2 } from "lucide-react";
 import { useState } from "react";
 
 import { ConfirmDelete } from "../ConfirmDelete";
+import { notification } from "../Notification";
 
 export interface BudgetItemProps {
   id: number;
@@ -63,16 +64,12 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
   });
 
   const handleDelete = async () => {
-    try {
-      setIsLoading(true);
+    setIsLoading(true);
 
-      setIsConfirmDelete(false);
-      await handleItemDelete(id);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    setIsConfirmDelete(false);
+    await handleItemDelete(id);
+
+    setIsLoading(false);
   };
 
   if (isDragging) {

@@ -16,6 +16,7 @@ import { format } from "date-fns";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "lucide-react";
 import { removeFromLocalStorage } from "@/lib/utils";
+import { notification } from "@/components/Notification";
 
 export const Lifestyle = () => {
   return (
@@ -119,11 +120,10 @@ export const OnboardingComplete = () => {
       try {
         setIsLoading(true);
         const date = format(currentDate, "dd/MM/yyyy");
-        const response = await api.post("/app/budget/onboarding-complete", {
+        await api.post("/app/budget/onboarding-complete", {
           date,
           data: formValue,
         });
-        console.log("🚀 ~ postOboardingData ~ response:", response);
 
         const formKeys = Object.keys(formValue);
 
@@ -132,7 +132,10 @@ export const OnboardingComplete = () => {
         navigate("/");
         setIsLoading(false);
       } catch (error) {
-        console.error("Error posting data:", error);
+        notification({
+          type: "error",
+          message: "Failed to onboard user. Please try again.",
+        });
       } finally {
         setIsLoading(false);
       }

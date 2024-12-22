@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { Loader } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
+import { notification } from "@/components/Notification";
 
 const schema = z
   .object({
@@ -38,11 +39,8 @@ const UpdatePassword = () => {
   } = useForm<FormData>({ resolver: zodResolver(schema) });
   const { updatePassword } = useAuth();
 
-  const navigate = useNavigate();
-  console.log("🚀 ~ UpdatePassword ~ navigate:", navigate);
   const [loading, setLoading] = useState(false);
   const watchPassword = watch("password") || "";
-  console.log(watchPassword);
 
   const onSubmit = async (formDetails: FormData) => {
     event?.preventDefault();
@@ -51,7 +49,10 @@ const UpdatePassword = () => {
     try {
       await updatePassword(formDetails.password);
     } catch (error) {
-      console.log(error);
+      notification({
+        type: "error",
+        message: "Failed to signup. Please try again.",
+      });
     }
     setLoading(false);
   };

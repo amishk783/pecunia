@@ -23,6 +23,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/Input";
 import { Github, Loader, Eye, Plus } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
+import { notification } from "@/components/Notification";
 
 const schema = z.object({
   email: z
@@ -69,7 +70,10 @@ const Login = () => {
       });
       navigate("/app/dashboard");
     } catch (error) {
-      // toast.error(error);
+     notification({
+       type: "error",
+       message: "Failed to login. Please try again.",
+     });
     }
     setLoading(false);
   };
@@ -78,20 +82,21 @@ const Login = () => {
     setLoading(true);
     setActive("github");
     try {
-      const {  error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: selectedProvider as Provider,
         options: {
           redirectTo: "http://localhost:5173/app/dashboard",
         },
       });
 
-    
       if (error) {
         throw new Error(error.message);
       }
-    
     } catch (error) {
-      console.log(error);
+      notification({
+        type: "error",
+        message: "Failed to login. Please try again.",
+      });
     }
     setLoading(false);
     setActive("default");

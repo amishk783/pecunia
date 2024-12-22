@@ -1,6 +1,6 @@
-FROM node:20-alpine3.18
+FROM node:20-alpine3.18 AS build
 
-RUN addgroup app && adduser -S app -G app 
+RUN addgroup app && adduser -S app -G app
 
 USER app
 
@@ -14,6 +14,16 @@ RUN npm install --force
 
 COPY --chown=app:app . .
 
-EXPOSE 5173
+ENV GENERATE_SOURCEMAP=false
 
-CMD ["npm", "run", "dev", "--", "--host"]
+RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
+
+# production environment
+FROM nginx:alpine
+COPY --from=build /home/app/frontend/dist /usr/share/nginx/html
+
+COPY --from=build /home/app/frontend/nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
+                              

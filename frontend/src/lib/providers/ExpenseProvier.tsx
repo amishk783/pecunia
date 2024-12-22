@@ -84,7 +84,6 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
           clearInterval(intervalId);
 
           const data = res.extractedData;
-          console.log("🚀 ~ intervalId ~ data:", data);
 
           // update null to empty string
           for (const key in data) {

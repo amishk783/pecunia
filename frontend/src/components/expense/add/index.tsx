@@ -30,6 +30,7 @@ import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
 import { useExpense } from "@/lib/providers/ExpenseProvier";
 import { Transaction } from "@/type";
 import { parse } from "date-fns";
+import { notification } from "@/components/Notification";
 
 interface ExpenseType {
   isEdit?: boolean;
@@ -59,7 +60,6 @@ export const AddExpense: React.FC<ExpenseType> = ({
   initalEditState,
   isEdit = false,
 }) => {
-  console.log("🚀 ~ activeTab:", activeTab);
   const [isOutsideDivActive, setIsOutsideDivActive] = useState(false);
   const { setExpenses } = useExpense();
 
@@ -121,7 +121,6 @@ export const AddExpense: React.FC<ExpenseType> = ({
 
   const onSubmit = async (formDetails: FormData) => {
     const { amount, label, notes } = formDetails;
-    console.log("🚀 ~ onSubmit ~ amount:", amount);
 
     setSelectedFieldErrors((prev) => ({
       ...prev,
@@ -134,7 +133,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
       notes,
       ...selectedData,
     };
-    console.log("🚀 ~ onSubmit ~ data:", data);
+
     try {
       setIsLoading(true);
       const res = await addTransaction(data);
@@ -142,7 +141,10 @@ export const AddExpense: React.FC<ExpenseType> = ({
       console.log(res);
       setExpenses((prev) => [...prev, res]);
     } catch (error) {
-      console.log(error);
+      notification({
+        type: "error",
+        message: "Failed to add expense. Please try again.",
+      });
       setIsLoading(false);
     }
   };

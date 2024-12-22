@@ -30,7 +30,7 @@ import { PendingTransaction } from "@/components/expense/PendingTransaction";
 
 const Expenses = () => {
   const { pendingTransaction, expenses, setExpenses } = useExpense();
- 
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -38,7 +38,10 @@ const Expenses = () => {
 
         setExpenses(res);
       } catch (error) {
-        throw new Error("Something Went wrong");
+        notification({
+          type: "error",
+          message: "Failed to fetch transactions. Please try again.",
+        });
       }
     };
     fetchTransactions();
@@ -54,7 +57,10 @@ const Expenses = () => {
       );
       notification({ type: "success", message: "Succefully Deleted" });
     } catch (error) {
-      throw new Error("Something Went wrong");
+      notification({
+        type: "error",
+        message: "Failed to delete expense. Please try again.",
+      });
     }
   };
   const onActionCopy = async (data: Transaction) => {
@@ -71,7 +77,10 @@ const Expenses = () => {
         message: `Succefully Copied ${data.label}`,
       });
     } catch (error) {
-      throw new Error("Something Went wrong");
+      notification({
+        type: "error",
+        message: "Failed to copy transaction. Please try again.",
+      });
     }
   };
 

@@ -24,6 +24,7 @@ import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
 import { Button } from "@/components/ui/button";
 
 import { Github, Loader, Eye, Plus } from "lucide-react";
+import { notification } from "@/components/Notification";
 
 const schema = z.object({
   email: z
@@ -66,7 +67,10 @@ const Signup = () => {
       });
       navigate("/welcome/lifestyle");
     } catch (error) {
-      erroMessageHandler(error);
+      notification({
+        type: "error",
+        message: "Failed to signup. Please try again.",
+      });
     }
     setLoading(false);
   };
@@ -83,12 +87,15 @@ const Signup = () => {
         },
       });
       console.log(data.provider);
-      console.log(data.url);
+
       if (error) {
         throw new Error(error.message);
       }
     } catch (error) {
-      erroMessageHandler(error);
+      notification({
+        type: "error",
+        message: "Failed to signup. Please try again.",
+      });
     }
     setLoading(false);
     setActive("default");

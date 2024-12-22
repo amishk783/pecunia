@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import api from "@/services/api";
 import { useAuth } from "./AuthProvider";
 import { supabase } from "@/supabaseClient";
+import { notification } from "@/components/Notification";
 
 interface BudgetContextType {
   budget: BudgetType | null;
@@ -46,7 +47,10 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
           ...response.data.currentBudget,
         }));
       } catch (error) {
-        console.error("Error posting data:", error); // Handle the error
+        notification({
+          type: "error",
+          message: "Failed to fetch bugdet. Please try again.",
+        }); // Handle the error
       } finally {
         setLoading(false);
       }
@@ -60,7 +64,11 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
 
         setAllExistedBudget(response.data.budgetExitence);
       } catch (error) {
-        console.error("Error posting data:", error); // Handle the error
+        // Handle the error
+        notification({
+          type: "error",
+          message: "Failed to fetch all existed bugdet. Please try again.",
+        });
       } finally {
         setLoading(false);
       }

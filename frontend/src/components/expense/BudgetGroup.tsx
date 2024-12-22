@@ -96,7 +96,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         });
       }
 
-      const result = await reorderCategory(reorderArray);
+      await reorderCategory(reorderArray);
 
       setActiveId(null);
     }
@@ -154,7 +154,10 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
         });
 
         setIsGroupEdit(false);
-        toast.success("Successfully edited Group Name");
+        notification({
+          type: "success",
+          message: "Successfully edited Group Name",
+        });
       } catch (error) {
         notification({
           type: "error",
@@ -186,10 +189,15 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       setIsloading(true);
       await deleteCategory(id);
       setItems((prev) => prev.filter((item) => item.id !== id));
-      toast.success("Successfully deleted category");
+      notification({
+        type: "success",
+        message: "Successfully deleted category",
+      });
     } catch (error) {
-      console.log(error);
-      toast.error("Failed to deleted category. Please try again.");
+      notification({
+        type: "error",
+        message: "Failed to delete category. Please try again.",
+      });
     } finally {
       setIsloading(false);
     }
@@ -198,7 +206,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
     try {
       setIsloading(true);
       const deletedGroup = await deleteGroup(id);
-      console.log("🚀 ~ handleGroupDelete ~ deletedGroup:", deletedGroup);
+
       setBudget((prev) => {
         if (!prev) return prev;
         const updateBudget = {
@@ -208,9 +216,15 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
 
         return updateBudget;
       });
-      toast.success("Successfully deleted group");
+      notification({
+        type: "success",
+        message: "Successfully deleted group.",
+      });
     } catch (error) {
-      toast.error("Failed to deleted category. Please try again.");
+      notification({
+        type: "error",
+        message: "Failed to delete Group. Please try again.",
+      });
     } finally {
       setIsloading(false);
     }
