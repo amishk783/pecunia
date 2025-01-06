@@ -78,6 +78,7 @@ const Budget = () => {
   const handleMonthClick = async (direction: 1 | -1) => {
     if (!budget) return;
     const updatedDate = addMonths(currentMonthDate, direction);
+    console.log("🚀 ~ handleMonthClick ~ currentMonthDate:", currentMonthDate)
     const currentYear = getYear(updatedDate);
     const zeroAdjustedMonthNumber = getMonth(updatedDate);
     const monthExists =
@@ -111,7 +112,8 @@ const Budget = () => {
       setIsloading(true);
       const id = (budget && budget.id) ?? 1;
 
-      const date = format(new Date(), "MM/dd/yyyy");
+      const date = format(currentMonthDate, "MM/dd/yyyy");
+      console.log("🚀 ~ handleCloneBudget ~ date:", date)
       const clonedBudget: BudgetType = await cloneBudget(date, id);
       console.log("🚀 ~ handleCloneBudget ~ clonedBudget:", clonedBudget);
       setBudget(clonedBudget);
@@ -183,7 +185,7 @@ const Budget = () => {
     }
   };
   return (
-    <div className="flex w-full h-min  min-h-screen">
+    <div className="flex w-full h-min  min-h-screen text-secondary-foreground">
       <div className="flex flex-col justify-center items-center  w-full h-full gap-4 overflow-auto">
         <div className="flex justify-center  md:justify-between   w-[80%] md:px-10 pt-5 pb-10  h-min">
           <h2 className="hidden md:block  text-4xl">
@@ -193,10 +195,10 @@ const Budget = () => {
           <div className="flex space-x-4 items-center">
             <Button
               onClick={() => handleMonthClick(-1)}
-              className=" group max-sm:bg-transparent hover:bg-transparent  "
+              className=" relative group bg-primary max-sm:bg-transparent   "
             >
               <ChevronLeft className=" " />
-              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-theme-secondary top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-300 transition-transform">
+              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap  bg-secondary text-secondary-foreground   top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-300 transition-transform">
                 prev month
               </div>
             </Button>
@@ -205,10 +207,10 @@ const Budget = () => {
             </h2>
             <Button
               onClick={() => handleMonthClick(1)}
-              className="relative group max-sm:bg-transparent hover:bg-transparent"
+              className="relative bg-primary group max-sm:bg-transparent"
             >
               <ChevronRight />
-              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap bg-theme-secondary top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-200 transition-all">
+              <div className="absolute w-auto py-2 rounded-xl whitespace-nowrap  bg-secondary text-secondary-foreground  top-12 -left-1/2 px-4 opacity-0 group-hover:opacity-100 duration-200 transition-all">
                 next month
               </div>
             </Button>
@@ -270,7 +272,7 @@ const Budget = () => {
                     {!isAddingGroup && (
                       <Button
                         onClick={() => setIsAddingGroup((prev) => !prev)}
-                        className="p-0 flex gap-2 items-center text-zinc-800"
+                        className="p-0 flex gap-2 items-center text-secondary-foreground"
                         variant="ghost"
                       >
                         <Plus />
@@ -280,7 +282,7 @@ const Budget = () => {
                     {isAddingGroup && (
                       <input
                         ref={itemInputRef}
-                        className="w-72 h-1 py-6 px-4 focus:outline-none bg-zinc-200 focus:border-0 focus:bg-blue-100 shadow-sm rounded-md"
+                        className="w-72 h-1 py-6 px-4 text-secondary-foreground bg-card focus:outline-none focus:border-0 focus:bg-card shadow-sm rounded-md"
                       />
                     )}
                   </div>

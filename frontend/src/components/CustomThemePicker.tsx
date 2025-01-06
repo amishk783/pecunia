@@ -28,15 +28,9 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
   ) => {
     console.log("🚀 ~ pattern:", pattern);
     if (!primaryColor) return;
-    document.documentElement.style.setProperty(
-      "--background-primary",
-      primaryColor
-    );
+    document.documentElement.style.setProperty("--background", primaryColor);
     if (!secondaryColor) return;
-    document.documentElement.style.setProperty(
-      "--background-secondary",
-      secondaryColor
-    );
+    document.documentElement.style.setProperty("--background", secondaryColor);
     setPrimary(primaryColor);
   };
   const handleAttr = (pattern: string) => {
@@ -140,7 +134,6 @@ const CustomThemePicker: React.FC<CustomThemePickerProps> = ({
           </div>
           <div className="flex flex-col pt-4 ">
             <p className="text-xl">Choose Fonts</p>
-            
           </div>
         </div>
       </div>

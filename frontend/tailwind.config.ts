@@ -19,9 +19,7 @@ export default {
     },
     extend: {
       backgroundImage: {
-        bgtest:
-           "var(--background-image)"
-    
+        bgtest: "var(--background-image)",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -33,14 +31,14 @@ export default {
           themeText: "var(--theme-text-color)",
         },
 
-        background: "var(--background-primary)",
+        background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "var(--theme-text-color)",
-          foreground: "var(--theme-text-color)",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "var(--background-primary)",
+          DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
@@ -48,16 +46,16 @@ export default {
           foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          // DEFAULT: "var(--theme-text-color)",
-          // foreground: "var(--theme-text-color)",
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "var(--background-primary)",
-          foreground: "var(--theme-text-color)",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "var(--background-secondary)",
-          foreground: "var(--theme-text-color)",
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
         card: {
           DEFAULT: "hsl(var(--card))",

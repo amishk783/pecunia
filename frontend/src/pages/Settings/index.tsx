@@ -12,17 +12,17 @@ export const Settings = () => {
   );
 
   return (
-    <main className=" py-8 px-6 w-full min-h-screen text-theme-themeText">
+    <main className=" py-8 px-6 w-full min-h-screen  text-secondary-foreground  ">
       <div className="w-full space-y-6 flex-col h-full">
         <h2 className="text-3xl font-medium">Settings</h2>
 
-        <div className="flex justify-between  bg-theme-secondary   py-1 px-2 rounded-3xl w-max items-center gap-4 text-xl">
+        <div className="flex justify-between  bg-background text-secondary-foreground  py-1 px-2 rounded-3xl w-max items-center gap-4 text-xl">
           <div
             onClick={() => setActiveTab("Gernal")}
             className={cn(
               " px-8 py-1 rounded-3xl",
               activeTab === "Gernal"
-                ? "  bg-theme-primary  drop-shadow-2xl shadow-md shadow-slate-950/40  "
+                ? "  bg-primary text-primary-foreground  drop-shadow-2xl shadow-md shadow-slate-950/40  "
                 : ""
             )}
           >
@@ -33,8 +33,8 @@ export const Settings = () => {
             className={cn(
               " px-8 py-1 rounded-3xl",
               activeTab === "Preference"
-                ? "  bg-theme- text-white   "
-                : " text-theme-secondary  text-white "
+                ? "  bg-primary text-primary-foreground "
+                : " "
             )}
           >
             Preference

@@ -263,7 +263,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
       style={style}
       {...attributes}
       className={cn(
-        "w-full h-full bg-theme-primary text-theme-themeText rounded-lg p-2 md:p-6 relative"
+        "w-full h-full bg-background text-secondary-foreground rounded-lg p-2 md:p-6 relative"
       )}
     >
       <DndContext
@@ -407,7 +407,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
                 >
                   <div
                     className={cn(
-                      "flex items-center bg-theme-secondary justify-center w-[110%] h-min absolute -left-12 rounded-md drop-shadow-lg shadow-md "
+                      "flex items-center bg-secondary justify-center w-[110%] h-min absolute -left-12 rounded-md drop-shadow-lg shadow-md "
                     )}
                   >
                     <div className="flex items-center justify-between w-full px-2 py-2 ">

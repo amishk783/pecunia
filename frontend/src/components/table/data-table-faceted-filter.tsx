@@ -45,7 +45,7 @@ export function DataTableFacetedFilter<TData, TValue>({
           variant="outline"
           size="sm"
           className={cn(
-            " md:h-8 border-dashed bg-theme-secondary text-theme-themeText",
+            " md:h-8 border-dashed bg-background text-primary",
             className
           )}
         >
@@ -87,7 +87,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command className="bg-theme-secondary text-theme-themeText">
+        <Command className="">
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
@@ -96,7 +96,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 const isSelected = selectedValues.has(option.value);
                 return (
                   <CommandItem
-                    className="text-theme-themeText  "
+                    className="  "
                     key={option.value}
                     onSelect={() => {
                       if (isSelected) {
@@ -114,7 +114,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                       className={cn(
                         "mr-2 flex h-4 w-4   items-center justify-center rounded-sm border border-primary",
                         isSelected
-                          ? "bg-theme-secondary  "
+                          ? " text-primary "
                           : "opacity-50 [&_svg]:invisible "
                       )}
                     >

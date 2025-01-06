@@ -159,8 +159,8 @@ const Login = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious variant="default" />
+                  <CarouselNext variant="default" />
                 </Carousel>
               </div>
             </div>
@@ -223,8 +223,8 @@ const Login = () => {
                 </Button>
               </div>
               <Button
-                className="my-2 flex items-center bg-theme-secondary justify-center gap-3 "
-                variant="default"
+                className="my-2 flex items-center bg-secondary-foreground  text-secondary justify-center gap-3 "
+                variant="outline"
                 size="lg"
                 type="submit"
                 disabled={loading}
@@ -249,7 +249,7 @@ const Login = () => {
             <div className="xl:w-3/5 py-4 flex gap-4 ">
               <div className="flex gap-4 w-full">
                 <Button
-                  className="flex gap-2 items-center bg-theme-secondary w-full justify-center"
+                  className="flex gap-2 items-center bg-secondary-foreground text-secondary w-full justify-center"
                   variant="outline"
                   size="lg"
                   onClick={() => signItWithOAuth("google")}
@@ -289,7 +289,7 @@ const Login = () => {
                   )}
                 </Button>
                 <Button
-                  className="flex gap-2 items-center bg-theme-secondary w-full justify-center"
+                  className="flex gap-2 items-center bg-secondary-foreground  text-secondary w-full justify-center"
                   variant="outline"
                   size="lg"
                   disabled={loading}

@@ -183,7 +183,7 @@ export const cloneBudget = async (req: AuthenticatedRequest, res: Response, next
 
   const year = getYear(date);
 
-  const month = getMonth(date);
+  const month = getMonth(date) + 1;
 
   try {
     const result = await db.transaction(async tx => {

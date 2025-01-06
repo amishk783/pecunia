@@ -60,7 +60,7 @@ export const MultipleLineChart: React.FC<Props> = ({
               <div className="flex space-x-2">
                 <div className="w-2 h-2 pl-1  mt-[6px] rounded-full bg-green-400"></div>
                 <div className="flex flex-col space-y-1">
-                  <h5 className=" text-sm  text-secondary/70">Total Income</h5>
+                  <h5 className=" text-sm text-foreground/90">Total Income</h5>
                   <p className="text-md  font-bold">${totalIncome}</p>
                 </div>
               </div>
@@ -68,7 +68,7 @@ export const MultipleLineChart: React.FC<Props> = ({
                 <div className="flex space-x-2">
                   <div className="w-2 h-2 pl-1  mt-[6px] rounded-full bg-green-400"></div>
                   <div className="flex flex-col  space-y-1">
-                    <h5 className="text-sm  text-secondary/70">
+                    <h5 className="text-sm text-foreground/90">
                       Total Expense
                     </h5>
                     <p className="text-md  font-bold">${totalExpense}</p>

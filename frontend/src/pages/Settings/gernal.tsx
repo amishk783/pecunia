@@ -8,7 +8,7 @@ export const GernalSection = () => {
   console.log("🚀 ~ GernalSection ~ userAvtarUrl:", userAvtarUrl);
   return (
     <section className="flex flex-col space-y-6">
-      <div className="xl:w-2/3 pt-4 px-4 py-6 rounded-lg bg-theme-primary  ">
+      <div className="xl:w-2/3 pt-4 px-4 py-6 rounded-lg bg-card text-secondary-foreground  ">
         <div className="flex flex-col gap-2 ">
           <div className="flex space-x-40 border-b py-4 ">
             <div className="flex flex-col">
@@ -27,8 +27,12 @@ export const GernalSection = () => {
                 )}
               </div>
 
-              <Button variant="ghost">Delete</Button>
-              <Button variant="ghost">Update</Button>
+              <Button className="text-secondary-foreground" variant="ghost">
+                Delete
+              </Button>
+              <Button className="text-secondary-foreground" variant="ghost">
+                Update
+              </Button>
             </div>
           </div>
           <div className="flex justify-between border-b py-4 h-full items-center ">
@@ -44,7 +48,9 @@ export const GernalSection = () => {
                 placeholder="Last Name"
                 className="py-2 md:py-5 bg-slate-100 w-full h-1 px-4 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm rounded-md"
               ></input>
-              <Button className="">Update</Button>
+              <Button className=" bg-primary text-secondary-foreground">
+                Update
+              </Button>
             </div>
           </div>
           <div className="flex space-x-12 border-b py-4 h-full items-center ">
@@ -61,7 +67,7 @@ export const GernalSection = () => {
         </div>
       </div>
       {/* usage section */}
-      <div className=" md:w-2/3 bg-theme-primary px-4 py-6 rounded-lg">
+      <div className=" md:w-2/3 bg-card px-4 py-6 rounded-lg text-secondary-foreground ">
         <div className="flex flex-col gap-3">
           <h2 className="text-lg font-semibold">Your usage</h2>
 
@@ -95,17 +101,17 @@ export const GernalSection = () => {
           </div>
         </div>
       </div>
-      <div className="md:w-2/3 bg-theme-primary  px-4 py-3 rounded-lg border-red-500 border">
+      <div className="md:w-2/3  bg-card  text-secondary-foreground  px-4 py-3 rounded-lg border-red-500 border">
         <div className=" flex flex-col gap-2">
           <h2 className="text-lg font-semibold border-b py-4">
             Delete Account
           </h2>
-          <p className=" py-4 text-slate-700/70">
+          <p className=" py-4 text-secondary-foreground">
             Permanently delete your account and all its associated data, this
             action cannot be undone.
           </p>
           <div className=" w-full flex items-center justify-end">
-            <Button className="px-4" variant="destructive">
+            <Button className="px-4 " variant="destructive">
               Delete Account
             </Button>
           </div>

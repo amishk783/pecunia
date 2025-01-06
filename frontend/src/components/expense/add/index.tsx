@@ -164,7 +164,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
 
   return (
     <Modal className=" items-end">
-      <div className="flex justify-end md:justify-center md:items-center w-full md:w-[80%]  xl:w-[50%] rounded-xl  bg-theme-secondary ">
+      <div className="flex justify-end md:justify-center md:items-center w-full md:w-[80%]  xl:w-[50%] rounded-xl bg-background ">
         <div ref={ref} className="w-full h-min   ">
           <div className="w-full h-min py-5 pb-10 px-4  relative flex  justify-between items-center  ">
             <p className=" w-full text-lg font-semibold">New Expense</p>
@@ -207,7 +207,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
                           Name
                         </label>
                         <Input
-                          className=" py-6 md:py-4 bg-theme-primary"
+                          className=" py-6 md:py-4 bg-background border border-black/10"
                           register={register}
                           error={errors.label}
                           name="label"
@@ -234,7 +234,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
                             Amount
                           </label>
                           <Input
-                            className="py-6 md:py-4 bg-theme-primary"
+                            className="py-6 md:py-4 bg-background border border-black/10"
                             register={register}
                             error={errors.amount}
                             name="amount"
@@ -315,7 +315,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
                           Notes
                         </label>
 
-                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm bg-theme-primary rounded-lg"></textarea>
+                        <textarea className="w-full h-20 py-2 px-2 focus:outline-none focus:border-0 focus:bg-blue-100 shadow-sm bg-background border border-black/10 rounded-lg"></textarea>
                       </li>
                     </ol>
                   </form>

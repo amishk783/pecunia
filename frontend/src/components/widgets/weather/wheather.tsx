@@ -33,11 +33,11 @@ const weatherDesgin: { [key: string]: { icon: string; bgColor: string } } = {
     bgColor: "",
   },
 };
-console.log("🚀 ~ weatherDesgin:", weatherDesgin)
+console.log("🚀 ~ weatherDesgin:", weatherDesgin);
 
 const Weather = () => {
   const [position, setPosition] = useState<Position | null>(null);
- 
+
   // const [bgClass, setBgClass] = useState<string>("");
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
@@ -111,7 +111,7 @@ const Weather = () => {
   return (
     <div
       className={cn(
-         " w-full lg:min-w-80   rounded-xl drop-shadow-xl glass, bgClass bg-theme-primary border "
+        " w-full lg:min-w-80   rounded-xl drop-shadow-xl  bg-card  border "
       )}
     >
       <div className=" flex items-center  h-full p-4">

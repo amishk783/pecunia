@@ -126,10 +126,10 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
               </div>
             </div>
             <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              {planned}
+              ${planned}
             </p>
             <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              {received}
+              ${received}
             </p>
           </div>
         </div>

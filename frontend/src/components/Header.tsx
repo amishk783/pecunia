@@ -18,26 +18,24 @@ import { useAuth } from "@/lib/providers/AuthProvider";
 const Header: React.FC = () => {
   const { pathname } = useLocation();
   const { user, loading } = useAuth();
- 
+
   const breadcrumb = pathname.slice(1, pathname.length);
 
   const [isOpenSidebar, setIsOpenSidebar] = useState(false);
 
   const userAvtarUrl = user?.user_metadata.avatar_url as string;
 
-
   const { theme } = useTheme();
- 
 
   const handleTheme = (value: string) => {
-  
-
     if (value === "light") {
+      document.documentElement.style.setProperty("--background", "0, 0%, 100%");
       document.documentElement.style.setProperty(
-        "--background-primary",
-        "hsl(20, 5.88%, 90%)"
+        "--secondary-foreground",
+        "0, 2%, 11%"
       );
-
+      document.documentElement.style.setProperty("--foreground", "0, 2%, 11%");
+      // document.documentElement.style.setProperty("--muted", "240 4.8% 95.9%");
       localStorage.setItem(
         "themeConfig",
         JSON.stringify({
@@ -46,34 +44,15 @@ const Header: React.FC = () => {
           "--theme-text-color": "#0f172a",
         })
       );
-
-      document.documentElement.style.setProperty(
-        "--background-secondary",
-        "rgb(214 211 209)"
-      );
-      document.documentElement.style.setProperty(
-        "--theme-text-color",
-        "#0f172a"
-      );
-      // setThemeState({
-      //   type: "light",
-      //   bgColor: "bg-zinc-200",
-      //   textColor: "text-black",
-      //   bgSecondary: "bg-stone-300",
-      // });
-      document.documentElement.style.setProperty(
-        "--muted",
-        "hsl(240 7.8% 75.9%)"
-      );
+      document.documentElement.classList.remove("dark");
     } else if (value === "dark") {
-      document.documentElement.style.setProperty(
-        "--background-primary",
-        "#1d1c1c"
-      );
+      document.documentElement.style.setProperty("--background", "0, 2%, 11%");
+      document.documentElement.classList.add("dark");
+      document.documentElement.style.setProperty("--foreground", "0, 0%, 100%");
 
       document.documentElement.style.setProperty(
-        "--background-secondary",
-        "#44403c"
+        "--secondary-foreground",
+        "0, 0%, 100%"
       );
       localStorage.setItem(
         "themeConfig",
@@ -83,12 +62,7 @@ const Header: React.FC = () => {
           "--text-theme-themeText": "#fffff",
         })
       );
-      document.documentElement.style.setProperty(
-        "--theme-text-color",
-        "#ffffff"
-      );
 
-      document.documentElement.style.setProperty("--muted", "240 5% 25%");
       // setThemeState({
       //   type: "dark",
       //   bgColor: "bg-[#1d1c1c]",
@@ -109,39 +83,41 @@ const Header: React.FC = () => {
     <>
       <div
         className={cn(
-          "hidden md:flex py-6     bg-theme-primary text-theme-themeText w-full items-center justify-between  px-5  ",
+          "hidden md:flex py-6 bg-secondary  w-full items-center justify-between  px-5  ",
           theme?.bgSecondary,
           theme?.textColor
         )}
       >
         <div className="flex gap-2 items-center">
-          <Home className=" text-theme-themeText" size={28} />
-          <h3 className="text-xl  text-theme-themeText">/home/{breadcrumb}</h3>
+          <Home className=" " size={28} />
+          <h3 className="text-xl text-secondary-foreground  ">
+            /home/{breadcrumb}
+          </h3>
         </div>
         <div className="flex items-center ">
           <div className="flex gap-4 items-center  ">
             <Select onValueChange={handleTheme}>
-              <SelectTrigger className="w-[140px] bg-theme-primary ">
+              <SelectTrigger className="w-[140px]  text-secondary-foreground ">
                 <SelectValue
-                  className="text-theme-themeText"
-                  placeholder={theme?.type}
+                  className=" text-secondary-foreground"
+                  placeholder={theme?.type.toLocaleUpperCase()}
                 />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="light">
-                  <div className="flex items-center text-theme-themeText gap-3 px-2">
+                  <div className="flex items-center  gap-3 px-2">
                     <Sun size={24} />
                     <h1 className="text-lg">Light</h1>
                   </div>
                 </SelectItem>
                 <SelectItem value="dark">
-                  <div className="flex items-center text-theme-themeText gap-3 px-2 text-slate-700 ">
+                  <div className="flex items-center  gap-3 px-2 text-secondary-foreground ">
                     <Moon size={24} />
                     <h1 className="text-lg">Dark</h1>
                   </div>
                 </SelectItem>
                 <SelectItem value="system">
-                  <div className="flex items-center text-theme-themeText gap-3 px-2 ">
+                  <div className="flex items-center  gap-3 px-2 ">
                     <Wrench size={24} />
                     <h1 className="text-lg">Custom</h1>
                   </div>

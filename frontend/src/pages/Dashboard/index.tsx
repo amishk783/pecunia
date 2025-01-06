@@ -48,26 +48,28 @@ const Dashboard = () => {
     .slice(0, 4)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   return (
-    <div className={cn("p-2 md:p-5 w-full min-h-screen text-theme-themeText")}>
+    <div
+      className={cn("p-2 md:p-5 w-full min-h-screen text-secondary-foreground")}
+    >
       <div className="flex py-4 ">
-        <h2 className=" font-medium text-4xl ">Good {timeOfDay}</h2>
+        <h2 className=" font-medium text-4xl text-secondary-foreground ">Good {timeOfDay}</h2>
       </div>
 
       <div className="flex flex-col gap-4">
         <div className="grid grid-cols-2 md:grid-cols-4 w-full gap-4 ">
           <SummeryItem
-            className="text-sm "
+            className="text-sm text-green-700"
             title="Total Income"
             amount={totalIncome ?? 0}
           />
 
           <SummeryItem
-            className="text-sm "
+            className="text-sm  text-blue-400 "
             title="Total Balance"
             amount={totalBalance ?? 0}
           />
           <SummeryItem
-            className="text-sm "
+            className="text-sm text-red-400 "
             title="Total Spent"
             amount={totalSpent ?? 0}
           />
@@ -78,11 +80,11 @@ const Dashboard = () => {
           <MultipleLineChart
             totalExpense={totalSpent ?? 0}
             totalIncome={totalIncome ?? 0}
-            className={cn(" bg-theme-primary")}
+            className={cn(" bg-background text-foreground")}
           />
           <div
             className={cn(
-              "flex flex-col space-y-4 max-md:w-full p-4 bg-theme-primary rounded-lg"
+              "flex flex-col space-y-4 max-md:w-full p-4 bg-background text-foreground rounded-lg"
             )}
           >
             <div className="flex justify-between  items-center">
@@ -93,7 +95,7 @@ const Dashboard = () => {
           </div>
           <div
             className={cn(
-              "flex flex-col space-y-4 p-5 max-md:w-full bg-theme-primary rounded-lg"
+              "flex flex-col space-y-4 p-5 max-md:w-full bg-background text-foreground rounded-lg"
             )}
           >
             <div className="flex justify-between items-center">
@@ -107,7 +109,7 @@ const Dashboard = () => {
         <div className="flex max-lg:flex-wrap gap-2 w-full h-full">
           <div
             className={cn(
-              " w-full lg:w-1/2 flex flex-col gap-4 h-full bg-theme-primary md:min-h-[405px] px-4 py-3 rounded-lg"
+              " w-full lg:w-1/2 flex flex-col gap-4 h-full bg-background md:min-h-[405px] px-4 py-3 rounded-lg"
             )}
           >
             <div className="py-2">
@@ -121,15 +123,13 @@ const Dashboard = () => {
           </div>
           <div
             className={cn(
-              "w-full md:w-1/2  lg:w-1/3 h-full bg-theme-primary justify-center flex p-0 rounded-lg"
+              "w-full md:w-1/2  lg:w-1/3 h-full bg-background justify-center flex p-0 rounded-lg"
             )}
           >
             <Calendar className=" " />
           </div>
           <div
-            className={cn(
-              " md:w-1/2 lg:w-1/3  flex rounded-lg bg-theme-primary"
-            )}
+            className={cn(" md:w-1/2 lg:w-1/3  flex rounded-lg bg-background")}
           >
             <div className="p-4 flex flex-col justify-between w-full  h-full ">
               <div className="flex flex-col space-y-14">
@@ -152,7 +152,7 @@ const Dashboard = () => {
                     $19,99<span className="text-sm">/Month</span>
                   </h4>
                 </div>
-                <Button className=" bg-theme-secondary">Learn More</Button>
+                <Button className=" bg-primary">Learn More</Button>
               </div>
             </div>
           </div>

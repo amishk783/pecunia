@@ -18,15 +18,15 @@ export const SummeryItem: React.FC<Props> = ({
   return (
     <div
       className={cn(
-        "flex  h-full w-full text-lg bg-theme-primary rounded-md   lg:min-w-80  ",
+        "flex  h-full w-full text-lg bg-background rounded-md   lg:min-w-80  ",
         className
       )}
     >
       <div className="flex flex-col gap-6 px-4 py-6">
         {iconShow && <CalendarPlus className="" />}
         <div className=" flex flex-col gap-2">
-          <h2 className=" text-primary/70 font-semibold">{title}</h2>
-          <p className=" text-opacity-100 text-2xl font-extrabold">{amount}</p>
+          <h2 className=" text-secondary-foreground/70 font-semibold">{title}</h2>
+          <p className=" text-opacity-100 text-2xl font-extrabold">$ {amount}</p>
         </div>
       </div>
     </div>

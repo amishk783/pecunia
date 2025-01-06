@@ -35,7 +35,7 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
           />
 
           {!selectedFile && (
-            <div className="w-full flex relative bg-secondary/80 justify-center items-center h-60 border-dashed border-slate-600 border-2 rounded-lg pb-4">
+            <div className="w-full flex relative bg-background/80 justify-center items-center h-60 border-dashed border-slate-600 border-2 rounded-lg pb-4">
               <div className="flex flex-col items-center">
                 <CloudUpload className="mt-1" />
                 <h5 className="font-medium">

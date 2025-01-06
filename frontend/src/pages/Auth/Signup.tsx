@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
-import { cn} from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { useAuth } from "@/lib/providers/AuthProvider";
 import { financialAdvice } from "./constant";
 
@@ -160,8 +160,8 @@ const Signup = () => {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  <CarouselPrevious />
-                  <CarouselNext />
+                  <CarouselPrevious variant="default" />
+                  <CarouselNext variant="default" />
                 </Carousel>
               </div>
             </div>
@@ -216,7 +216,7 @@ const Signup = () => {
               <PasswordStrengthChecker password={watchPassword} />
               <Button
                 className="my-2 flex items-center  bg-theme-secondary text-theme-themeText justify-center gap-3 "
-                variant="default"
+                variant="outline"
                 size="lg"
                 type="submit"
                 disabled={loading}
@@ -241,7 +241,7 @@ const Signup = () => {
             <div className="xl:w-3/5 py-4 flex gap-4 ">
               <div className="flex gap-4 w-full">
                 <Button
-                  className="flex gap-2 bg-theme-secondary items-center w-full justify-center"
+                  className="flex gap-2 text-secondary-foreground items-center w-full justify-center"
                   variant="outline"
                   size="lg"
                   onClick={() => signItWithOAuth("google")}
@@ -281,7 +281,7 @@ const Signup = () => {
                   )}
                 </Button>
                 <Button
-                  className="flex gap-2  bg-theme-secondary items-center w-full justify-center"
+                  className="flex gap-2  text-secondary-foreground items-center w-full justify-center"
                   variant="outline"
                   size="lg"
                   disabled={loading}

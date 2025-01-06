@@ -24,7 +24,7 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
   return (
     <div
       className={cn(
-        " w-20 lg:w-[230px] bg-theme-secondary hidden text-theme-themeText h-full fixed  md:flex bottom-0 top-0 left-0 flex-col z-10   ",
+        " w-20 lg:w-[230px] bg-background hidden text-secondary-foreground h-full fixed  md:flex bottom-0 top-0 left-0 flex-col z-10   ",
         className
       )}
     >
@@ -33,7 +33,7 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
           {/* <img /> */}
           <h1
             className={cn(
-              " text-zinc-200 text-3xl  font-semibold text-theme-themeText drop-shadow-md md:hidden lg:block "
+              " text-zinc-200 text-3xl  font-semibold text-secondary-foreground drop-shadow-md md:hidden lg:block "
             )}
           >
             Pecunia
@@ -53,14 +53,14 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
           {adminDashboard.map((item) => (
             <Link
               className={`flex relative z-10 gap-4 group items-center justify-center lg:justify-start    lg:px-5 py-3 rounded-lg ${
-                isActivePage(`/${item.pathUrl}`) ? ` bg-theme-primary ` : ""
+                isActivePage(`/${item.pathUrl}`) ? ` bg-primary text-primary-foreground ` : ""
               }`}
               to={item.pathUrl}
               key={item.text}
             >
               <div
                 className={cn(
-                  " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-theme-primary group-hover:opacity-40 rounded-lg transition-colors duration-200 ease-out",
+                  " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-primary group-hover:opacity-40 rounded-lg transition-colors duration-200 ease-out",
                 
                 )}
               ></div>
@@ -73,14 +73,14 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
           <Link
             className={`flex gap-4 items-center relative  group w-full lg:px-5 py-3 rounded-lg ${
               isActivePage("/app/settings")
-                ? "bg-theme-primary bg-opacity-30"
+                ? "bg-primary text-primary-foreground bg-opacity-30"
                 : ""
             }`}
             to={"/app/settings"}
           >
             <div
               className={cn(
-                " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-theme-primary group-hover:opacity-40 rounded-lg",
+                " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-primary group-hover:opacity-40 rounded-lg",
                 isActivePage("/app/settings") ? `bg-theme-primary ` : ""
               )}
             ></div>
@@ -94,7 +94,7 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
       <div className="gap-4 bottom-0 px-5 py-5 absolute w-full">
         <Button
           onClick={logOut}
-          className=" flex gap-4 items-center w-full  hover:bg-opacity-30 hover:text-red-600  py-3 rounded-lg"
+          className=" flex gap-4 bg-primary items-center w-full  hover:bg-opacity-30 hover:text-red-600  py-3 rounded-lg"
         >
           <LogOut size={36} />
           <h2 className="hidden lg:block font-semibold text-xl ">Log Out</h2>
