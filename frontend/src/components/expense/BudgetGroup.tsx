@@ -358,7 +358,7 @@ export const BudgetGroup: React.FC<BudgetGroupProps> = ({
             </div>
           </>
           {!collapseGroup && (
-            <div className="transition-transform duration-500 delay-1000 ease-in-out ">
+            <div className="relative transition-transform duration-500 delay-1000 ease-in-out ">
               <SortableContext
                 items={items}
                 strategy={verticalListSortingStrategy}

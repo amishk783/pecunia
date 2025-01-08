@@ -5,6 +5,8 @@ import { createContext, useContext, useState } from "react";
 interface ExpenseContextType {
   pendingTransaction: PendingTransactionType[];
   expenses: Transaction[];
+  isLoading: boolean;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   handleReceiptUpload: (file: File) => void;
   pollScanStatus: (sessionId: string) => void;
   scanStatus: "IDLE" | "PROCESSING" | "COMPLETED" | "FAILED";
@@ -26,6 +28,7 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
   const [scanSessionId, setScanSessionId] = useState<string | null>(null);
   console.log("🚀 ~ ExpenseProvier ~ scanSessionId:", scanSessionId);
   const [expenses, setExpenses] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleReceiptUpload = async (file: File) => {
     try {
@@ -112,6 +115,8 @@ export const ExpenseProvier = ({ children }: { children: React.ReactNode }) => {
       value={{
         pendingTransaction,
         expenses,
+        isLoading,
+        setIsLoading,
         scanStatus,
         handleReceiptUpload,
         pollScanStatus,

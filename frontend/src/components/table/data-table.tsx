@@ -26,6 +26,7 @@ import { useState } from "react";
 import { DataTableToolbar } from "./data-table-toolbar";
 import { DataTablePagination } from "./data-table-pagination";
 import { Transaction } from "@/type";
+import TableLoader from "./data-table-loader";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -39,6 +40,7 @@ declare module "@tanstack/react-table" {
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  isLoading: boolean;
   data: TData[];
   pagination?: boolean;
   categories?: {
@@ -55,6 +57,7 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
   pagination = true,
   actions,
   categories,
@@ -121,6 +124,8 @@ export function DataTable<TData, TValue>({
                   ))}
                 </TableRow>
               ))
+            ) : isLoading && table.getRowModel().rows?.length === 0 ? (
+              <TableLoader rows={5} columns={columns.length} />
             ) : (
               <TableRow>
                 <TableCell

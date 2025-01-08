@@ -31,9 +31,11 @@ import { PendingTransaction } from "@/components/expense/PendingTransaction";
 const Expenses = () => {
   const { pendingTransaction, expenses, setExpenses } = useExpense();
 
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
+        setIsLoading(true);
         const res = await getAllTransaction();
 
         setExpenses(res);
@@ -42,10 +44,12 @@ const Expenses = () => {
           type: "error",
           message: "Failed to fetch transactions. Please try again.",
         });
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchTransactions();
-  }, [setExpenses]);
+  }, [setExpenses, setIsLoading]);
 
   const onActionDelete = async (id: number) => {
     try {
@@ -174,6 +178,7 @@ const Expenses = () => {
 
           <div className="w-full mx-auto px-2 pb-10">
             <DataTable
+              isLoading={isLoading}
               columns={columns}
               data={expenses}
               categories={categories}

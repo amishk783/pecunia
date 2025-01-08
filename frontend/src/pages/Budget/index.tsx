@@ -10,7 +10,7 @@ import { BudgetType, GroupType } from "@/type";
 
 import { ChevronLeft, ChevronRight, Plus, LoaderCircle } from "lucide-react";
 import { addMonths, format, getMonth, getYear } from "date-fns";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import api from "@/services/api";
 import { cloneBudget } from "@/services/budget";
@@ -28,17 +28,50 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+import { useAuth } from "@/lib/providers/AuthProvider";
+import { notification } from "@/components/Notification";
+import { SkeletonBudgetCard } from "@/components/expense/SkeletonBudgetCard";
 
 const Budget = () => {
   const [isAddingGroup, setIsAddingGroup] = useState<boolean>(false);
   const itemInputRef = useRef<HTMLInputElement | null>(null);
   const { budget, setBudget, loading, allExistedBudget } = useBudget();
-
+  const { isAuth } = useAuth();
   const currentDate = new Date();
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(currentDate);
   const [isBudgetNotPresent, setIsBudgetNotPresent] = useState<boolean>(false);
-  const [isLoading, setIsloading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [activeId, setActiveId] = useState<string | null>("");
+
+  useEffect(() => {
+    const fetchBudget = async () => {
+      const currentDate = new Date();
+      const date = format(currentDate, "dd/MM/yyyy");
+
+      if (!isAuth) return;
+
+      setIsLoading(true);
+      try {
+        const response = await api.post("/app/budget/by-date", {
+          date,
+        });
+
+        setBudget((prevBudget) => ({
+          ...prevBudget,
+          ...response.data.currentBudget,
+        }));
+      } catch (error) {
+        notification({
+          type: "error",
+          message: "Failed to fetch bugdet. Please try again.",
+        }); // Handle the error
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchBudget();
+  }, [isAuth, setBudget]);
+
   const handleCloseAdditem = async () => {
     if (itemInputRef.current && itemInputRef.current.value) {
       try {
@@ -78,7 +111,7 @@ const Budget = () => {
   const handleMonthClick = async (direction: 1 | -1) => {
     if (!budget) return;
     const updatedDate = addMonths(currentMonthDate, direction);
-    console.log("🚀 ~ handleMonthClick ~ currentMonthDate:", currentMonthDate)
+    console.log("🚀 ~ handleMonthClick ~ currentMonthDate:", currentMonthDate);
     const currentYear = getYear(updatedDate);
     const zeroAdjustedMonthNumber = getMonth(updatedDate);
     const monthExists =
@@ -88,16 +121,16 @@ const Budget = () => {
     setIsBudgetNotPresent(!monthExists);
     if (monthExists) {
       try {
-        setIsloading(true);
+        setIsLoading(true);
         const date = format(updatedDate, "dd/MM/yyyy");
         const res = await api.post("/app/budget/by-date", { date });
 
         setBudget(res.data.currentBudget);
-        setIsloading(false);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching budget:", error);
       } finally {
-        setIsloading(false);
+        setIsLoading(false);
       }
     }
 
@@ -109,20 +142,20 @@ const Budget = () => {
   );
   const handleCloneBudget = async () => {
     try {
-      setIsloading(true);
+      setIsLoading(true);
       const id = (budget && budget.id) ?? 1;
 
       const date = format(currentMonthDate, "MM/dd/yyyy");
-      console.log("🚀 ~ handleCloneBudget ~ date:", date)
+      console.log("🚀 ~ handleCloneBudget ~ date:", date);
       const clonedBudget: BudgetType = await cloneBudget(date, id);
       console.log("🚀 ~ handleCloneBudget ~ clonedBudget:", clonedBudget);
       setBudget(clonedBudget);
       setIsBudgetNotPresent(false);
-      setIsloading(false);
+      setIsLoading(false);
     } catch (error) {
       console.error("Error fetching budget:", error);
     } finally {
-      setIsloading(false);
+      setIsLoading(false);
     }
   };
 
@@ -217,9 +250,11 @@ const Budget = () => {
           </div>
         </div>
         <div className="flex flex-col w-full max-sm:px-2  md:w-2/3 h-full items-center justify-center gap-4 ">
-          {loading || isLoading ? (
-            <div className="flex w-full mt-44 items-center  justify-center  ">
-              <LoaderCircle size={36} className=" animate-spin " />
+          {isLoading ? (
+            <div className="flex flex-col gap-4 w-full m items-center  justify-center  ">
+              {Array.from({ length: 3 }).map((_, index) => (
+                <SkeletonBudgetCard key={index} />
+              ))}
             </div>
           ) : !isBudgetNotPresent ? (
             <DndContext

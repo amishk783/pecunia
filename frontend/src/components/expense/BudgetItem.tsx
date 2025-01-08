@@ -48,15 +48,6 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
   });
   const [isActive, setIsActive] = useState<boolean>(false);
 
-  // const handleClose = () => {
-  //   setIsActive(false);
-  //   setIsEditOpen((prev) => ({
-  //     ...prev,
-  //     label: false,
-  //     allocatedBudget: false,
-  //   }));
-  // };
-
   const ref = useClickOutside<HTMLDivElement>(() => {
     setIsActive(false);
     setIsEditOpen({ label: false, allocatedBudget: false });
@@ -84,16 +75,23 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
   }
 
   return (
-    <div ref={ref} className={cn("", isDragging ? "" : "")}>
+    <div className="relative" ref={ref}>
       <div
         ref={setNodeRef}
         style={style}
         {...attributes}
-        className="flex w-full h-min relative items-center justify-center group  "
+        className={cn(
+          "flex  relative items-center justify-center group ",
+          isActive
+            ? "w-[115%] h-16 -left-20 bg-background rounded-lg drop-shadow-lg shadow-xl shadow-primary/5"
+            : "w-full h-min"
+        )}
       >
         <GripVertical
-          className="absolute -left-8  opacity-0 group-hover:opacity-100 
-             transition-opacity duration-500 ease-in-out "
+          className={cn(
+            "absolute -left-8  opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out ",
+            isActive ? "hidden" : ""
+          )}
           {...listeners}
         />
 
@@ -101,85 +99,39 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
           onClick={() => {
             setIsActive(true);
           }}
-          className={cn("flex justify-between border-b-2 w-full  py-2 ")}
+          className={cn(
+            "flex justify-between relative  w-full  py-2 ",
+            isActive ? "px-[78px]" : "border-b-2"
+          )}
         >
-          <div
-            className={cn(
-              "flex w-full h-full relative ",
-              isActive ? " " : "w-full "
-            )}
-          >
-            <div className="text-lg flex items-center flex-grow-0 flex-shrink basis-1/2  flex-wrap  ">
-              <div
-                className={cn(
-                  " w-[70%] h-full py-2 px-2 rounded-md ",
-                  isEditOpen || isActive ? "" : "hover:bg-zinc-100"
+          <div className="flex w-full items-center h-full relative  ">
+            <div className="text-lg  flex items-center flex-grow-0 flex-shrink basis-1/2  flex-wrap  ">
+              <div className={cn("w-full   h-full rounded-md ")}>
+                {isEditOpen.label ? (
+                  <input
+                    value={itemInputs.label}
+                    onChange={(e) =>
+                      setItemInputs((prev) => ({
+                        ...prev,
+                        label: e.target.value,
+                      }))
+                    }
+                    className="w-[80%] h-1 py-5 px-4 focus:outline-none bg-transparent ring-2 shadow-sm rounded-md"
+                  />
+                ) : (
+                  <p
+                    className="w-full hover:bg-secondary/60 rounded-md px-2 py-2"
+                    onClick={() =>
+                      setIsEditOpen((prev) => ({ ...prev, label: true }))
+                    }
+                  >
+                    {label}
+                  </p>
                 )}
-              >
-                <p
-                  onClick={() =>
-                    setIsEditOpen((prev) => ({ ...prev, label: true }))
-                  }
-                >
-                  {label}
-                </p>
               </div>
             </div>
-            <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              ${planned}
-            </p>
-            <p className="flex items-end w-full justify-end text-right flex-1 relative">
-              ${received}
-            </p>
-          </div>
-        </div>
-
-        {isActive && (
-          <div
-            className={cn(
-              "flex justify-between absolute border-b-2  w-[115%]  bg-white rounded-md drop-shadow-xl shadow-lg  top-0 py-1  "
-            )}
-          >
-            <div
-              className={cn(
-                "flex w-full h-full relative ",
-                isActive ? " " : "w-full "
-              )}
-            >
-              <div className="text-lg flex items-center flex-grow-0 flex-shrink  basis-1/2  flex-wrap  ">
-                <div
-                  className={cn(
-                    " w-[70%] flex items-center h-full px-8 rounded-md relative ",
-                    isEditOpen || isActive ? "" : "hover:bg-zinc-100"
-                  )}
-                >
-                  {isEditOpen.label ? (
-                    <input
-                      value={itemInputs.label}
-                      onChange={(e) =>
-                        setItemInputs((prev) => ({
-                          ...prev,
-                          label: e.target.value,
-                        }))
-                      }
-                      className="w-64 h-1 py-6 px-4 focus:outline-none  ring-2 shadow-sm rounded-md"
-                    />
-                  ) : (
-                    <p
-                      onClick={() =>
-                        setIsEditOpen((prev) => ({
-                          ...prev,
-                          label: true,
-                          allocatedBudget: false,
-                        }))
-                      }
-                    >
-                      {label}
-                    </p>
-                  )}
-                </div>
-              </div>
-              {isEditOpen.allocatedBudget ? (
+            {isEditOpen.allocatedBudget ? (
+              <div className="w-32  justify-end flex flex-1 px-4 focus:outline-none bg-transparent">
                 <input
                   value={itemInputs.allocatedBudget}
                   onChange={(e) =>
@@ -188,9 +140,11 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
                       allocatedBudget: e.target.value,
                     }))
                   }
-                  className="w-64 h-1 py-6 px-4 focus:outline-none  ring-2 shadow-sm rounded-md"
+                  className=" w-2/3 py-2  px-2 text-end my-2  focus:outline-none bg-transparent  ring-2 shadow-sm rounded-md"
                 />
-              ) : (
+              </div>
+            ) : (
+              <div className="flex items-end w-full  -right-2 justify-end text-right flex-1 relative ">
                 <p
                   onClick={() =>
                     setIsEditOpen((prev) => ({
@@ -199,33 +153,34 @@ export const BudgetItem: React.FC<BudgetItemProps> = ({
                       allocatedBudget: true,
                     }))
                   }
-                  className="flex py-4 items-end h-full w-full justify-end text-right flex-1 relative"
+                  className="w-2/3 p-2 my-2  hover:bg-secondary/50 rounded-xl"
                 >
-                  {planned}
+                  ${planned}
                 </p>
-              )}
-              <p className="flex py-4 items-end h-full w-full justify-end text-right flex-1 relative">
-                {received}
-              </p>
-              {!isLoading && (
-                <div className="flex  items-center w-20 justify-center text-right  relative">
-                  <div className=" flex w-20 h-full absolute items-center basis-4 flex-shrink flex-grow-0 justify-center right-0">
-                    <Trash2
-                      onClick={() => setIsConfirmDelete(true)}
-                      className="w-20 text-red-600 "
-                    />
-                  </div>
-                </div>
-              )}
-
-              {isLoading && (
-                <div className=" w-20 ">
-                  <Loader size={24} className="  animate-spin text-red-500" />
-                </div>
-              )}
-            </div>
+              </div>
+            )}
+            <p className="flex items-end w-full justify-end text-right flex-1 relative">
+              ${received}
+            </p>
           </div>
-        )}
+          {isActive && (
+            <div className="flex  items-center w-20 justify-center text-right absolute -right-0 top-1/2">
+              <div className=" flex w-20 h-full absolute items-center basis-4 flex-shrink flex-grow-0 justify-center right-0">
+                {!isLoading && (
+                  <Trash2
+                    onClick={() => setIsConfirmDelete(true)}
+                    className="w-20 text-red-600 "
+                  />
+                )}
+                {isLoading && (
+                  <div className="flex w-20 h-full absolute items-center basis-4 flex-shrink flex-grow-0 justify-center right-0">
+                    <Loader size={24} className="  animate-spin text-red-500" />
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
       <ConfirmDelete
         className="p-8 flex flex-col gap-6 bg-white rounded-xl"

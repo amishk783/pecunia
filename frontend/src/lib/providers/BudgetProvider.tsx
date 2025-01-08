@@ -30,32 +30,6 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
   const { isAuth } = useAuth();
 
   useEffect(() => {
-    const fetchBudget = async () => {
-      const currentDate = new Date();
-      const date = format(currentDate, "dd/MM/yyyy");
-
-      if (!isAuth) return;
-
-      setLoading(true);
-      try {
-        const response = await api.post("/app/budget/by-date", {
-          date,
-        });
-
-        setBudget((prevBudget) => ({
-          ...prevBudget,
-          ...response.data.currentBudget,
-        }));
-      } catch (error) {
-        notification({
-          type: "error",
-          message: "Failed to fetch bugdet. Please try again.",
-        }); // Handle the error
-      } finally {
-        setLoading(false);
-      }
-    };
-
     const fetchAllExistedBudget = async () => {
       try {
         if (!isAuth) return;
@@ -73,7 +47,7 @@ export const BudgetProvider: React.FC<{ children: React.ReactNode }> = ({
         setLoading(false);
       }
     };
-    fetchBudget();
+
     fetchAllExistedBudget();
   }, [isAuth]);
 

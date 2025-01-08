@@ -69,10 +69,10 @@ const Login = () => {
       });
       navigate("/app/dashboard");
     } catch (error) {
-     notification({
-       type: "error",
-       message: "Failed to login. Please try again.",
-     });
+      notification({
+        type: "error",
+        message: "Failed to login. Please try again.",
+      });
     }
     setLoading(false);
   };
@@ -207,6 +207,7 @@ const Login = () => {
                     "absolute mr-4 focus:outline-none",
                     viewPassword ? "text-blue-500" : ""
                   )}
+                  type="button"
                   onClick={handleViewPassword}
                 >
                   <Eye />
