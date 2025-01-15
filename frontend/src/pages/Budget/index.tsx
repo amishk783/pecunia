@@ -44,7 +44,7 @@ const Budget = () => {
   const [activeId, setActiveId] = useState<string | null>("");
 
   useEffect(() => {
-    if (budget) return;
+   
     const fetchBudget = async () => {
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
