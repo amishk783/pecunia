@@ -27,7 +27,7 @@ const ForgotPassword = () => {
     getValues,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const { resetPassword } = useAuth();
+  const resetPassword = useAuth((state) => state.resetPassword);
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

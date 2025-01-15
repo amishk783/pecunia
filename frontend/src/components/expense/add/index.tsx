@@ -363,7 +363,7 @@ export const AddExpense: React.FC<ExpenseType> = ({
                     handleSubmit(onSubmit)();
                   }}
                   disabled={isLoading}
-                  className="px-10"
+                  className="px-10 bg-primary text-primary-foreground"
                 >
                   Save
                 </Button>

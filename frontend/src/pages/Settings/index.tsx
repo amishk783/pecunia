@@ -3,7 +3,7 @@ import { useState } from "react";
 import { GernalSection } from "./gernal";
 import { BankSection } from "./banks";
 
-export const Settings = () => {
+const Settings = () => {
   const transactionWidth = (20 / 100) * 100;
   console.log("🚀 ~ Settings ~ transactionWidth:", transactionWidth);
 
@@ -55,3 +55,4 @@ export const Settings = () => {
     </main>
   );
 };
+export default Settings;

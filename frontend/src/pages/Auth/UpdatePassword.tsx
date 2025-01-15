@@ -36,7 +36,7 @@ const UpdatePassword = () => {
     watch,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const { updatePassword } = useAuth();
+  const updatePassword = useAuth((state) => state.updatePassword);
 
   const [loading, setLoading] = useState(false);
   const watchPassword = watch("password") || "";

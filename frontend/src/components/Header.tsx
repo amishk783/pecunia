@@ -25,7 +25,7 @@ const Header: React.FC = () => {
 
   const userAvtarUrl = user?.user_metadata.avatar_url as string;
 
-  const { theme } = useTheme();
+  const { theme, setThemeState } = useTheme();
 
   const handleTheme = (value: string) => {
     if (value === "light") {
@@ -54,6 +54,7 @@ const Header: React.FC = () => {
         "--secondary-foreground",
         "0, 0%, 100%"
       );
+      localStorage.setItem("theme", "Dark");
       localStorage.setItem(
         "themeConfig",
         JSON.stringify({
@@ -83,9 +84,7 @@ const Header: React.FC = () => {
     <>
       <div
         className={cn(
-          "hidden md:flex py-6 bg-secondary  w-full items-center justify-between  px-5  ",
-          theme?.bgSecondary,
-          theme?.textColor
+          "hidden md:flex py-6 bg-secondary  w-full items-center justify-between  px-5  "
         )}
       >
         <div className="flex gap-2 items-center">
@@ -100,7 +99,7 @@ const Header: React.FC = () => {
               <SelectTrigger className="w-[140px]  text-secondary-foreground ">
                 <SelectValue
                   className=" text-secondary-foreground"
-                  placeholder={theme?.type.toLocaleUpperCase()}
+                  placeholder={theme?.type}
                 />
               </SelectTrigger>
               <SelectContent>
@@ -134,7 +133,7 @@ const Header: React.FC = () => {
             </div>
 
             {/* <Sun className={theme?.textColor} size={28} /> */}
-            <Mail className={theme?.textColor} size={28} />
+            <Mail size={28} />
           </div>
         </div>
       </div>

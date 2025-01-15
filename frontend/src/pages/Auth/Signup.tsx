@@ -48,7 +48,7 @@ const Signup = () => {
     watch,
     formState: { errors },
   } = useForm<FormData>({ resolver: zodResolver(schema) });
-  const { signUp } = useAuth();
+  const signUp = useAuth((state) => state.signUp);
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);

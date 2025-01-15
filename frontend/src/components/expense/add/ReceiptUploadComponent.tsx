@@ -28,12 +28,7 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
       <div className="flex w-full flex-col h-14 p-4  gap-4 justify-center  md:h-[320px]  ">
         <h2 className=" font-semibold text-lg">Upload a Receipt</h2>
         <div className=" w-full h-full   rounded-xl  relative">
-          <input
-            onChange={(event) => handleFileChange(event)}
-            type="file"
-            className=" absolute w-full h-full top-0 left-0 right-0 opacity-0 cursor-pointer"
-          />
-
+          
           {!selectedFile && (
             <div className="w-full flex relative bg-background/80 justify-center items-center h-60 border-dashed border-slate-600 border-2 rounded-lg pb-4">
               <div className="flex flex-col items-center">

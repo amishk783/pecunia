@@ -16,12 +16,17 @@ import PrivateRoute from "./lib/PrivateRoute.tsx";
 import UpdatePassword from "./pages/Auth/UpdatePassword.tsx";
 import Welcome from "./pages/Welcome/index.tsx";
 import CustomThemePicker from "./components/CustomThemePicker.tsx";
-import { Settings } from "./pages/Settings/index.tsx";
+import Settings from "./pages/Settings/index.tsx";
+import { useEffect } from "react";
+import { useAuth } from "./lib/providers/AuthProvider.tsx";
+import Home from "./pages/Home/index.tsx";
 
 function App() {
   const { theme, themePicker, setThemeOpen } = useTheme();
   const bgcolor = `bg-[${theme?.bgColor}]`;
-
+  useEffect(() => {
+    useAuth.getState().initializeAuth();
+  }, []);
   return (
     <>
       <Toaster position="bottom-right" />
@@ -35,26 +40,20 @@ function App() {
           <Route path="/update-password" element={<UpdatePassword />} />
         </Route>
 
-        <Route path="/" element={<Layout />}>
+        <Route path="/">
           <Route element={<PrivateRoute />}>
             <Route index element={<Navigate to="app/dashboard" replace />} />
+
+            <Route path="app/" element={<Layout />}>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="analytics" element={<Budget />} />
+              <Route path="expenses" element={<Expenses />} />
+              <Route path="account" element={<Goals />} />
+              <Route path="budget" element={<Budget />} />
+              <Route path="settings" element={<Settings />} />
+            </Route>
           </Route>
-          <Route
-            path="app/"
-            element={
-              <main className={cn("w-full h-full relative", bgcolor)}>
-                {themePicker && <CustomThemePicker handleOpen={setThemeOpen} />}
-                <Outlet />
-              </main>
-            }
-          >
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="analytics" element={<Budget />} />
-            <Route path="expenses" element={<Expenses />} />
-            <Route path="account" element={<Goals />} />
-            <Route path="budget" element={<Budget />} />
-            <Route path="settings" element={<Settings />} />
-          </Route>
+          <Route element={<Home />} />
         </Route>
       </Routes>
     </>

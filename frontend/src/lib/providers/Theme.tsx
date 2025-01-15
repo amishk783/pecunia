@@ -2,10 +2,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 type Theme = {
   type: string;
-  bgImage?: string;
-  bgColor?: string;
-  textColor?: string;
-  bgSecondary?: string;
 };
 
 interface initalThemeInterface {
@@ -22,10 +18,7 @@ const initalThemeContext: initalThemeInterface = {
   themePicker: false,
 };
 const defaultTheme: Theme = {
-  type: "light",
-  bgColor: "bg-white",
-  bgImage: "",
-  textColor: "text-black",
+  type: "Light",
 };
 const ThemeContext = createContext(initalThemeContext);
 
@@ -43,19 +36,13 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     const isTheme = localStorage.getItem("theme");
 
     const themeConfig = localStorage.getItem("themeConfig");
-    if (isTheme && themeConfig) {
+    if (isTheme === "Dark") {
       setThemeState({
-        type: "light",
-        bgColor: "bg-white",
-        bgImage: "",
-        textColor: "text-black",
+        type: isTheme,
       });
-      const parsedConfig: ThemeConfigType = JSON.parse(themeConfig);
-
-      Object.entries(parsedConfig).forEach(([key, value]) => {
-        document.documentElement.style.setProperty(key, value as string);
-      });
+      document.documentElement.classList.add("dark");
     } else {
+      document.documentElement.classList.remove("dark");
       localStorage.setItem("theme", defaultTheme.type);
       localStorage.setItem(
         "themeConfig",
@@ -68,7 +55,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
       setThemeState(defaultTheme);
     }
   }, [setThemeState]);
- 
+
   const setThemeOpen = () => {
     setThemePicker((prev) => !prev);
   };

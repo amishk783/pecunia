@@ -2,7 +2,7 @@ import { LucideIcon } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
 
 import { Bitcoin } from "lucide-react";
-import { SquareGanttChart} from "lucide-react";
+import { SquareGanttChart } from "lucide-react";
 export interface DashboardType {
   icon: LucideIcon;
   text: string;
