@@ -25,7 +25,7 @@ import { AddExpense } from "@/components/expense/add";
 import { cn } from "@/lib/utils";
 
 import { notification } from "@/components/Notification";
-import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { useExpense } from "@/lib/stores/ExpenseProvier";
 import { PendingTransaction } from "@/components/expense/PendingTransaction";
 
 const Expenses = () => {
@@ -33,6 +33,7 @@ const Expenses = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
+    if (expenses.length > 0) return;
     const fetchTransactions = async () => {
       try {
         setIsLoading(true);
@@ -49,7 +50,8 @@ const Expenses = () => {
       }
     };
     fetchTransactions();
-  }, [setExpenses, setIsLoading]);
+  }, [setExpenses, setIsLoading, expenses]);
+  console.log("🚀 ~ useEffect ~ expenses:", expenses);
 
   const onActionDelete = async (id: number) => {
     try {
@@ -160,11 +162,17 @@ const Expenses = () => {
           <div className=" w-full h-min px-2  text-secondary-foreground ">
             <div className="flex gap-2">
               <SummeryItem
+                loading={isLoading}
                 className=""
                 title="Total Transaction"
                 amount={totalExpenses}
+                symbol=""
               />
-              <SummeryItem title="Total Spent" amount={totalAmountSpent} />
+              <SummeryItem
+                loading={isLoading}
+                title="Total Spent"
+                amount={totalAmountSpent}
+              />
             </div>
           </div>
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Outlet, Navigate } from "react-router-dom";
 
-import { useAuth } from "./providers/AuthProvider";
+import { useAuth } from "./stores/AuthProvider";
 
 const PrivateRoute: React.FC = () => {
   const { user, loading, session } = useAuth();

@@ -16,7 +16,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 import { cn } from "@/lib/utils";
 import { supabase } from "@/supabaseClient";
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
 import { financialAdvice } from "./constant";
 
 import { Button } from "@/components/ui/button";

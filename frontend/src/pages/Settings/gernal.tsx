@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
 import { Loader2 } from "lucide-react";
 
 export const GernalSection = () => {

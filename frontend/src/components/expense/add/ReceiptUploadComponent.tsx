@@ -1,7 +1,7 @@
 import { CloudUpload } from "lucide-react";
 import { useState } from "react";
 
-import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { useExpense } from "@/lib/stores/ExpenseProvier";
 
 interface Props {
   handleSetActiveTab: (tab: "scan" | "multiple" | "single" | null) => void;
@@ -12,7 +12,7 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
-  const { handleReceiptUpload} = useExpense();
+  const { handleReceiptUpload } = useExpense();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event || !event.target.files) return;
@@ -28,7 +28,6 @@ export const ReceiptUploadComponent: React.FC<Props> = ({
       <div className="flex w-full flex-col h-14 p-4  gap-4 justify-center  md:h-[320px]  ">
         <h2 className=" font-semibold text-lg">Upload a Receipt</h2>
         <div className=" w-full h-full   rounded-xl  relative">
-          
           {!selectedFile && (
             <div className="w-full flex relative bg-background/80 justify-center items-center h-60 border-dashed border-slate-600 border-2 rounded-lg pb-4">
               <div className="flex flex-col items-center">

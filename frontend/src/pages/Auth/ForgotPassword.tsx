@@ -4,7 +4,7 @@ import * as z from "zod";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
 
 import { ArrowLeftIcon, Loader } from "lucide-react";
 import { Input } from "@/components/ui/Input";

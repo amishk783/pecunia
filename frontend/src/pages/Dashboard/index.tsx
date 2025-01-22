@@ -10,8 +10,8 @@ import { columns } from "./columns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { RadarChart } from "@/components/charts/RadarChart";
-import { useExpense } from "@/lib/providers/ExpenseProvier";
-import { useBudget } from "@/lib/providers/BudgetProvider";
+import { useExpense } from "@/lib/stores/ExpenseProvier";
+import { useBudget } from "@/lib/stores/BudgetProvider";
 
 const Dashboard = () => {
   // const { user } = useAuth();
@@ -52,7 +52,9 @@ const Dashboard = () => {
       className={cn("p-2 md:p-5 w-full min-h-screen text-secondary-foreground")}
     >
       <div className="flex py-4 ">
-        <h2 className=" font-medium text-4xl text-secondary-foreground ">Good {timeOfDay}</h2>
+        <h2 className=" font-medium text-4xl text-secondary-foreground ">
+          Good {timeOfDay}
+        </h2>
       </div>
 
       <div className="flex flex-col gap-4">

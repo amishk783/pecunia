@@ -3,7 +3,7 @@ import { BudgetGroup } from "@/components/expense/BudgetGroup";
 import { Button } from "@/components/ui/button";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
-import { useBudget } from "@/lib/providers/BudgetProvider";
+import { useBudget } from "@/lib/stores/BudgetProvider";
 
 import { addGroup, reorderGroup } from "@/services/group";
 import { BudgetType, GroupType } from "@/type";
@@ -28,50 +28,39 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { useAuth } from "@/lib/providers/AuthProvider";
-import { notification } from "@/components/Notification";
+import { useAuth } from "@/lib/stores/AuthProvider";
 import { SkeletonBudgetCard } from "@/components/expense/SkeletonBudgetCard";
 
 const Budget = () => {
   const [isAddingGroup, setIsAddingGroup] = useState<boolean>(false);
   const itemInputRef = useRef<HTMLInputElement | null>(null);
-  const { budget, setBudget, loading, allExistedBudget } = useBudget();
+  const {
+    budget,
+    setBudget,
+    loading,
+    allExistedBudget,
+    fetchBudget,
+    addGroup: addGroupToStore,
+    reorderGroups,
+  } = useBudget();
   const { isAuth } = useAuth();
   const currentDate = new Date();
   const [currentMonthDate, setCurrentMonthDate] = useState<Date>(currentDate);
   const [isBudgetNotPresent, setIsBudgetNotPresent] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(false);
+
   const [activeId, setActiveId] = useState<string | null>("");
 
   useEffect(() => {
-   
-    const fetchBudget = async () => {
+    if (budget) return;
+    const fetchInitialBudget = async () => {
       const currentDate = new Date();
       const date = format(currentDate, "dd/MM/yyyy");
-
       if (!isAuth) return;
 
-      setIsLoading(true);
-      try {
-        const response = await api.post("/app/budget/by-date", {
-          date,
-        });
-
-        setBudget((prevBudget) => ({
-          ...prevBudget,
-          ...response.data.currentBudget,
-        }));
-      } catch (error) {
-        notification({
-          type: "error",
-          message: "Failed to fetch bugdet. Please try again.",
-        }); // Handle the error
-      } finally {
-        setIsLoading(false);
-      }
+      await fetchBudget(date);
     };
-    fetchBudget();
-  }, [isAuth, setBudget,budget]);
+    fetchInitialBudget();
+  }, [isAuth, budget, fetchBudget]);
 
   const handleCloseAdditem = async () => {
     if (itemInputRef.current && itemInputRef.current.value) {
@@ -84,15 +73,16 @@ const Budget = () => {
           type: "expense",
         });
 
-        setBudget((prev) => {
-          if (!prev) return prev;
-          const updatedBudget = {
-            ...prev,
-            groups: [...prev.groups, newGroup],
-          };
+        // setBudget((prev) => {
+        //   if (!prev) return prev;
+        //   const updatedBudget = {
+        //     ...prev,
+        //     groups: [...prev.groups, newGroup],
+        //   };
 
-          return updatedBudget;
-        });
+        //   return updatedBudget;
+        // });
+        addGroupToStore(newGroup);
         setIsAddingGroup(false);
       } catch (error) {
         console.log(error);
@@ -121,18 +111,8 @@ const Budget = () => {
 
     setIsBudgetNotPresent(!monthExists);
     if (monthExists) {
-      try {
-        setIsLoading(true);
-        const date = format(updatedDate, "dd/MM/yyyy");
-        const res = await api.post("/app/budget/by-date", { date });
-
-        setBudget(res.data.currentBudget);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching budget:", error);
-      } finally {
-        setIsLoading(false);
-      }
+      const date = format(updatedDate, "dd/MM/yyyy");
+      fetchBudget(date);
     }
 
     setCurrentMonthDate(updatedDate);
@@ -143,7 +123,7 @@ const Budget = () => {
   );
   const handleCloneBudget = async () => {
     try {
-      setIsLoading(true);
+      // setIsLoading(true);
       const id = (budget && budget.id) ?? 1;
 
       const date = format(currentMonthDate, "MM/dd/yyyy");
@@ -152,11 +132,11 @@ const Budget = () => {
       console.log("🚀 ~ handleCloneBudget ~ clonedBudget:", clonedBudget);
       setBudget(clonedBudget);
       setIsBudgetNotPresent(false);
-      setIsLoading(false);
+      // setIsLoading(false);
     } catch (error) {
       console.error("Error fetching budget:", error);
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -172,50 +152,18 @@ const Budget = () => {
     const { active, over } = event;
     if (over && active.id !== over.id && budget) {
       const oldIndex = budget.groups.findIndex((item) => item.id === active.id);
-
       const newIndex = budget.groups.findIndex((item) => item.id === over.id);
 
-      const groups = budget && budget?.groups;
+      const updatedGroups = arrayMove(budget.groups, oldIndex, newIndex);
+      reorderGroups(updatedGroups);
 
-      setBudget((prev) => {
-        if (!prev) return prev;
+      const reorderArray = updatedGroups.map((group, index) => ({
+        id: group.id,
+        position: index + 1,
+        budgetId: group.budgetID,
+      }));
 
-        const oldIndex = prev.groups.findIndex((item) => item.id === active.id);
-
-        const newIndex = prev.groups.findIndex((item) => item.id === over.id);
-        // Ensure valid indices before proceeding
-        if (oldIndex === -1 || newIndex === -1) {
-          console.error("Invalid indices for dragging:", {
-            oldIndex,
-            newIndex,
-          });
-          return prev;
-        }
-        console.log(prev.groups);
-        const updatedGroups = arrayMove(prev.groups, oldIndex, newIndex);
-
-        return {
-          ...prev,
-          groups: updatedGroups,
-        };
-      });
-      const reorderArray: {
-        id: number;
-        position: number;
-        budgetId: number;
-      }[] = [];
-
-      const movedArray = arrayMove(groups, oldIndex, newIndex);
-      console.log("🚀 ~ handleDragEnd ~ movedArray:", movedArray);
-      for (const group of movedArray) {
-        reorderArray.push({
-          id: group.id,
-          position: group.position,
-          budgetId: group.budgetID,
-        });
-      }
-      const result = await reorderGroup(reorderArray);
-      console.log("🚀 ~ handleDragEnd ~ result:", result);
+      await reorderGroup(reorderArray);
     }
   };
   return (
@@ -251,7 +199,7 @@ const Budget = () => {
           </div>
         </div>
         <div className="flex flex-col w-full max-sm:px-2  md:w-2/3 h-full items-center justify-center gap-4 ">
-          {isLoading ? (
+          {loading ? (
             <div className="flex flex-col gap-4 w-full m items-center  justify-center  ">
               {Array.from({ length: 3 }).map((_, index) => (
                 <SkeletonBudgetCard key={index} />
@@ -334,7 +282,7 @@ const Budget = () => {
               monthName,
               exisitngBudget,
               handleCloneBudget,
-              isLoading
+              loading
             )
           )}
         </div>

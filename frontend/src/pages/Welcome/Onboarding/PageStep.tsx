@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MultistepForm from "@/components/MultistepForm";
 import { Steps } from "./Steps";
-import { useMultiForm } from "@/lib/providers/FormProvider";
+import { useMultiForm } from "@/lib/stores/FormProvider";
 import { ItemsType } from "../constant";
 import { motion } from "framer-motion";
 

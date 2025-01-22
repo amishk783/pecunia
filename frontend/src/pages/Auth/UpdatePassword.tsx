@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/button";
 
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
 import { Loader } from "lucide-react";
 import PasswordStrengthChecker from "@/components/ui/PasswordStrengthChecker";
 import { notification } from "@/components/Notification";

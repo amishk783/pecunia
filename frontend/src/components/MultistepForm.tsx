@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import { useMultiForm } from "@/lib/providers/FormProvider";
+import { useMultiForm } from "@/lib/stores/FormProvider";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "./ui/button";

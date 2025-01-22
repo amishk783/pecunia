@@ -1,12 +1,13 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { cn } from "@/lib/utils";
 import { Settings, LogOut, ChevronLeft } from "lucide-react";
 
 import { adminDashboard } from "../constants/constants";
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
+import Link from "./Link";
 
 interface Props {
   className?: string;
@@ -15,16 +16,22 @@ interface Props {
 
 const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const isActivePage = (path: string): boolean => {
     return path === pathname;
   };
 
-  const { logOut } = useAuth();
+  const logOut = useAuth((state) => state.logOut);
+
+  const handleLogout = () => {
+    logOut();
+    navigate("/login");
+  };
   return (
     <div
       className={cn(
-        " w-20 lg:w-[230px] bg-background hidden text-secondary-foreground h-full fixed  md:flex bottom-0 top-0 left-0 flex-col z-10   ",
+        " w-20 lg:w-[230px] bg-background hidden text-secondary-foreground h-full fixed  md:flex bottom-0 top-0 left-0 flex-col z-10 drop-shadow-md shadow-sm  border-r border-card-foreground/20   ",
         className
       )}
     >
@@ -53,15 +60,16 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
           {adminDashboard.map((item) => (
             <Link
               className={`flex relative z-10 gap-4 group items-center justify-center lg:justify-start    lg:px-5 py-3 rounded-lg ${
-                isActivePage(`/${item.pathUrl}`) ? ` bg-primary text-primary-foreground ` : ""
+                isActivePage(`/${item.pathUrl}`)
+                  ? ` bg-primary text-primary-foreground `
+                  : ""
               }`}
-              to={item.pathUrl}
+              to={`/${item.pathUrl}`}
               key={item.text}
             >
               <div
                 className={cn(
-                  " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-primary group-hover:opacity-40 rounded-lg transition-colors duration-200 ease-out",
-                
+                  " absolute top-0 left-0 w-full -z-10 h-full group-hover:bg-primary group-hover:opacity-40 rounded-lg transition-colors duration-200 ease-out"
                 )}
               ></div>
               <item.icon size={36} />
@@ -93,7 +101,7 @@ const SideBar: React.FC<Props> = ({ className, onSidebarClose }) => {
       </div>
       <div className="gap-4 bottom-0 px-5 py-5 absolute w-full">
         <Button
-          onClick={logOut}
+          onClick={handleLogout}
           className=" flex gap-4 bg-primary items-center w-full  hover:bg-opacity-30 hover:text-red-600  py-3 rounded-lg"
         >
           <LogOut size={36} />

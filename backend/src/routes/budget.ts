@@ -18,6 +18,7 @@ import {
 import { checkScanStatus, scanTransaction } from '@/controllers/scanTransaction';
 import { upload } from '@/middleware/multer';
 import { getScanStatus } from '@/utils/scanSessionService';
+import { dashboardSummary } from '@/controllers/budget/dashboard';
 const router = express.Router();
 
 router.post('/item/reorder', reorder);
@@ -45,5 +46,7 @@ router.post('/onboarding-complete', createOnboardingBudget);
 router.post('/by-date', getBudgetByMonth);
 router.get('/budgets', getAllExistenceBudget);
 router.post('/:id', cloneBudget);
+
+router.get('/dashbord/:date', dashboardSummary);
 
 export const budgetRouter = router;

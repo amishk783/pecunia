@@ -36,7 +36,7 @@ import {
   Trash2,
 } from "lucide-react";
 import { deleteGroup, modifyGroup } from "@/services/group";
-import { useBudget } from "@/lib/providers/BudgetProvider";
+import { useBudget } from "@/lib/stores/BudgetProvider";
 
 import { ConfirmDelete } from "../ConfirmDelete";
 import { notification } from "../Notification";

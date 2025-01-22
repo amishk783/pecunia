@@ -1,6 +1,6 @@
 import { Sun, Home, Mail, Moon, Wrench, Menu, Loader2 } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { useTheme } from "../lib/providers/Theme";
+import { useTheme } from "../lib/stores/Theme";
 import { cn } from "../lib/utils";
 
 import {
@@ -13,7 +13,7 @@ import {
 
 import { useState } from "react";
 import SideBar from "./SideBar";
-import { useAuth } from "@/lib/providers/AuthProvider";
+import { useAuth } from "@/lib/stores/AuthProvider";
 
 const Header: React.FC = () => {
   const { pathname } = useLocation();

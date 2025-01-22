@@ -22,12 +22,12 @@ import {
   expensesPayMode,
   GroupWithCategoriesType,
 } from "@/constants/constants";
-import { useBudget } from "@/lib/providers/BudgetProvider";
+import { useBudget } from "@/lib/stores/BudgetProvider";
 
 import { addTransaction } from "@/services/transaction";
 import { CloudUpload, X } from "lucide-react";
 import { ReceiptUploadComponent } from "./ReceiptUploadComponent";
-import { useExpense } from "@/lib/providers/ExpenseProvier";
+import { useExpense } from "@/lib/stores/ExpenseProvier";
 import { Transaction } from "@/type";
 import { parse } from "date-fns";
 import { notification } from "@/components/Notification";

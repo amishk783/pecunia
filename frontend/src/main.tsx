@@ -4,23 +4,21 @@ import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
 
 // import { AuthProvider } from "./lib/providers/AuthProvider.tsx";
-import { FormProvider } from "./lib/providers/FormProvider.tsx";
-import { ThemeProvider } from "./lib/providers/Theme.tsx";
+import { FormProvider } from "./lib/stores/FormProvider.tsx";
+import { ThemeProvider } from "./lib/stores/Theme.tsx";
 
 import "./index.css";
-import { BudgetProvider } from "./lib/providers/BudgetProvider.tsx";
-import { ExpenseProvier } from "./lib/providers/ExpenseProvier.tsx";
+
+import { ExpenseProvier } from "./lib/stores/ExpenseProvier.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ExpenseProvier>
         <FormProvider>
-          <BudgetProvider>
-            <ThemeProvider>
-              <App />
-            </ThemeProvider>
-          </BudgetProvider>
+          <ThemeProvider>
+            <App />
+          </ThemeProvider>
         </FormProvider>
       </ExpenseProvier>
     </BrowserRouter>

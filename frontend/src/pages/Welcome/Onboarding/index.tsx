@@ -1,4 +1,4 @@
-import { useMultiForm } from "@/lib/providers/FormProvider";
+import { useMultiForm } from "@/lib/stores/FormProvider";
 import {
   lifestyle,
   Bills,

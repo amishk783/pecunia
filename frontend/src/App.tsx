@@ -1,7 +1,7 @@
 import { Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 
-import { useTheme } from "./lib/providers/Theme.tsx";
+import { useTheme } from "./lib/stores/Theme.tsx";
 import { cn } from "@/lib/utils.ts";
 
 import Budget from "@/pages/Budget";
@@ -18,7 +18,7 @@ import Welcome from "./pages/Welcome/index.tsx";
 import CustomThemePicker from "./components/CustomThemePicker.tsx";
 import Settings from "./pages/Settings/index.tsx";
 import { useEffect } from "react";
-import { useAuth } from "./lib/providers/AuthProvider.tsx";
+import { useAuth } from "./lib/stores/AuthProvider.tsx";
 import Home from "./pages/Home/index.tsx";
 
 function App() {
